@@ -1,0 +1,269 @@
+@font-face {
+    font-family: 'Bariol';
+    src: url('./fonts/bariol/bariol_regular-webfont.eot');
+    src: url('./fonts/bariol/bariol_regular-webfont.eot?#iefix') format('embedded-opentype'),
+    url('./fonts/bariol/bariol_regular-webfont.woff2') format('woff2'),
+    url('./fonts/bariol/bariol_regular-webfont.woff') format('woff'),
+    url('./fonts/bariol/bariol_regular-webfont.ttf') format('truetype'),
+    url('./fonts/bariol/bariol_regular-webfont.svg') format('svg');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Bariol Bold';
+    src: url('./fonts/bariol/bariol_bold-webfont.eot');
+    src: url('./fonts/bariol/bariol_bold-webfont.eot?#iefix') format('embedded-opentype'),
+    url('./fonts/bariol/bariol_bold-webfont.woff2') format('woff2'),
+    url('./fonts/bariol/bariol_bold-webfont.woff') format('woff'),
+    url('./fonts/bariol/bariol_bold-webfont.ttf') format('truetype'),
+    url('./fonts/bariol/bariol_bold-webfont.svg') format('svg');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
+$base-blue: #30486e;
+$light-blue: #475873;
+$white: #ffffff;
+$light-yellow: #ffd85b;
+$base-yellow: #f4ca13;
+$dark-yellow: #d9a900;
+$light-red: #ffa997;
+$base-red: #e14b2a;
+$dark-red: #ba3c23;
+
+
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+  
+  #override {
+    color: #212121;
+    padding-top: 50px;
+    .line-gede img {
+      margin: 0;
+      padding: 0;
+      max-height: 0.5em;
+    }
+    .nomor {
+      color: #7a7a7a;
+    }
+  
+    .navbar-brand {
+      color: $base-yellow;
+    }
+  
+    nav {
+      border-bottom: none;
+      background-color: $base-blue;
+      color: white;
+  
+      li.active a {
+        background-color: $base-blue;
+        color: white;
+        border-bottom: 2px solid $base-yellow;
+      }
+      a {
+        font-family: "Bariol Bold", Arial, Helvetica, sans-serif;
+        font-size: 18px;
+        color: #cccccc;
+  
+      }
+    }
+  
+    h1, h2, h3, h4, h5, h6 {
+      font-family: "Bariol Bold", Arial, Helvetica, sans-serif;
+    }
+  
+    h1 {
+      color: $base-blue;
+    }
+  
+    p, small, li, ul, cite, em, strong {
+      font-family: 'Open Sans', sans-serif;      
+      font-weight: normal;
+    }
+  
+    p {
+      font-size: 16px;
+      color: #555555;
+    }
+  
+    section {
+      margin: 8em 0;
+    }
+  
+    @keyframes arrow {
+      0% {margin-left: 0em;}
+      50% {margin-left: 0.2em;}
+      100% {margin-left: 0em;}
+    }
+  
+    .arrow-link {
+      animation: arrow 1s infinite;
+    }
+  
+    section#land {
+      margin: 0;
+      background-size: cover;
+      background-image: url("../images/backgroundmipa.jpg");
+      .jumbotron {
+        background: $base-blue;
+        border-radius: 0;
+        width: 100%;
+        height: 80vh;
+        padding: 0 15px;
+        .tagline {
+          color: white;
+          padding: 50px 0;
+          img {
+            width: 300px;
+          }
+          h1 {
+            font-size: 4em;
+            color: white;
+          }
+          p {
+            font-size: 2em;
+            color: $base-yellow;
+            a {
+              width: 400px;
+              border: none;
+              font-size: 0.8em;
+              background-color: $dark-red;
+              font-family: "Bariol Bold", Arial, Helvetica, sans-serif;
+              color: $light-red;
+            }
+          }
+          @media screen and (max-width: 640px) {
+            color: white;
+            padding: 10px 0;
+            img {
+              width: 150px;
+            }
+            h1 {
+              font-size: 2.75em;
+              color: white;
+            }
+            p {
+              font-size: 2em;
+              color: $base-yellow;
+              a {
+                width: 300px;
+                border: none;
+                font-size:0.6em;
+                background-color: $base-yellow;
+                font-family: "Bariol Bold", Arial, Helvetica, sans-serif;
+                color: #212121;
+              }
+            }
+  
+          }
+        }
+      }
+    }
+  
+    section#why {
+      background-image: url("../images/why.png");
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: contain;
+      padding-top: 2em;
+      h2 {
+        margin: 1em 0;
+      }
+
+      h3 {
+        color: #555555;
+      }
+  
+      p {
+        color: #555555;
+        line-height: 1.5em;
+        text-indent: 1em;
+      }
+  
+      .row div {
+        padding-top: 1em;
+        padding-bottom: 1em;
+        &.even {
+          @media screen and (min-width: 768px) {
+            margin-top: 10em;
+          }
+        }
+      }
+  
+    }
+  
+    section#alumnus {
+      .row {
+        margin-top: 2em;
+      }
+      .thumbnail {
+        min-height: 600px;
+        border: none;
+        box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, .16);
+        &.odd {
+          transform: rotate(2deg);
+          transition: all 1s;
+          &:hover {
+            transform: rotate(0deg);
+          }
+        }
+        &.even {
+          transform: rotate(-2deg);
+          transition: all 1s;
+          &:hover {
+            transform: rotate(0deg);
+          }
+        }
+      }
+    }
+  
+    section#support {
+      .kolaborasi {
+        text-align: center;
+        margin: 2em 0;
+        h2 {
+          margin: 1em 0;
+          color: #cccccc;
+          font-size: 1.6em;
+        }
+        img {
+          margin: 10px;
+        }
+      }
+    }
+  
+    section#contact {
+      margin: 0;
+      background-color: #303c42;
+      color: #f5f5f5;
+      padding: 2em 0;
+      h1 {
+        color: white;
+      }
+      h3 {
+        margin-bottom: 1em;
+      }
+      p {
+        margin: 0;
+        color: white;
+      }
+      .links {
+        p {
+          margin: 0;
+          color: white;
+        }
+        a {
+          color: #cfd8dc;
+        }
+      }
+    }
+  }
+  
+  
+  #staedtler {
+    background-color: #150958 !important;
+    color: white !important;
+  }

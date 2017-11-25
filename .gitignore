@@ -1,0 +1,26 @@
+# Created by .ignore support plugin (hsz.mobi)
+
+# modules
+/functions/node_modules
+/node_modules/
+
+# editor
+.idea/*
+.vscode/*
+
+# lock
+yarn.lock
+package-lock.json
+/functions/package-lock.json
+/functions/yarn.lock
+
+# error Files
+yarn-error.log
+/functions/yarn-error.log
+
+# build
+build/*
+!build/build.xml
+
+# log
+firebase-debug.log

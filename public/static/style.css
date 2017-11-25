@@ -1,0 +1,174 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans");
+@import url("https://fonts.googleapis.com/css?family=Open+Sans");
+@font-face {
+  font-family: 'Bariol';
+  src: url("./fonts/bariol/bariol_regular-webfont.eot");
+  src: url("./fonts/bariol/bariol_regular-webfont.eot?#iefix") format("embedded-opentype"), url("./fonts/bariol/bariol_regular-webfont.woff2") format("woff2"), url("./fonts/bariol/bariol_regular-webfont.woff") format("woff"), url("./fonts/bariol/bariol_regular-webfont.ttf") format("truetype"), url("./fonts/bariol/bariol_regular-webfont.svg") format("svg");
+  font-weight: 400;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'Bariol Bold';
+  src: url("./fonts/bariol/bariol_bold-webfont.eot");
+  src: url("./fonts/bariol/bariol_bold-webfont.eot?#iefix") format("embedded-opentype"), url("./fonts/bariol/bariol_bold-webfont.woff2") format("woff2"), url("./fonts/bariol/bariol_bold-webfont.woff") format("woff"), url("./fonts/bariol/bariol_bold-webfont.ttf") format("truetype"), url("./fonts/bariol/bariol_bold-webfont.svg") format("svg");
+  font-weight: 700;
+  font-style: normal; }
+
+#override {
+  color: #212121;
+  padding-top: 50px; }
+  #override .line-gede img {
+    margin: 0;
+    padding: 0;
+    max-height: 0.5em; }
+  #override .nomor {
+    color: #7a7a7a; }
+  #override .navbar-brand {
+    color: #f4ca13; }
+  #override nav {
+    border-bottom: none;
+    background-color: #30486e;
+    color: white; }
+    #override nav li.active a {
+      background-color: #30486e;
+      color: white;
+      border-bottom: 2px solid #f4ca13; }
+    #override nav a {
+      font-family: "Bariol Bold", Arial, Helvetica, sans-serif;
+      font-size: 18px;
+      color: #cccccc; }
+  #override h1, #override h2, #override h3, #override h4, #override h5, #override h6 {
+    font-family: "Bariol Bold", Arial, Helvetica, sans-serif; }
+  #override h1 {
+    color: #30486e; }
+  #override p, #override small, #override li, #override ul, #override cite, #override em, #override strong {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: normal; }
+  #override p {
+    font-size: 16px;
+    color: #555555; }
+  #override section {
+    margin: 8em 0; }
+
+@keyframes arrow {
+  0% {
+    margin-left: 0em; }
+  50% {
+    margin-left: 0.2em; }
+  100% {
+    margin-left: 0em; } }
+  #override .arrow-link {
+    animation: arrow 1s infinite; }
+  #override section#land {
+    margin: 0;
+    background-size: cover;
+    background-image: url("../images/backgroundmipa.jpg"); }
+    #override section#land .jumbotron {
+      background: #30486e;
+      border-radius: 0;
+      width: 100%;
+      height: 80vh;
+      padding: 0 15px; }
+      #override section#land .jumbotron .tagline {
+        color: white;
+        padding: 50px 0; }
+        #override section#land .jumbotron .tagline img {
+          width: 300px; }
+        #override section#land .jumbotron .tagline h1 {
+          font-size: 4em;
+          color: white; }
+        #override section#land .jumbotron .tagline p {
+          font-size: 2em;
+          color: #f4ca13; }
+          #override section#land .jumbotron .tagline p a {
+            width: 400px;
+            border: none;
+            font-size: 0.8em;
+            background-color: #ba3c23;
+            font-family: "Bariol Bold", Arial, Helvetica, sans-serif;
+            color: #ffa997; }
+        @media screen and (max-width: 640px) {
+          #override section#land .jumbotron .tagline {
+            color: white;
+            padding: 10px 0; }
+            #override section#land .jumbotron .tagline img {
+              width: 150px; }
+            #override section#land .jumbotron .tagline h1 {
+              font-size: 2.75em;
+              color: white; }
+            #override section#land .jumbotron .tagline p {
+              font-size: 2em;
+              color: #f4ca13; }
+              #override section#land .jumbotron .tagline p a {
+                width: 300px;
+                border: none;
+                font-size: 0.6em;
+                background-color: #f4ca13;
+                font-family: "Bariol Bold", Arial, Helvetica, sans-serif;
+                color: #212121; } }
+  #override section#why {
+    background-image: url("../images/why.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+    padding-top: 2em; }
+    #override section#why h2 {
+      margin: 1em 0; }
+    #override section#why h3 {
+      color: #555555; }
+    #override section#why p {
+      color: #555555;
+      line-height: 1.5em;
+      text-indent: 1em; }
+    #override section#why .row div {
+      padding-top: 1em;
+      padding-bottom: 1em; }
+      @media screen and (min-width: 768px) {
+        #override section#why .row div.even {
+          margin-top: 10em; } }
+  #override section#alumnus .row {
+    margin-top: 2em; }
+  #override section#alumnus .thumbnail {
+    min-height: 600px;
+    border: none;
+    box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.16); }
+    #override section#alumnus .thumbnail.odd {
+      transform: rotate(2deg);
+      transition: all 1s; }
+      #override section#alumnus .thumbnail.odd:hover {
+        transform: rotate(0deg); }
+    #override section#alumnus .thumbnail.even {
+      transform: rotate(-2deg);
+      transition: all 1s; }
+      #override section#alumnus .thumbnail.even:hover {
+        transform: rotate(0deg); }
+  #override section#support .kolaborasi {
+    text-align: center;
+    margin: 2em 0; }
+    #override section#support .kolaborasi h2 {
+      margin: 1em 0;
+      color: #cccccc;
+      font-size: 1.6em; }
+    #override section#support .kolaborasi img {
+      margin: 10px; }
+  #override section#contact {
+    margin: 0;
+    background-color: #303c42;
+    color: #f5f5f5;
+    padding: 2em 0; }
+    #override section#contact h1 {
+      color: white; }
+    #override section#contact h3 {
+      margin-bottom: 1em; }
+    #override section#contact p {
+      margin: 0;
+      color: white; }
+    #override section#contact .links p {
+      margin: 0;
+      color: white; }
+    #override section#contact .links a {
+      color: #cfd8dc; }
+
+#staedtler {
+  background-color: #150958 !important;
+  color: white !important; }

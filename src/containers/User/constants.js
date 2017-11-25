@@ -1,0 +1,1 @@
+export const FETCH_USER_DATA = 'ORION/FETCH_USER_DATA';
