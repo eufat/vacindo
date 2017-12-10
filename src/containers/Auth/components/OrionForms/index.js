@@ -102,9 +102,6 @@ const OrionForms = props => (
         <MenuItem key={3} value={'ips'}>
           IPS
         </MenuItem>
-        <MenuItem key={4} value={'ipc'}>
-          IPC
-        </MenuItem>
       </Select>
     </FormControl>
     <FormControl fullWidth>

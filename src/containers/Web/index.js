@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
 import { withStyles } from 'material-ui/styles';
 

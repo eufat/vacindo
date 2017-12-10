@@ -1,5 +1,3 @@
-import omit from 'lodash/omit';
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import update from 'immutability-helper';
@@ -14,14 +12,11 @@ import { FormControl } from 'material-ui/Form';
 import Select from 'material-ui/Select';
 import Button from 'material-ui/Button';
 
-import { getDate } from '../../../../../utils/numberHelper';
 import eventConfig from '../../../../../event.config';
-import { errorMessage } from '../../../../App/actions';
 import { createVouchers } from '../../../actions';
 
 const now = new Date();
 const timestamp = now.getTime();
-const dateNow = getDate(timestamp);
 
 const styleSheet = () => ({
   paper: {

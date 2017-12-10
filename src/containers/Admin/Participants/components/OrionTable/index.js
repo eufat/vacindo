@@ -103,17 +103,16 @@ class OrionTable extends React.PureComponent {
   };
   componentDidMount() {
     this.fetchData();
-  }
-  componentDidUpdate() {
-    this.fetchData();
-  }
+  };
   changeCurrentPage = (currentPage) => {
+    this.fetchData();
     this.setState({
       loading: true,
       currentPage,
     });
   };
   changePageSize = (pageSize) => {
+    this.fetchData();
     const totalPages = Math.ceil(this.state.totalCount / pageSize);
     const currentPage = Math.min(this.state.currentPage, totalPages - 1);
 

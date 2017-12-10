@@ -29,23 +29,24 @@ exports.createPayment = functions.database.ref('/paymentsData/{paymentId}').onCr
   const now = new Date();
   const timestamp = now.getTime();
 
-  function updatePaymentNumber(paymentId, paymentNumber) {
-    const userRef = admin.database().ref(`paymentsData/${paymentId}`);
-    userRef.update({ paymentNumber });
-  }
-
-  const paymentsCountRef = admin.database().ref('appData/paymentsCount');
-  paymentsCountRef.once('value').then(() => {
-    let count = null;
-    paymentsCountRef.transaction(
-      (current) => {
-        count = (current || 0) + 1;
-        return count;
-      },
-      (error, committed, snapshot) => {
-        updatePaymentNumber(event.params.paymentId, snapshot.val());
-      }
-    );
+  const updatePaymentNumber = new Promise((resolve, reject) => {
+    const paymentsCountRef = admin.database().ref('appData/paymentsCount');
+    paymentsCountRef.once('value').then(() => {
+      let count = null;
+      paymentsCountRef.transaction(
+        (current) => {
+          count = (current || 0) + 1;
+          return count;
+        },
+        (error, committed, snapshot) => {
+          const value = snapshot.val();
+          const userRef = admin.database().ref(`paymentsData/${event.params.paymentId}`);
+          userRef.update({ paymentNumber: value });
+          console.log(`Payment count: ${value}`);
+          resolve();
+        }
+      );
+    });
   });
 
   const paymentMethod = event.data.val()['method'];
@@ -83,7 +84,7 @@ exports.createPayment = functions.database.ref('/paymentsData/{paymentId}').onCr
 
   return Promise.all([
     timelineRef,
-    paymentsCountRef,
+    updatePaymentNumber,
     paymentsMethodCountRef,
     event.data.ref.parent.child(event.params.paymentId).set(newData),
   ]);
@@ -93,23 +94,24 @@ exports.createUser = functions.database.ref('/usersData/{userId}').onCreate((eve
   const now = new Date();
   const timestamp = now.getTime();
 
-  function updateUserNumber(userId, userNumber) {
-    const userRef = admin.database().ref(`usersData/${userId}`);
-    userRef.update({ userNumber });
-  }
-
-  const usersCountRef = admin.database().ref('appData/usersCount');
-  usersCountRef.once('value').then(() => {
-    let count = null;
-    usersCountRef.transaction(
-      (current) => {
-        count = (current || 0) + 1;
-        return count;
-      },
-      (error, committed, snapshot) => {
-        updateUserNumber(event.params.userId, snapshot.val());
-      }
-    );
+  const updateUserNumber = new Promise((resolve, reject) => {
+    const usersCountRef = admin.database().ref('appData/usersCount');
+    usersCountRef.once('value').then(() => {
+      let count = null;
+      usersCountRef.transaction(
+        (current) => {
+          count = (current || 0) + 1;
+          return count;
+        },
+        (error, committed, snapshot) => {
+          const userNumber = snapshot.val();
+          const userRef = admin.database().ref(`usersData/${event.params.userId}`);
+          userRef.update({ userNumber });
+          console.log(`User count: ${userNumber}`);
+          resolve();
+        }
+      );
+    });
   });
 
   const userExamType = event.data.val().examType;
@@ -157,7 +159,7 @@ exports.createUser = functions.database.ref('/usersData/{userId}').onCreate((eve
   });
 
   return Promise.all([
-    usersCountRef,
+    updateUserNumber,
     usersExamCountRef,
     timelineRef,
     lastRegsTimeRef,

@@ -1,4 +1,5 @@
 import map from 'lodash/map';
+import get from 'lodash/get';
 
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -13,13 +14,21 @@ import { TableCell } from 'material-ui';
 import { withStyles } from 'material-ui/styles';
 import Button from 'material-ui/Button';
 import Drawer from 'material-ui/Drawer';
+import Typography from 'material-ui/Typography';
+import { CircularProgress } from 'material-ui/Progress';
+import ExpansionPanel, {
+  ExpansionPanelSummary,
+  ExpansionPanelDetails,
+  ExpansionPanelActions,
+} from 'material-ui/ExpansionPanel';
+import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
+import Divider from 'material-ui/Divider';
 
 import { OrionLoading } from '../../../../../components/OrionLoading';
 import OrionForms from '../../../../Auth/components/OrionForms';
 
 import { getDate } from '../../../../../utils/numberHelper';
-import { retrievePayments } from '../../../actions';
-import { retrieveParticipant } from '../../../actions';
+import { retrievePayments, retrieveParticipant, retrievePaymentImageURL, retrievePayment } from '../../../actions';
 
 const styles = {
   saleAmountCell: {
@@ -71,6 +80,10 @@ const styleSheet = theme => ({
     padding: 16,
     width: 400,
   },
+  heading: {
+    fontSize: theme.typography.pxToRem(15),
+    fontWeight: theme.typography.fontWeightRegular,
+  },
 });
 
 class OrionTable extends React.PureComponent {
@@ -90,23 +103,25 @@ class OrionTable extends React.PureComponent {
     currentPage: 0,
     loading: true,
     verifyOpen: false,
+    verifyOnLoad: true,
     verifyData: {},
     dataOnPage: {},
     userData: {},
+    paymentImageURL: '',
+    paymentData: {}
   };
   componentDidMount() {
     this.fetchData();
-  }
-  componentDidUpdate() {
-    this.fetchData();
-  }
+  };
   changeCurrentPage = (currentPage) => {
+    this.fetchData();
     this.setState({
       loading: true,
       currentPage,
     });
   };
   changePageSize = (pageSize) => {
+    this.fetchData();    
     const totalPages = Math.ceil(this.state.totalCount / pageSize);
     const currentPage = Math.min(this.state.currentPage, totalPages - 1);
 
@@ -148,16 +163,19 @@ class OrionTable extends React.PureComponent {
   async fetchData() {
     const { pageSize, currentPage, sorting } = this.state;
     let payments = {};
+
     try {
       payments = await retrievePayments(
         currentPage * pageSize,
         currentPage * pageSize + pageSize,
         sorting.columnName,
       );
-    } finally {
-      const rows = map(payments, (value, paymentId) => ({ ...value, paymentId }));
-      this.setRows(payments, rows);
+    } catch (error) {
+      console.error(error.message);
     }
+
+    const rows = map(payments, (value, paymentId) => ({ ...value, paymentId }));
+    this.setRows(payments, rows);
   }
 
   loadData() {
@@ -179,16 +197,52 @@ class OrionTable extends React.PureComponent {
       .catch(() => this.setState({ loading: false }));
     this.lastQuery = queryString;
   }
-  onVerify = async (paymentId) => {
+
+  onVerify = (paymentId) => {
+    this.setState({ ...this.state, verifyOpen: true, verifyOnLoad: true }, () => this.setVerifyData(paymentId));
+  };
+
+  setVerifyData = async (paymentId) => {
     const dataOnPage = this.state.dataOnPage;
     const userId = dataOnPage[paymentId].userId;
-    const userData = await retrieveParticipant(userId);
-    this.setState({ ...this.state, verifyOpen: true, verifyData: dataOnPage[paymentId], userData });
+    let userData = {};
+    let paymentImageURL = '';
+    let paymentData = {};
+
+    try {
+      userData = await retrieveParticipant(userId);
+      userData = { ...userData, userId };
+    } catch (error) {
+      console.error(error.message);
+    }
+
+    try {
+      paymentImageURL = await retrievePaymentImageURL(paymentId);      
+    } catch (error) {
+      console.error(error.message);
+    }
+
+    try {
+      paymentData = await retrievePayment(paymentId);
+    } catch (error) {
+      console.error(error.message);
+    }
+
+    this.setState({
+      ...this.state,
+      verifyOnLoad: false,
+      verifyData: dataOnPage[paymentId],
+      userData,
+      paymentImageURL,
+      paymentData,
+    });
   };
+
   toggleEditDrawer = (state) => {
     this.setState({ ...this.state, verifyOpen: state });
   };
   render() {
+    const { classes } = this.props;
     const {
       rows,
       columns,
@@ -200,7 +254,77 @@ class OrionTable extends React.PureComponent {
       loading,
       userData,
       verifyOpen,
+      paymentImageURL,
     } = this.state;
+
+    let i = 0;
+
+    const PaymentContent = (paymentData) => (
+      <div>
+        <Typography type="body1">
+          Created Date  : {get(paymentData, 'creationTime', '')} <br />
+          Method  : {get(paymentData, 'method', '')} <br />
+          Payment Number  : {get(paymentData, 'paymentNumber', '')} <br />
+          Verification Time  : {get(paymentData, 'verificationTime', '')} <br />
+          {
+            get(paymentData, 'method') === 'transfer' ?
+            <div>
+              Bank Account  : {get(paymentData, 'data.bankAccount', '')} <br />
+              Bank Name  : {get(paymentData, 'data.bankName', '')} <br />
+              Transfer Amount : {get(paymentData, 'data.transferAmount', '')} <br />
+              Transfer Date  : {get(paymentData, 'data.transferDate', '')} <br />
+              Transferors  : {get(paymentData, 'data.transferors', '')} <br />
+            </div> :
+            <div>
+              Voucher Code  : {get(paymentData, 'data.code', '')} <br />
+            </div>
+          }
+        </Typography>
+      </div>
+    );
+
+    const DrawerContent = () => (
+      <div>
+        <ExpansionPanel>
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography className={classes.heading}>User Info</Typography>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            <OrionForms
+              changeFormFields={noop => noop}
+              changeFormSelect={noop => noop}
+              forms={userData}
+              disabled
+              key={`form-${i++}`}
+            />
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
+        <ExpansionPanel>
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography className={classes.heading}>Payment Info</Typography>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            { this.state.paymentImageURL === '' ?
+              <Typography type="body1" gutterBottom align="center">
+                No payment image.
+              </Typography> :
+              <img src={paymentImageURL} width="200" alt="Payment URL" />
+            }
+          </ExpansionPanelDetails>
+          <Divider />
+          <ExpansionPanelDetails>
+            { PaymentContent(this.state.paymentData) }
+          </ExpansionPanelDetails>
+          <Divider />
+          <ExpansionPanelActions>
+            <Button dense>Cancel</Button>
+            <Button dense color="primary">
+              Verify Payment
+            </Button>
+          </ExpansionPanelActions>
+        </ExpansionPanel>
+      </div>
+    );
 
     return (
       <div style={{ position: 'relative' }}>
@@ -210,14 +334,11 @@ class OrionTable extends React.PureComponent {
           onRequestClose={() => this.toggleEditDrawer(false)}
         >
           <div className={this.props.classes.editData}>
-            <OrionForms
-              changeFormFields={noop => noop}
-              changeFormSelect={noop => noop}
-              forms={userData}
-              disabled
-            />
-            <br />
-            <Button disabled>Verify Payment</Button>
+          {
+            this.state.verifyOnLoad ?
+              <CircularProgress /> :
+              <div>{ DrawerContent() }</div>
+          }
           </div>
         </Drawer>
         <Grid rows={rows} columns={columns}>

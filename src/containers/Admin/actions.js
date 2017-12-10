@@ -60,6 +60,13 @@ export async function retrievePayments(startAt, endAt, sorting) {
   return query.val();
 }
 
+export async function retrievePayment(paymentId) {
+  const rtdb = firebase.database();
+  const userRef = rtdb.ref(`paymentsData/${paymentId}`);
+  const data = await userRef.once('value');
+  return data.val();
+}
+
 export function retrieveAppData() {
   return (dispatch) => {
     dispatch(showLoadingBar());
@@ -73,6 +80,14 @@ export function retrieveAppData() {
   };
 }
 
+export async function retrievePaymentImageURL(userId) {
+  const storage = firebase.storage();
+  const imageRef = storage.ref(`paymentsImage/${userId}`);
+  const url = await imageRef.getDownloadURL();
+
+  return url;
+}
+
 export async function createVouchers(req) {
   return new Promise(async (resolve, reject) => {
     try {
@@ -80,7 +95,7 @@ export async function createVouchers(req) {
       const url = 'https://hadron.tossaka14th.com/pdf';
 
       const response = await fetch(url, {
-        mode: 'cors',
+        mode: 'no-cors',
         method: 'POST',
         headers: new Headers({
           'Content-Type': 'application/json',

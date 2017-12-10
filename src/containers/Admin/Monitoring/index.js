@@ -42,8 +42,18 @@ class Monitoring extends Component {
 
   componentDidMount() {
     const { appData } = this.props;
+    const data = values(get(appData, 'timeline', {}));
+
     // add range 1 year, 6 mo, 3 mo, 1 mo, 1 week
-    this.setData(values(get(appData, 'timeline', {})));
+    this.setData(data.sort((a, b) => {
+      function dateToNum(string) {
+        const prevDate = string.split('-');
+        const [day, month, year] = prevDate;
+        const newDate = year + month + day;
+        return +newDate;
+      }
+      return dateToNum(a.date) - dateToNum(b.date);
+    }));
   }
 
   setData = (data) => {
