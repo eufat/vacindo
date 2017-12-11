@@ -105,14 +105,12 @@ class OrionTable extends React.PureComponent {
     this.fetchData();
   };
   changeCurrentPage = (currentPage) => {
-    this.fetchData();
     this.setState({
       loading: true,
       currentPage,
-    });
+    }, () => this.fetchData());
   };
   changePageSize = (pageSize) => {
-    this.fetchData();
     const totalPages = Math.ceil(this.state.totalCount / pageSize);
     const currentPage = Math.min(this.state.currentPage, totalPages - 1);
 
@@ -120,7 +118,7 @@ class OrionTable extends React.PureComponent {
       loading: true,
       pageSize,
       currentPage,
-    });
+    }, () => this.fetchData());
   };
   queryString() {
     const { sorting, pageSize, currentPage } = this.state;

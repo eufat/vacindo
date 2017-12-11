@@ -36,7 +36,7 @@ export function retrieveParticipants(startAt, endAt, sorting) {
   const usersDataRef = firebase.database().ref('usersData');
   return usersDataRef
     .orderByChild(sorting || 'userNumber')
-    .startAt(startAt)
+    .startAt(startAt + 1)
     .endAt(endAt)
     .once('value')
     .then(snapshot => snapshot.val());
@@ -53,7 +53,7 @@ export async function retrievePayments(startAt, endAt, sorting) {
   const usersDataRef = firebase.database().ref('paymentsData');
   const query = await usersDataRef
     .orderByChild(sorting || 'paymentNumber')
-    .startAt(startAt)
+    .startAt(startAt + 1)
     .endAt(endAt)
     .once('value');
 
