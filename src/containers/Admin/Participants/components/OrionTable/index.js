@@ -94,7 +94,7 @@ class OrionTable extends React.PureComponent {
     sorting: [{ columnName: 'userNumber', direction: 'asc' }],
     totalCount: 0,
     pageSize: 10,
-    allowedPageSizes: [5, 10, 15],
+    allowedPageSizes: [5, 10, 20, 50],
     currentPage: 0,
     loading: true,
     editOpen: false,

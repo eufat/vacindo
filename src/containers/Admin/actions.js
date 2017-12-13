@@ -71,6 +71,14 @@ export function verifyPayment(paymentId, timestamp) {
   // unverify payment with timestamp = ''
   const updates = {};
   updates[`/paymentsData/${paymentId}/verificationTime/`] = timestamp;
+  // increment verified payment
+  const verifiedPayment = firebase.database().ref('appData/verifiedPaymentCount');
+  verifiedPayment.once('value').then(() => {
+    verifiedPayment.transaction((current) => {
+      const newCount = (current || 0) + 1;
+      return newCount;
+    });
+  });
 
   return firebase.database().ref().update(updates);
 }
@@ -79,6 +87,14 @@ export function deletePayment(paymentId, userId) {
   const updates = {};
   updates[`/paymentsData/${paymentId}`] = null;
   updates[`/usersData/${userId}/paymentId`] = '';
+  // decrement verified payment
+  const verifiedPayment = firebase.database().ref('appData/verifiedPaymentCount');
+  verifiedPayment.once('value').then(() => {
+    verifiedPayment.transaction((current) => {
+      const newCount = current === 0 ? current - 1 : 0;
+      return newCount;
+    });
+  });
 
   return firebase.database().ref().update(updates);
 }

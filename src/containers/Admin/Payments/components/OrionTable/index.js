@@ -31,7 +31,14 @@ import { OrionLoading } from '../../../../../components/OrionLoading';
 import OrionForms from '../../../../Auth/components/OrionForms';
 
 import { getDate } from '../../../../../utils/numberHelper';
-import { retrievePayments, retrieveParticipant, retrievePaymentImageURL, retrievePayment, verifyPayment, deletePayment } from '../../../actions';
+import {
+  retrievePayments,
+  retrieveParticipant,
+  retrievePaymentImageURL,
+  retrievePayment,
+  verifyPayment,
+  deletePayment,
+} from '../../../actions';
 
 const styles = {
   saleAmountCell: {
@@ -117,7 +124,7 @@ class OrionTable extends React.PureComponent {
     sorting: [{ columnName: 'paymentNumber', direction: 'asc' }],
     totalCount: 0,
     pageSize: 10,
-    allowedPageSizes: [5, 10, 15],
+    allowedPageSizes: [5, 10, 20, 50],
     currentPage: 0,
     loading: true,
     verifyOpen: false,
@@ -137,7 +144,7 @@ class OrionTable extends React.PureComponent {
       currentPage,
     }, () => this.fetchData());
   };
-  changePageSize = (pageSize) => {    
+  changePageSize = (pageSize) => {
     const totalPages = Math.ceil(this.state.totalCount / pageSize);
     const currentPage = Math.min(this.state.currentPage, totalPages - 1);
 
@@ -300,7 +307,13 @@ class OrionTable extends React.PureComponent {
 
     let i = 0;
 
-    const formatMsToDate = ms => (new Date(ms)).toString();
+    const formatMsToDate = (ms) => {
+      if (ms === 0) {
+        return '-';
+      }
+
+      return (new Date(ms)).toString();
+    };
     const isVerified = this.state.paymentData.verificationTime > 0;
 
     const PaymentContent = paymentData => (

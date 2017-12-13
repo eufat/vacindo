@@ -1,19 +1,47 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
+import { FormControlLabel, FormGroup } from 'material-ui/Form';
+import Switch from 'material-ui/Switch';
 
-const styleSheet = () => ({});
+class Settings extends React.Component {
+  state = {
+    openSignIn: true,
+    openSignUp: true,
+    adminData: {},
+  };
 
-function Settings(props) {
-  return (
-    <div>
-      <center>This is Settings</center>
-    </div>
-  );
+  toggleSignIn = (checked) => {
+    this.setState({ ...this.state, openSignIn: checked });
+  }
+
+
+  toggleSignUp = (checked) => {
+    this.setState({ ...this.state, openSignUp: checked });
+  }
+
+  render() {
+    return (
+      <FormGroup>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={this.state.openSignIn}
+              onChange={(event, checked) => this.toggleSignIn(checked)}
+            />
+          }
+          label="Sign In Form"
+        />
+        <FormControlLabel
+          control={
+            <Switch
+              checked={this.state.openSignUp}
+              onChange={(event, checked) => this.toggleSignUp(checked)}
+            />
+          }
+          label="Sign Up Form"
+        />
+      </FormGroup>
+    );
+  }
 }
 
-Settings.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styleSheet)(Settings);
+export default Settings;
