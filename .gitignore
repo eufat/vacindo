@@ -24,3 +24,6 @@ build/*
 
 # log
 firebase-debug.log
+
+# env
+.env

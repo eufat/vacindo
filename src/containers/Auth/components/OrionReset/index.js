@@ -8,16 +8,13 @@ import Dialog, {
   DialogContentText,
   DialogTitle,
 } from 'material-ui/Dialog';
-import Slide from 'material-ui/transitions/Slide';
-import Typography from 'material-ui/Typography';
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
-import Grid from 'material-ui/Grid';
 
 const styleSheet = theme => ({
   container: {
     padding: theme.spacing.unit * 2,
-  }
+  },
 });
 
 const OrionReset = props => (

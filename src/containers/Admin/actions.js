@@ -67,6 +67,22 @@ export async function retrievePayment(paymentId) {
   return data.val();
 }
 
+export function verifyPayment(paymentId, timestamp) {
+  // unverify payment with timestamp = ''
+  const updates = {};
+  updates[`/paymentsData/${paymentId}/verificationTime/`] = timestamp;
+
+  return firebase.database().ref().update(updates);
+}
+
+export function deletePayment(paymentId, userId) {
+  const updates = {};
+  updates[`/paymentsData/${paymentId}`] = null;
+  updates[`/usersData/${userId}/paymentId`] = '';
+
+  return firebase.database().ref().update(updates);
+}
+
 export function retrieveAppData() {
   return (dispatch) => {
     dispatch(showLoadingBar());

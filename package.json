@@ -36,13 +36,12 @@
     "warning": "^3.0.0"
   },
   "scripts": {
-    "start": "cross-env FIREBASE_ENV=dev react-scripts start",
-    "build": "cross-env FIREBSAE_ENV=prod react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom", 
     "eject": "react-scripts eject",
     "clone:unix": "cp ./public/in.htm ./build/in.htm && cp -r ./public/static ./build/static",
     "clone:ps": "copy ./public/in.htm ./build/in.htm; copy ./public/static ./build/static",
-    "deploy:prod": "cross-env FIREBASE_ENV=prod npm run build && npm run clone:unix && firebase deploy",
-    "deploy:dev": "cross-env FIREBASE_ENV=dev npm run build && npm run clone:unix && firebase deploy"
+    "deploy:prod": "cross-env FIREBASE_ENV=production npm run build && npm run clone:unix && firebase deploy"
   }
 }

@@ -209,19 +209,21 @@ class OriontransferForms extends Component {
           }}
         />
         <p className={this.props.classes.fileName}>{this.state.imageName}</p>
-        <input
-          onChange={this.changeFile}
-          accept="jpg,jpeg,JPG,JPEG"
-          className={this.props.classes.fileInput}
-          id="file"
-          multiple
-          type="file"
-        />
-        <label htmlFor="file">
-          <Button raised component="span" className={this.props.classes.button}>
-            Select Transfer Image
-          </Button>
-        </label>
+        <div>
+          <input
+            onChange={this.changeFile}
+            accept="jpg,jpeg,JPG,JPEG"
+            className={this.props.classes.fileInput}
+            id="file"
+            multiple
+            type="file"
+          />
+          <label htmlFor="file">
+            <Button raised component="span" className={this.props.classes.button}>
+              Select Transfer Image
+            </Button>
+          </label>
+        </div>
       </div>
     );
 
@@ -275,6 +277,7 @@ class OriontransferForms extends Component {
           raised
           className={classnames(classes.button, !this.state.method && classes.hidden)}
           onClick={() => this.handleOnSubmitPayment()}
+          color="primary"
         >
           Submit {this.state.method}
         </Button>

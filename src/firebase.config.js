@@ -1,13 +1,13 @@
-const developmentConfig = {
-  apiKey: "AIzaSyDV4ZHUrzh5ZT5XA1Kw7NKMOxDVBTqzGwQ",
-  authDomain: "tossaka-14-dev.firebaseapp.com",
-  databaseURL: "https://tossaka-14-dev.firebaseio.com",
-  projectId: "tossaka-14-dev",
-  storageBucket: "tossaka-14-dev.appspot.com",
-  messagingSenderId: "140118202385"
+const devConfig = {
+  apiKey: 'AIzaSyDV4ZHUrzh5ZT5XA1Kw7NKMOxDVBTqzGwQ',
+  authDomain: 'tossaka-14-dev.firebaseapp.com',
+  databaseURL: 'https://tossaka-14-dev.firebaseio.com',
+  projectId: 'tossaka-14-dev',
+  storageBucket: 'tossaka-14-dev.appspot.com',
+  messagingSenderId: '140118202385',
 };
 
-const productionConfig = {
+const prodConfig = {
   apiKey: 'AIzaSyD1ZJGKQ6d7_tgSoD9MGTOrGHjCsLxB4Jg',
   authDomain: 'tossaka-14.firebaseapp.com',
   databaseURL: 'https://tossaka-14.firebaseio.com',
@@ -16,8 +16,9 @@ const productionConfig = {
   messagingSenderId: '231207813297',
 };
 
-const env = process.env.FIREBASE_ENV || 'dev';
+console.log('FIREBASE_ENV: ' + process.env.FIREBASE_ENV);
+const env = process.env.FIREBASE_ENV || 'production';
 console.log(`Firebase environment on: ${env}`);
-const config = env === 'dev' ? developmentConfig : productionConfig;
+const config = env === 'development' ? devConfig : prodConfig;
 
 export default config;

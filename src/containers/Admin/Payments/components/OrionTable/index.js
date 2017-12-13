@@ -21,14 +21,17 @@ import ExpansionPanel, {
   ExpansionPanelDetails,
   ExpansionPanelActions,
 } from 'material-ui/ExpansionPanel';
-import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
+import IconButton from 'material-ui/IconButton';
 import Divider from 'material-ui/Divider';
+
+import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
+import Close from 'material-ui-icons/Close';
 
 import { OrionLoading } from '../../../../../components/OrionLoading';
 import OrionForms from '../../../../Auth/components/OrionForms';
 
 import { getDate } from '../../../../../utils/numberHelper';
-import { retrievePayments, retrieveParticipant, retrievePaymentImageURL, retrievePayment } from '../../../actions';
+import { retrievePayments, retrieveParticipant, retrievePaymentImageURL, retrievePayment, verifyPayment, deletePayment } from '../../../actions';
 
 const styles = {
   saleAmountCell: {
@@ -39,6 +42,14 @@ const styles = {
     padding: '40px 0',
   },
 };
+
+const VerifiedCellBase = ({ time }) => <TableCell>{`${time > 0 ? 'Verified' : 'Not verified'}`}</TableCell>;
+
+VerifiedCellBase.propTypes = {
+  time: PropTypes.number.isRequired,
+};
+
+const VerifiedCell = VerifiedCellBase;
 
 const DateCellBase = ({ time }) => <TableCell>{`${time > 0 ? getDate(time) : 'No date'}`}</TableCell>;
 
@@ -83,6 +94,13 @@ const styleSheet = theme => ({
   heading: {
     fontSize: theme.typography.pxToRem(15),
     fontWeight: theme.typography.fontWeightRegular,
+  },
+  paymentImage: {
+    maxWidth: '100%',
+    maxHeight: '400px',
+  },
+  leftIcon: {
+    marginRight: theme.spacing.unit,
   },
 });
 
@@ -215,13 +233,14 @@ class OrionTable extends React.PureComponent {
     }
 
     try {
-      paymentImageURL = await retrievePaymentImageURL(paymentId);      
+      paymentImageURL = await retrievePaymentImageURL(userId);
     } catch (error) {
       console.error(error.message);
     }
 
     try {
       paymentData = await retrievePayment(paymentId);
+      paymentData = { ...paymentData, paymentId };
     } catch (error) {
       console.error(error.message);
     }
@@ -235,6 +254,30 @@ class OrionTable extends React.PureComponent {
       paymentData,
     });
   };
+
+  handleDeletePayment = () => {
+    deletePayment(this.state.paymentData.paymentId, this.state.userData.userId);
+    this.toggleEditDrawer(false);
+    this.fetchData();
+  }
+
+  handleVerifyPayment = () => {
+    const now = Date.now();
+    const paymentId = this.state.paymentData.paymentId;
+
+    verifyPayment(paymentId, now);
+    this.fetchData();
+    this.onVerify(paymentId);
+  }
+
+  handleUnverifyPayment = () => {
+    // Unverify with timestamp ''
+    const paymentId = this.state.paymentData.paymentId;
+
+    verifyPayment(paymentId, '');
+    this.fetchData();
+    this.onVerify(paymentId);
+  }
 
   toggleEditDrawer = (state) => {
     this.setState({ ...this.state, verifyOpen: state });
@@ -257,25 +300,29 @@ class OrionTable extends React.PureComponent {
 
     let i = 0;
 
-    const PaymentContent = (paymentData) => (
+    const formatMsToDate = ms => (new Date(ms)).toString();
+    const isVerified = this.state.paymentData.verificationTime > 0;
+
+    const PaymentContent = paymentData => (
       <div>
         <Typography type="body1">
           Created Date  : {get(paymentData, 'creationTime', '')} <br />
           Method  : {get(paymentData, 'method', '')} <br />
           Payment Number  : {get(paymentData, 'paymentNumber', '')} <br />
-          Verification Time  : {get(paymentData, 'verificationTime', '')} <br />
+          Verification Status: {isVerified ? 'Verified' : 'Not verified'} <br />
+          Verification Date  : {formatMsToDate(get(paymentData, 'verificationTime', ''))} <br />
           {
             get(paymentData, 'method') === 'transfer' ?
-            <div>
-              Bank Account  : {get(paymentData, 'data.bankAccount', '')} <br />
-              Bank Name  : {get(paymentData, 'data.bankName', '')} <br />
-              Transfer Amount : {get(paymentData, 'data.transferAmount', '')} <br />
-              Transfer Date  : {get(paymentData, 'data.transferDate', '')} <br />
-              Transferors  : {get(paymentData, 'data.transferors', '')} <br />
-            </div> :
-            <div>
-              Voucher Code  : {get(paymentData, 'data.code', '')} <br />
-            </div>
+              <div>
+                Bank Account  : {get(paymentData, 'data.bankAccount', '')} <br />
+                Bank Name  : {get(paymentData, 'data.bankName', '')} <br />
+                Transfer Amount : {get(paymentData, 'data.transferAmount', '')} <br />
+                Transfer Date  : {get(paymentData, 'data.transferDate', '')} <br />
+                Transferors  : {get(paymentData, 'data.transferors', '')} <br />
+              </div> :
+              <div>
+                Voucher Code  : {get(paymentData, 'data.code', '')} <br />
+              </div>
           }
         </Typography>
       </div>
@@ -283,6 +330,9 @@ class OrionTable extends React.PureComponent {
 
     const DrawerContent = () => (
       <div>
+        <IconButton dense onClick={() => this.toggleEditDrawer(false)}>
+          <Close className={classes.leftIcon} />
+        </IconButton>
         <ExpansionPanel>
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
             <Typography className={classes.heading}>User Info</Typography>
@@ -299,27 +349,35 @@ class OrionTable extends React.PureComponent {
         </ExpansionPanel>
         <ExpansionPanel>
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography className={classes.heading}>Payment Info</Typography>
+            <Typography className={classes.heading}>Payment Image</Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
-            { this.state.paymentImageURL === '' ?
-              <Typography type="body1" gutterBottom align="center">
-                No payment image.
-              </Typography> :
-              <img src={paymentImageURL} width="200" alt="Payment URL" />
+            {
+              this.state.paymentImageURL === '' ?
+                <Typography type="body1" gutterBottom align="center">
+                  No payment image.
+                </Typography> :
+                <img src={paymentImageURL} className={classes.paymentImage} alt="Payment URL" />
             }
           </ExpansionPanelDetails>
-          <Divider />
+        </ExpansionPanel>
+        <ExpansionPanel defaultExpanded>
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography className={classes.heading}>Payment Info</Typography>
+          </ExpansionPanelSummary>
           <ExpansionPanelDetails>
             { PaymentContent(this.state.paymentData) }
           </ExpansionPanelDetails>
           <Divider />
           <ExpansionPanelActions>
-            <Button dense onClick={() => this.toggleEditDrawer(false)}>
-              Cancel
+            <Button dense onClick={() => this.handleDeletePayment()}>
+              Delete
             </Button>
-            <Button dense color="primary">
-              Verify Payment
+            <Button dense onClick={() => this.handleUnverifyPayment()} disabled={!isVerified}>
+              Unverify
+            </Button>
+            <Button dense onClick={() => this.handleVerifyPayment()} color="primary" disabled={isVerified}>
+              Verify
             </Button>
           </ExpansionPanelActions>
         </ExpansionPanel>
@@ -353,7 +411,7 @@ class OrionTable extends React.PureComponent {
           <TableView
             tableCellTemplate={({ row, column }) => {
               if (column.name === 'verificationTime') {
-                return <DateCell row={row} time={row.verificationTime} />;
+                return <VerifiedCell row={row} time={row.verificationTime} />;
               }
               if (column.name === 'creationTime') {
                 return <DateCell row={row} time={row.creationTime} />;
