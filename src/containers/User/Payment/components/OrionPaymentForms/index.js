@@ -1,3 +1,5 @@
+import some from 'lodash/some';
+
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -13,6 +15,7 @@ import Select from 'material-ui/Select';
 import Button from 'material-ui/Button';
 
 import { setPaymentData, setPaymentImage } from '../../../actions';
+import { errorMessage } from '../../../../App/actions';
 import {
   numberWithDelimiter,
   numberStripDelimiter,
@@ -50,7 +53,7 @@ const styleSheet = theme => ({
 
 const noFileName = 'No file selected.';
 
-class OrionPaymentForms extends Component {
+class OriontransferForms extends Component {
   state = {
     verified: false,
     method: '',
@@ -102,16 +105,48 @@ class OrionPaymentForms extends Component {
 
     if (method === 'transfer') {
       const selectedFile = this.state.imageFile;
-      dispatch(
-        setPaymentData(user.uid, 'transfer', this.state.form.transfer, () =>
-          dispatch(setPaymentImage(user.uid, selectedFile)),
-        ),
-      );
-
-      checkPayment()
+      if (this.transferIsValid()) {
+        dispatch(setPaymentData(user.uid, 'transfer', this.state.form.transfer, () => {
+          dispatch(setPaymentImage(user.uid, selectedFile));
+        }));
+      }
+      checkPayment();
     } else if (method === 'voucher') {
-      dispatch(setPaymentData(user.uid, 'voucher', this.state.form.voucher));
+      if (this.voucherIsValid()) {
+        dispatch(setPaymentData(user.uid, 'voucher', this.state.form.voucher));
+      }
     }
+  };
+
+
+  transferIsValid = () => {
+    const { dispatch } = this.props;
+    const transferForm = this.state.form.transfer;
+    const { imageFile } = this.state;    
+
+    if (some(transferForm, field => field === '')) {
+      dispatch(errorMessage('Transfer form must be completed'));
+      return false;
+    }
+
+    if (imageFile === '') {
+      dispatch(errorMessage('Please select transfer image file'));
+      return false;
+    }
+
+    return true;
+  };
+
+  voucherIsValid = () => {
+    const { dispatch } = this.props;
+    const voucherForm = this.state.form.voucher;
+
+    if (some(voucherForm, field => field === '')) {
+      dispatch(errorMessage('Voucher form must be completed'));
+      return false;
+    }
+
+    return true;
   };
 
   render() {
@@ -248,7 +283,7 @@ class OrionPaymentForms extends Component {
   }
 }
 
-OrionPaymentForms.propTypes = {
+OriontransferForms.propTypes = {
   classes: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
@@ -261,4 +296,4 @@ function mapStateToProps({ auth }) {
   };
 }
 
-export default withStyles(styleSheet)(connect(mapStateToProps)(OrionPaymentForms));
+export default withStyles(styleSheet)(connect(mapStateToProps)(OriontransferForms));

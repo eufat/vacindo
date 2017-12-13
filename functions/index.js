@@ -41,9 +41,10 @@ exports.createPayment = functions.database.ref('/paymentsData/{paymentId}').onCr
         (error, committed, snapshot) => {
           const value = snapshot.val();
           const userRef = admin.database().ref(`paymentsData/${event.params.paymentId}`);
-          userRef.update({ paymentNumber: value });
-          console.log(`Payment count: ${value}`);
-          resolve();
+          userRef.update({ paymentNumber: value }).then(() => {
+            console.log(`Payment count: ${value}`);
+            resolve();
+          });
         }
       );
     });
@@ -106,9 +107,10 @@ exports.createUser = functions.database.ref('/usersData/{userId}').onCreate((eve
         (error, committed, snapshot) => {
           const userNumber = snapshot.val();
           const userRef = admin.database().ref(`usersData/${event.params.userId}`);
-          userRef.update({ userNumber });
-          console.log(`User count: ${userNumber}`);
-          resolve();
+          userRef.update({ userNumber }).then(() => {
+            console.log(`User count: ${userNumber}`);
+            resolve();
+          });
         }
       );
     });

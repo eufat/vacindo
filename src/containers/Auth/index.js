@@ -117,7 +117,7 @@ class Auth extends Component {
     const emailIsValid = validateEmail(signUpForm.email);
 
     if (some(signUpForm, field => field === '')) {
-      dispatch(errorMessage('Signup form must completed'));
+      dispatch(errorMessage('Signup form must be completed'));
       return false;
     }
     if (!emailIsConfirmed) {

@@ -47,7 +47,7 @@ class OrionSnackbar extends Component {
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'right',
+          horizontal: 'center',
         }}
         className={classes.forefront}
         open={open}

@@ -4,7 +4,9 @@ import * as c from './constants';
 import { showLoadingBar, successMessage, errorMessage } from '../App/actions';
 
 export function resetAuthentication(email) {
+  console.log(email);
   return (dispatch) => {
+    console.log('dispatching');
     firebase
       .auth()
       .sendPasswordResetEmail(email)
