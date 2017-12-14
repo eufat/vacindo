@@ -18,7 +18,7 @@ import { OrionLoading } from '../../../../../components/OrionLoading';
 import OrionForms from '../../../../Auth/components/OrionForms';
 
 import { getDate } from '../../../../../utils/numberHelper';
-import { retrieveParticipants } from '../../../actions';
+import { retrieveParticipants, deleteParticipant } from '../../../actions';
 
 const styles = {
   saleAmountCell: {
@@ -133,6 +133,15 @@ class OrionTable extends React.PureComponent {
 
     return queryString;
   }
+  onDelete = () => {
+    const { userId, firstName, lastName } = this.state.editData;
+    const answer = confirm(`Are you sure you want to delete ${firstName} ${lastName}?`);
+
+    if (answer) {
+      deleteParticipant(userId);
+      this.fetchData();
+    }
+  };
   setRows = (participants, rows) => {
     const totalCount = this.props.participantsCount;
     this.setState({
@@ -179,11 +188,11 @@ class OrionTable extends React.PureComponent {
       )
       .catch(() => this.setState({ loading: false }));
     this.lastQuery = queryString;
-  }
-
-  onEdit = (uid) => {
-    const dataOnPage = this.state.dataOnPage;
-    this.setState({ ...this.state, editOpen: true, editData: dataOnPage[uid] });
+  };
+  onEdit = (userId) => {
+    let dataOnPage = this.state.dataOnPage;
+    dataOnPage = { ...dataOnPage, userId };
+    this.setState({ ...this.state, editOpen: true, editData: dataOnPage[userId] });
   };
   toggleEditDrawer = (state) => {
     this.setState({ ...this.state, editOpen: state });
@@ -212,7 +221,7 @@ class OrionTable extends React.PureComponent {
               disabled
             />
             <br />
-            <Button disabled>Delete User</Button>
+            <Button onClick="">Delete User</Button>
           </div>
         </Drawer>
         <Grid rows={rows} columns={columns}>

@@ -49,6 +49,13 @@ export async function retrieveParticipant(userId) {
   return data.val();
 }
 
+export async function deleteParticipant(userId) {
+  const rtdb = firebase.database();
+  const userRef = rtdb.ref(`usersData/${userId}`);
+
+  return userRef.set(null);
+}
+
 export async function retrievePayments(startAt, endAt, sorting) {
   const usersDataRef = firebase.database().ref('paymentsData');
   const query = await usersDataRef
