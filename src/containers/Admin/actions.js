@@ -52,8 +52,7 @@ export async function retrieveParticipant(userId) {
 export async function deleteParticipant(userId) {
   const rtdb = firebase.database();
   const userRef = rtdb.ref(`usersData/${userId}`);
-
-  return userRef.set(null);
+  userRef.set(null).then(() => console.log(`deleting ${userId}.`));
 }
 
 export async function retrievePayments(startAt, endAt, sorting) {

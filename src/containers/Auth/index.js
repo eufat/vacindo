@@ -22,7 +22,7 @@ function smoothScroll() {
   const currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
   if (currentScroll > 0) {
     window.requestAnimationFrame(smoothScroll);
-    window.scrollTo(0, currentScroll - (currentScroll / 5));
+    window.scrollTo(0, currentScroll - currentScroll / 5);
   }
 }
 
@@ -38,12 +38,14 @@ const styleSheet = theme => ({
   background: {
     minHeight: '100vh',
     marginTop: '0',
-    backgroundColor: theme.palette.grey['200'],
   },
   containerGrid: {
     width: '100% !important',
     padding: '0 !important',
     marginRight: '0 !important',
+  },
+  changeQuestion: {
+    textAlign: 'center',
   },
 });
 
@@ -97,15 +99,11 @@ class Auth extends Component {
     const submitForm = this.state.form;
     const persistence = this.state.rememberSignIn;
     if (this.state.signInPage) {
-      this.props.dispatch(
-        submitAuthentication(submitForm.signIn.email, submitForm.signIn.password, persistence),
-      );
+      this.props.dispatch(submitAuthentication(submitForm.signIn.email, submitForm.signIn.password, persistence));
     } else {
       const optional = omit(this.state.form.signUp, ['password', 'emailConfirmation']);
       if (this.signUpIsValid()) {
-        this.props.dispatch(
-          createAuthentication(submitForm.signUp.email, submitForm.signUp.password, optional),
-        );
+        this.props.dispatch(createAuthentication(submitForm.signUp.email, submitForm.signUp.password, optional));
       }
     }
   };
@@ -197,32 +195,39 @@ class Auth extends Component {
       <div className={classes.background}>
         <Grid container justify="center" align="flex-start" className={classes.containerGrid}>
           <Grid item md={4} sm={6} xs={12}>
-            <Paper className={classes.paper}>
-              <Button disabled={this.state.signInPage} onClick={() => this.changeToSignInPage()}>
-                Sign In Page
-              </Button>
-              <Button disabled={!this.state.signInPage} onClick={() => this.changeToSignUpPage()}>
-                Sign Up Page
-              </Button>
-              <form onSubmit={this.handleOnSubmitAuth}>
-                {this.state.signInPage ? (
-                  <OrionSignin
-                    changeSignInFields={this.changeSignInFields}
-                    changeRememberSignIn={this.changeRememberSignIn}
-                    handleOnSubmitAuth={this.handleOnSubmitAuth}
-                    rememberSignIn={this.state.rememberSignIn}
-                    handleOpen={this.handleOpen}
-                  />
-                ) : (
-                  <OrionSignup
-                    changeSignUpFields={this.changeSignUpFields}
-                    changeSignUpSelect={this.changeSignUpSelect}
-                    handleOnSubmitAuth={this.handleOnSubmitAuth}
-                    signUp={this.state.form.signUp}
-                  />
-                )}
-              </form>
-            </Paper>
+            <center>
+              <img src="/static/images/logo.jpg" alt="logo" width={240} />
+            </center>
+            <form onSubmit={this.handleOnSubmitAuth}>
+              {this.state.signInPage ? (
+                <OrionSignin
+                  changeSignInFields={this.changeSignInFields}
+                  changeRememberSignIn={this.changeRememberSignIn}
+                  handleOnSubmitAuth={this.handleOnSubmitAuth}
+                  rememberSignIn={this.state.rememberSignIn}
+                  handleOpen={this.handleOpen}
+                />
+              ) : (
+                <OrionSignup
+                  changeSignUpFields={this.changeSignUpFields}
+                  changeSignUpSelect={this.changeSignUpSelect}
+                  handleOnSubmitAuth={this.handleOnSubmitAuth}
+                  signUp={this.state.form.signUp}
+                />
+              )}
+            </form>
+            <div className={classes.changeQuestion}>
+              {
+                this.state.signInPage ?
+                  <div>
+                    <p>Doesn't have an account? <Button dense onClick={() => this.changeToSignUpPage()}>Sign Up</Button></p>
+                  </div>
+                :
+                  <div>
+                    <p>Already an account? <Button dense onClick={() => this.changeToSignInPage()}>Sign In</Button></p>
+                  </div>
+              }
+            </div>
           </Grid>
         </Grid>
         <OrionReset

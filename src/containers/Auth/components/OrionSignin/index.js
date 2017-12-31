@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import TextField from 'material-ui/TextField';
+import Typography from 'material-ui/Typography';
 import Button from 'material-ui/Button';
 import { FormGroup, FormControlLabel } from 'material-ui/Form';
 import Checkbox from 'material-ui/Checkbox';
@@ -10,6 +11,10 @@ const styleSheet = theme => ({
   button: {
     marginTop: theme.spacing.unit * 4,
     marginRight: theme.spacing.unit * 2,
+    width: '100%',
+  },
+  buttonWrap: {
+    display: 'flex',
   },
   formContainer: {
     padding: 20,
@@ -18,6 +23,7 @@ const styleSheet = theme => ({
 
 const OrionSignin = props => (
   <div className={props.classes.formContainer}>
+    <Typography type="title">Sign in</Typography>
     <TextField
       fullWidth
       margin="dense"
@@ -49,13 +55,15 @@ const OrionSignin = props => (
         }
         label="Remember Me"
       />
+      <Button dense onClick={() => props.handleOpen()}>
+        Forget password?
+      </Button>
     </FormGroup>
-    <Button raised className={props.classes.button} onClick={() => props.handleOnSubmitAuth()}>
-      Sign In
-    </Button>
-    <Button className={props.classes.button} onClick={() => props.handleOpen()}>
-      Reset Password
-    </Button>
+    <div className={props.classes.buttonWrap}>
+      <Button raised color="primary" className={props.classes.button} onClick={() => props.handleOnSubmitAuth()}>
+        Sign In
+      </Button>
+    </div>
   </div>
 );
 

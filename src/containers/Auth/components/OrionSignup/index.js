@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
-import Divider from 'material-ui/Divider';
+import Typography from 'material-ui/Typography';
 
 import OrionForms from '../OrionForms';
 
 const styleSheet = theme => ({
   button: {
     marginTop: theme.spacing.unit * 4,
+    width: '100%',
   },
   formContainer: {
     padding: 20,
@@ -19,7 +20,7 @@ const styleSheet = theme => ({
 const OrionSignup = props => (
   <div>
     <div className={props.classes.formContainer}>
-      <p>Fill Account Info</p>
+      <Typography type="title">Sign up</Typography>
       <TextField
         fullWidth
         margin="dense"
@@ -51,16 +52,14 @@ const OrionSignup = props => (
         }}
       />
     </div>
-    <Divider />
     <div className={props.classes.formContainer}>
-      <p>Fill Registration Info</p>
       <OrionForms
         changeFormFields={props.changeSignUpFields}
         changeFormSelect={props.changeSignUpSelect}
         forms={props.signUp}
         disabled={false}
       />
-      <Button raised className={props.classes.button} onClick={() => props.handleOnSubmitAuth()}>
+      <Button raised color="primary" className={props.classes.button} onClick={() => props.handleOnSubmitAuth()}>
         Sign Up
       </Button>
     </div>

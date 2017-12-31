@@ -1,4 +1,5 @@
 import some from 'lodash/some';
+import isEmpty from 'lodash/isEmpty';
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -14,7 +15,7 @@ import { FormControl } from 'material-ui/Form';
 import Select from 'material-ui/Select';
 import Button from 'material-ui/Button';
 
-import { setPaymentData, setPaymentImage } from '../../../actions';
+import { setPaymentData, setPaymentImage, fetchVoucherData } from '../../../actions';
 import { errorMessage } from '../../../../App/actions';
 import {
   numberWithDelimiter,
@@ -122,7 +123,7 @@ class OriontransferForms extends Component {
   transferIsValid = () => {
     const { dispatch } = this.props;
     const transferForm = this.state.form.transfer;
-    const { imageFile } = this.state;    
+    const { imageFile } = this.state;
 
     if (some(transferForm, field => field === '')) {
       dispatch(errorMessage('Transfer form must be completed'));
@@ -137,12 +138,20 @@ class OriontransferForms extends Component {
     return true;
   };
 
-  voucherIsValid = () => {
+  voucherIsValid = async () => {
     const { dispatch } = this.props;
     const voucherForm = this.state.form.voucher;
 
+    const voucherData = await fetchVoucherData(voucherForm.code);
+
     if (some(voucherForm, field => field === '')) {
       dispatch(errorMessage('Voucher form must be completed'));
+      return false;
+    } else if (isEmpty(voucherData)) {
+      dispatch(errorMessage('This voucher code is wrong'));
+      return false;
+    } else if (voucherData.paymentId !== '') {
+      dispatch(errorMessage('This voucher code was used'));
       return false;
     }
 

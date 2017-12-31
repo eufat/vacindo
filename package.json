@@ -40,6 +40,6 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "clone": "cp ./public/in.htm ./build/in.htm && cp -r ./public/static ./build/static",
-    "deploy": "cross-env FIREBASE_ENV=production npm run build && npm run clone:unix && firebase deploy"
+    "deploy": "cross-env FIREBASE_ENV=production npm run build && npm run clone && firebase deploy"
   }
 }

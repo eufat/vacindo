@@ -86,8 +86,8 @@ class Monitoring extends Component {
           </Grid>
           <Grid item xs={6} sm={3}>
             <Paper className={classes.paper}>
-              <h2 className={classes.number}>{get(appData, 'deletedUsersCount', 0)}</h2>
-              <p>Declined Participants</p>
+              <h2 className={classes.number}>{get(appData, 'deletedUserCount', 0)}</h2>
+              <p>Deleted Participants</p>
             </Paper>
           </Grid>
           <Grid item xs={6} sm={3}>

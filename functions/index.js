@@ -63,30 +63,34 @@ exports.createPayment = functions.database.ref('/paymentsData/{paymentId}').onCr
   const timelineRef = admin.database().ref(`appData/timeline/${dateNow}`);
   timelineRef.once('value').then(() => {
     timelineRef.transaction((current) => {
-      let date = null;
-      let payments = null;
-      let users = null;
-
-      if (current) {
-        date = current.date;
-        payments = current.payments;
-        users = current.users;
-      }
+      const { date, payments, users } = current;
 
       return { date: date || dateNow, payments: (payments || 0) + 1, users: users || 0 };
     });
   });
 
   const prevData = event.data.val();
+  const voucherCode = prevData.method === 'voucher' && prevData.data.code;
+  const verificationTime = voucherCode ? timestamp : 0;
+
+  const vouchersDataRef = admin.database().ref(`vouchersData/${voucherCode}/paymentId`);
+  vouchersDataRef.once('value').then(() => {
+    vouchersDataRef.transaction((current) => {
+      const newPaymentId = current !== '' ? current : event.params.paymentId;
+      return newPaymentId;
+    });
+  });
+
   const newData = Object.assign({}, prevData, {
     creationTime: timestamp,
-    verificationTime: 0,
+    verificationTime,
   });
 
   return Promise.all([
     timelineRef,
     updatePaymentNumber,
     paymentsMethodCountRef,
+    vouchersDataRef,
     event.data.ref.parent.child(event.params.paymentId).set(newData),
   ]);
 });
@@ -169,7 +173,11 @@ exports.createUser = functions.database.ref('/usersData/{userId}').onCreate((eve
   ]);
 });
 
-exports.deleteUser = functions.auth.user().onDelete((event) => {
+exports.deleteUserData = functions.database.ref('usersData/{userId}').onDelete((event) => {
+  return admin.auth().deleteUser(event.params.userId);
+});
+
+exports.deleteUserAuth = functions.auth.user().onDelete((event) => {
   const user = event.data;
 
   const deletedUserCountRef = admin.database().ref('appData/deletedUserCount');

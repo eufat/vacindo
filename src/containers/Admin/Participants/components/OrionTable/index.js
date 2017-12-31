@@ -14,6 +14,8 @@ import { withStyles } from 'material-ui/styles';
 import Button from 'material-ui/Button';
 import Drawer from 'material-ui/Drawer';
 
+
+import OrionDialog from '../../../../../components/OrionDialog';
 import { OrionLoading } from '../../../../../components/OrionLoading';
 import OrionForms from '../../../../Auth/components/OrionForms';
 
@@ -98,6 +100,7 @@ class OrionTable extends React.PureComponent {
     currentPage: 0,
     loading: true,
     editOpen: false,
+    dialogOpen: false,
     editData: {},
     dataOnPage: {},
   };
@@ -133,14 +136,16 @@ class OrionTable extends React.PureComponent {
 
     return queryString;
   }
-  onDelete = () => {
-    const { userId, firstName, lastName } = this.state.editData;
-    const answer = confirm(`Are you sure you want to delete ${firstName} ${lastName}?`);
-
-    if (answer) {
-      deleteParticipant(userId);
-      this.fetchData();
-    }
+  handleDialogOpen = () => {
+    this.setState({ ...this.state, dialogOpen: true });
+  };
+  handleDialogClose = () => {
+    this.setState({ ...this.state, dialogOpen: false });
+  };
+  onDialogOk = () => {
+    const { uid } = this.state.editData;
+    deleteParticipant(uid);
+    this.setState({ ...this.state, dialogOpen: false, editOpen: false }, () => this.fetchData());
   };
   setRows = (participants, rows) => {
     const totalCount = this.props.participantsCount;
@@ -189,10 +194,10 @@ class OrionTable extends React.PureComponent {
       .catch(() => this.setState({ loading: false }));
     this.lastQuery = queryString;
   };
-  onEdit = (userId) => {
+  onEdit = (uid) => {
     let dataOnPage = this.state.dataOnPage;
-    dataOnPage = { ...dataOnPage, userId };
-    this.setState({ ...this.state, editOpen: true, editData: dataOnPage[userId] });
+    const editData = { ...dataOnPage[uid], uid };
+    this.setState({ ...this.state, editOpen: true, editData });
   };
   toggleEditDrawer = (state) => {
     this.setState({ ...this.state, editOpen: state });
@@ -212,6 +217,14 @@ class OrionTable extends React.PureComponent {
     } = this.state;
     return (
       <div style={{ position: 'relative' }}>
+        <OrionDialog
+          dialogTitle='Delete User'
+          dialogText='Are you sure you want to delete this user?'
+          open={this.state.dialogOpen}
+          onOk={this.onDialogOk}
+          onCancel={this.handleDialogClose}
+          handleClose={this.handleDialogClose}
+        />
         <Drawer anchor="right" open={editOpen} onRequestClose={() => this.toggleEditDrawer(false)}>
           <div className={this.props.classes.editData}>
             <OrionForms
@@ -221,7 +234,7 @@ class OrionTable extends React.PureComponent {
               disabled
             />
             <br />
-            <Button onClick="">Delete User</Button>
+            <Button onClick={this.handleDialogOpen}>Delete User</Button>
           </div>
         </Drawer>
         <Grid rows={rows} columns={columns}>

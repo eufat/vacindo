@@ -24,6 +24,14 @@ export async function fetchPaymentData(paymentId) {
   return null;
 }
 
+export async function fetchVoucherData(voucherCode) {
+  const voucherData = await firebase
+    .database()
+    .ref(`voucherData/${voucherCode}`)
+    .once('value');
+  return voucherData.val();
+}
+
 export function setPaymentData(userId, method, data, callback) {
   return (dispatch) => {
     dispatch(showLoadingBar());
