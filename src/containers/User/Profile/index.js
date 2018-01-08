@@ -4,9 +4,11 @@ import PropTypes from 'prop-types';
 import update from 'immutability-helper';
 
 import { withStyles } from 'material-ui/styles';
+import Typography from 'material-ui/Typography';
 
 import OrionForms from '../../Auth/components/OrionForms';
 import OrionStepButtons from '../components/OrionStepButtons';
+
 
 import { fetchUserData } from '../actions';
 
@@ -69,6 +71,7 @@ class Profile extends Component {
   render() {
     return (
       <div>
+        <Typography type="title">Profile</Typography>
         <OrionForms
           changeFormFields={this.changeFormFields}
           changeFormSelect={this.changeFormSelect}

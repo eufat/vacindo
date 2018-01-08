@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
+import Typography from 'material-ui/Typography';
 
 import OrionStepButtons from '../components/OrionStepButtons';
 
@@ -15,8 +16,9 @@ const styleSheet = theme => ({
 function Ticket(props) {
   return (
     <div>
+      <Typography type="title">Ticket</Typography>
       <div className={props.classes.container}>
-        <center>Your Event Ticket will be Displayed Here.</center>
+        <center>Your tryout ticket not found or not yet generated.</center>
       </div>
       <OrionStepButtons nextLink="/user/result" beforeLink="/user/payment" />
     </div>

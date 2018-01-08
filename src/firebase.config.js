@@ -18,7 +18,7 @@ const prodConfig = {
 
 console.log('FIREBASE_ENV: ' + process.env.FIREBASE_ENV);
 const env = process.env.FIREBASE_ENV || 'production';
-console.log(`Firebase environment on: ${env}`);
 const config = env === 'development' ? devConfig : prodConfig;
+// const config = devConfig;
 
 export default config;

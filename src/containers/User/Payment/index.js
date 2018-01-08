@@ -1,7 +1,9 @@
+/* eslint-disable react/forbid-prop-types */
+
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-
+import Typography from 'material-ui/Typography';
 import { fetchPaymentData, fetchUserData } from '../actions';
 import OrionPaymentForms from './components/OrionPaymentForms';
 import OrionPaymentComplete from './components/OrionPaymentComplete';
@@ -24,7 +26,7 @@ class Payment extends Component {
 
     if (paymentId) {
       const paymentData = await fetchPaymentData(paymentId);
-      const { verificationTime } = paymentData
+      const { verificationTime } = paymentData;
       this.setState({ paymentData, verificationTime });
     }
   };
@@ -36,6 +38,7 @@ class Payment extends Component {
 
     return (
       <div>
+        <Typography type="title">Payment</Typography>
         {isPaymentEmpty ? (
           <OrionPaymentForms checkPayment={this.checkPayment} />
         ) : (
@@ -48,7 +51,6 @@ class Payment extends Component {
 }
 
 Payment.propTypes = {
-  classes: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
 };
 

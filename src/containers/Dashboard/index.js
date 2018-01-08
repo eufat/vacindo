@@ -9,6 +9,8 @@ import OrionSidebar from './components/OrionSidebar';
 
 import { checkAuthentication } from '../Auth/actions';
 
+import isMobile from '../../utils/mobileCheck';
+
 const drawerWidth = 240;
 
 const styleSheet = theme => ({
@@ -48,13 +50,18 @@ const styleSheet = theme => ({
 
 class Dashboard extends Component {
   state = {
-    open: true,
+    open: false,
   };
 
   componentDidMount() {
     const { dispatch, history } = this.props;
     dispatch(checkAuthentication(history));
+    this.mobileCheck();
   }
+
+  mobileCheck = () => {
+    this.setState({ open: !isMobile() });
+  };
 
   handleDrawerOpen = () => {
     this.setState({ open: true });

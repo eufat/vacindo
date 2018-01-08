@@ -27,7 +27,7 @@ export async function fetchPaymentData(paymentId) {
 export async function fetchVoucherData(voucherCode) {
   const voucherData = await firebase
     .database()
-    .ref(`voucherData/${voucherCode}`)
+    .ref(`vouchersData/${voucherCode}`)
     .once('value');
   return voucherData.val();
 }

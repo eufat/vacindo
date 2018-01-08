@@ -23,7 +23,7 @@ const styleSheet = theme => ({
 
 class Web extends Component {
   componentDidMount() {
-    window.location.replace("https://tossaka14th.com/in.htm");
+    window.location.href = "https://tossaka14th.com/in.htm";
   }
 
   render() {

@@ -1,4 +1,4 @@
-/* eslint-disable comma-dangle, dot-notation */
+/* eslint-disable comma-dangle, dot-notation, prefer-destructuring */
 
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
@@ -63,15 +63,23 @@ exports.createPayment = functions.database.ref('/paymentsData/{paymentId}').onCr
   const timelineRef = admin.database().ref(`appData/timeline/${dateNow}`);
   timelineRef.once('value').then(() => {
     timelineRef.transaction((current) => {
-      const { date, payments, users } = current;
+      let date = null;
+      let payments = null;
+      let users = null;
+
+      if (current) {
+        date = current.date;
+        payments = current.payments;
+        users = current.users;
+      }
 
       return { date: date || dateNow, payments: (payments || 0) + 1, users: users || 0 };
     });
   });
 
   const prevData = event.data.val();
-  const voucherCode = prevData.method === 'voucher' && prevData.data.code;
-  const verificationTime = voucherCode ? timestamp : 0;
+  const voucherCode = prevData.method === 'voucher' ? prevData.data.code : '';
+  const verificationTime = voucherCode !== '' ? timestamp : 0;
 
   const vouchersDataRef = admin.database().ref(`vouchersData/${voucherCode}/paymentId`);
   vouchersDataRef.once('value').then(() => {

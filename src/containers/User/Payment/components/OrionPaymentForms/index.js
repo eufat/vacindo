@@ -23,6 +23,10 @@ import {
   getDate,
 } from '../../../../../utils/numberHelper';
 
+import OrionMessage from '../../../../../components/OrionMessage';
+
+const toUpperCase = string => string.toUpperCase();
+
 const styleSheet = theme => ({
   hidden: {
     display: 'none',
@@ -100,12 +104,13 @@ class OriontransferForms extends Component {
     this.setState({ ...this.state, imageFile, imageName });
   };
 
-  handleOnSubmitPayment = () => {
+  handleOnSubmitPayment = async () => {
     const method = this.state.method;
     const { dispatch, user, checkPayment } = this.props;
 
     if (method === 'transfer') {
       const selectedFile = this.state.imageFile;
+
       if (this.transferIsValid()) {
         dispatch(setPaymentData(user.uid, 'transfer', this.state.form.transfer, () => {
           dispatch(setPaymentImage(user.uid, selectedFile));
@@ -113,9 +118,13 @@ class OriontransferForms extends Component {
       }
       checkPayment();
     } else if (method === 'voucher') {
-      if (this.voucherIsValid()) {
-        dispatch(setPaymentData(user.uid, 'voucher', this.state.form.voucher));
+      const voucherIsValid = await this.voucherIsValid();
+      if (voucherIsValid) {
+        let voucherForm = this.state.form.voucher;
+        voucherForm = { ...voucherForm, code: toUpperCase(voucherForm.code) };
+        dispatch(setPaymentData(user.uid, 'voucher', voucherForm, noop => noop));
       }
+      checkPayment();
     }
   };
 
@@ -138,24 +147,31 @@ class OriontransferForms extends Component {
     return true;
   };
 
-  voucherIsValid = async () => {
-    const { dispatch } = this.props;
-    const voucherForm = this.state.form.voucher;
+  voucherIsValid = () => {
+    return new Promise(async (resolve, reject) => {
+      const now = new Date();
+      const { dispatch } = this.props;
+      let voucherForm = this.state.form.voucher;
+      voucherForm = { ...voucherForm, code: toUpperCase(voucherForm.code) };
 
-    const voucherData = await fetchVoucherData(voucherForm.code);
+      const voucherData = await fetchVoucherData(voucherForm.code);
 
-    if (some(voucherForm, field => field === '')) {
-      dispatch(errorMessage('Voucher form must be completed'));
-      return false;
-    } else if (isEmpty(voucherData)) {
-      dispatch(errorMessage('This voucher code is wrong'));
-      return false;
-    } else if (voucherData.paymentId !== '') {
-      dispatch(errorMessage('This voucher code was used'));
-      return false;
-    }
+      if (voucherForm === '') {
+        dispatch(errorMessage('Voucher form cannot be empty'));
+        resolve(false);
+      } else if (isEmpty(voucherData) || voucherData === null) {
+        dispatch(errorMessage('This voucher code is wrong'));
+        resolve(false);
+      } else if (voucherData.paymentId !== '') {
+        dispatch(errorMessage('This voucher code was used'));
+        resolve(false);
+      } else if (now.getTime() > voucherData.vocExpire) {
+        dispatch(errorMessage('This voucher was expired'));
+        resolve(false);
+      }
 
-    return true;
+      resolve(true);
+    })
   };
 
   render() {
@@ -163,6 +179,10 @@ class OriontransferForms extends Component {
 
     const transfer = () => (
       <div>
+        <OrionMessage>
+          No Rekening TOSSAKA 14th:
+          BNI 0589616111 a.n. Rizqi Imam Gilang
+        </OrionMessage>
         <TextField
           value={this.state.form.transfer.bankName}
           fullWidth
