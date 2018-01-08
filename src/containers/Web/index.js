@@ -23,7 +23,7 @@ const styleSheet = theme => ({
 
 class Web extends Component {
   componentDidMount() {
-    window.location.href = "https://tossaka14th.com/in.htm";
+    window.location.href = '/in.htm';
   }
 
   render() {
@@ -37,8 +37,7 @@ class Web extends Component {
           </div>
         </Grid>
       </Grid>
-    )
-    
+    );
   }
 }
 

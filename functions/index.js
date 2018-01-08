@@ -85,6 +85,7 @@ exports.createPayment = functions.database.ref('/paymentsData/{paymentId}').onCr
   vouchersDataRef.once('value').then(() => {
     vouchersDataRef.transaction((current) => {
       const newPaymentId = current !== '' ? current : event.params.paymentId;
+      console.log(`np: ${newPaymentId}: current: ${current}; paymentId: ${event.params.paymentId}`);
       return newPaymentId;
     });
   });
