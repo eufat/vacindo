@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 
 import OrionTable from './components/OrionTable';
+import Typography from 'material-ui/Typography';
 
 const styleSheet = () => ({});
 
@@ -13,6 +14,8 @@ class Participants extends Component {
 
     return (
       <div>
+        <Typography type="title">Participants</Typography>
+        <br />
         <OrionTable participantsCount={(appData && appData.usersCount) || 0} />
       </div>
     );

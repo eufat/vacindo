@@ -1,9 +1,18 @@
-/* eslint-disable comma-dangle, dot-notation, prefer-destructuring */
+/* eslint-disable comma-dangle, dot-notation, prefer-destructuring, no-plusplus */
 
 const functions = require('firebase-functions');
+const _ = require('lodash');
 const admin = require('firebase-admin');
+const algoliasearch = require('algoliasearch');
 
 admin.initializeApp(functions.config().firebase);
+
+const algolia = algoliasearch(
+  '5RPGT77LXQ',
+  'c0c34193afd1631b2024fcf24699863a'
+);
+
+const userIndex = algolia.initIndex('users');
 
 function getDate(millis) {
   let today = new Date();
@@ -24,6 +33,112 @@ function getDate(millis) {
 
   return `${dd}-${mm}-${yyyy}`;
 }
+
+exports.actions = functions.https.onRequest((req, res) => {
+  req.get('/export-users-data', (request, respond) => {
+    const database = admin.database();
+    return database.ref('/usersData').once('value', (users) => {
+      const records = [];
+      users.forEach((user) => {
+        const childKey = user.key;
+        const childData = user.val();
+        childData.objectID = childKey;
+        records.push(childData);
+      });
+
+      userIndex
+        .saveObjects(records)
+        .then(() => {
+          const message = 'imported into Algolia';
+          console.log(message);
+          respond.send(message);
+        })
+        .catch((error) => {
+          const message = 'Error when importing into Algolia';
+          console.error(message, error);
+          respond.send(message);
+        });
+    });
+  });
+
+  req.get('/reset-counter', (request, respond) => {
+    const database = admin.database();
+
+    database.ref('/').once('value').then((snapshot) => {
+      let parsed = snapshot.val();
+
+      // Reset count values
+      parsed.appData.examsCount = _.mapValues(parsed.appData.examsCount, (v, k, o) => 0);
+      parsed.appData.methodsCount = _.mapValues(parsed.appData.methodsCount, (v, k, o) => 0);
+
+      function updateNumber(data, dataFieldKey, dataNumberingKey, callback) {
+        let i = 1;
+        const filteredData = _.mapValues(data[dataFieldKey], (value, key, object) => {
+          const newValue = value;
+          newValue[dataNumberingKey] = i;
+
+          if (newValue.examType) {
+            const previousExamsCount = parsed.appData.examsCount[newValue.examType];
+            parsed.appData.examsCount[newValue.examType] = previousExamsCount + 1;
+          }
+
+          if (newValue.method) {
+            const previousMethodsCount = parsed.appData.methodsCount[newValue.method];
+            parsed.appData.methodsCount[newValue.method] = previousMethodsCount + 1;
+          }
+
+          i++;
+          return newValue;
+        });
+
+        callback(i - 1);
+        return filteredData;
+      }
+
+      parsed.paymentsData = updateNumber(parsed, 'paymentsData', 'paymentNumber', i => parsed.appData.paymentsCount = i);
+      parsed.usersData = updateNumber(parsed, 'usersData', 'userNumber', i => parsed.appData.usersCount = i);
+
+      database.ref('/').update(parsed, () => respond.send('Reset successfull'));
+    });
+  });
+});
+
+function addOrUpdateUserRecord(user) {
+  return new Promise((resolve, reject) => {
+    const record = user.val();
+    record.objectID = user.key;
+    userIndex
+      .saveObject(record)
+      .then(() => {
+        console.log('User userIndexed in Algolia', record.objectID);
+        resolve();
+      })
+      .catch((error) => {
+        console.error('Error when userIndexing user into Algolia', error);
+        reject();
+      });
+  });
+}
+
+function deleteUserRecord(user) {
+  return new Promise((resolve, reject) => {
+    const objectID = user.key;
+    userIndex
+      .deleteObject(objectID)
+      .then(() => {
+        console.log('User deleted from Algolia', objectID);
+        resolve();
+      })
+      .catch((error) => {
+        console.error('Error when deleting user from Algolia', error);
+        reject();
+      });
+  });
+}
+
+exports.updateUsersData = functions.database.ref('/usersData/{userId}').onUpdate((event) => {
+  return addOrUpdateUserRecord(event.data);
+});
 
 exports.createPayment = functions.database.ref('/paymentsData/{paymentId}').onCreate((event) => {
   const now = new Date();
@@ -178,12 +293,16 @@ exports.createUser = functions.database.ref('/usersData/{userId}').onCreate((eve
     usersExamCountRef,
     timelineRef,
     lastRegsTimeRef,
+    addOrUpdateUserRecord(event.data),
     event.data.ref.parent.child(event.params.userId).set(newData),
   ]);
 });
 
 exports.deleteUserData = functions.database.ref('usersData/{userId}').onDelete((event) => {
-  return admin.auth().deleteUser(event.params.userId);
+  return Promise.all([
+    deleteUserRecord(event.data),
+    admin.auth().deleteUser(event.params.userId)
+  ]);
 });
 
 exports.deleteUserAuth = functions.auth.user().onDelete((event) => {

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 
+import Typography from 'material-ui/Typography';
 import OrionTable from './components/OrionTable';
 import OrionVoucher from './components/OrionVoucher';
 
@@ -17,6 +18,8 @@ class Payments extends Component {
     const { appData, classes } = this.props;
     return (
       <div>
+        <Typography type="title">Payments</Typography>
+        <br />
         <div className={classes.panel}>
           <OrionVoucher {...this.props} />
         </div>
