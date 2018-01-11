@@ -65,7 +65,7 @@ exports.actions = functions.https.onRequest((req, res) => {
     const database = admin.database();
 
     database.ref('/').once('value').then((snapshot) => {
-      let parsed = snapshot.val();
+      const parsed = snapshot.val();
 
       // Reset count values
       parsed.appData.examsCount = _.mapValues(parsed.appData.examsCount, (v, k, o) => 0);
@@ -73,7 +73,9 @@ exports.actions = functions.https.onRequest((req, res) => {
 
       function updateNumber(data, dataFieldKey, dataNumberingKey, callback) {
         let i = 1;
-        const filteredData = _.mapValues(data[dataFieldKey], (value, key, object) => {
+        parsed.appData.verificationCount = 0;
+
+        const updatedData = _.mapValues(data[dataFieldKey], (value, key, object) => {
           const newValue = value;
           newValue[dataNumberingKey] = i;
 
@@ -87,12 +89,17 @@ exports.actions = functions.https.onRequest((req, res) => {
             parsed.appData.methodsCount[newValue.method] = previousMethodsCount + 1;
           }
 
+          if (newValue.verificationTime > 0) {
+            const previousVerificationCount = parsed.appData.verificationCount;
+            parsed.appData.verificationCount = previousVerificationCount + 1;
+          }
+
           i++;
           return newValue;
         });
 
         callback(i - 1);
-        return filteredData;
+        return updatedData;
       }
 
       parsed.paymentsData = updateNumber(parsed, 'paymentsData', 'paymentNumber', i => parsed.appData.paymentsCount = i);
@@ -140,6 +147,19 @@ exports.updateUsersData = functions.database.ref('/usersData/{userId}').onUpdate
   return addOrUpdateUserRecord(event.data);
 });
 
+exports.updateVerification = functions.database.ref('/usersData/{userId}/verificationTime').onCreate(() => {
+  const verificationCountRef = admin.database().ref('appData/verificationCount');
+  verificationCountRef.once('value').then(() => {
+    verificationCountRef.transaction((current) => {
+      const count = (current || 0) + 1;
+      return count;
+    });
+  });
+
+  return verificationCountRef;
+});
+
+
 exports.createPayment = functions.database.ref('/paymentsData/{paymentId}').onCreate((event) => {
   const now = new Date();
   const timestamp = now.getTime();
@@ -165,10 +185,10 @@ exports.createPayment = functions.database.ref('/paymentsData/{paymentId}').onCr
     });
   });
 
-  const paymentMethod = event.data.val()['method'];
-  const paymentsMethodCountRef = admin.database().ref(`appData/methodsCount/${paymentMethod}`);
-  paymentsMethodCountRef.once('value').then(() => {
-    paymentsMethodCountRef.transaction((current) => {
+  const verification = event.data.val()['method'];
+  const verificationCountRef = admin.database().ref(`appData/methodsCount/${verification}`);
+  verificationCountRef.once('value').then(() => {
+    verificationCountRef.transaction((current) => {
       const count = (current || 0) + 1;
       return count;
     });
@@ -213,7 +233,7 @@ exports.createPayment = functions.database.ref('/paymentsData/{paymentId}').onCr
   return Promise.all([
     timelineRef,
     updatePaymentNumber,
-    paymentsMethodCountRef,
+    verificationCountRef,
     vouchersDataRef,
     event.data.ref.parent.child(event.params.paymentId).set(newData),
   ]);
