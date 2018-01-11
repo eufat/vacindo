@@ -5,6 +5,7 @@ import { ConnectedRouter } from 'react-router-redux';
 import firebase from 'firebase';
 import 'firebase/firestore';
 import Raven from 'raven-js';
+// import Reboot from 'material-ui/Reboot';
 // import { StackdriverErrorReporter } from 'stackdriver-errors-js';
 
 import createMuiTheme from 'material-ui/styles/createMuiTheme';
@@ -33,6 +34,7 @@ render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
       <MuiThemeProvider theme={theme}>
+        {/* <Reboot /> */}
         <App />
       </MuiThemeProvider>
     </ConnectedRouter>

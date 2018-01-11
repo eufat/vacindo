@@ -34,7 +34,7 @@ class Payment extends Component {
 
   render() {
     const isPaymentEmpty = this.state.verificationTime === null;
-    const verification = this.state.verificationTime > 0 ? 'Verified' : 'waiting verification';
+    const verification = this.state.verificationTime > 0 ? 'Verified' : 'Waiting Verification';
 
     return (
       <div>

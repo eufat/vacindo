@@ -13,7 +13,8 @@ Orion is responsive, single-page, serverless application. It designed so, so we 
 8. Airbnb's Javascript convention ☑️
 9. Xendit for payments
 10. Material UI ☑️
- 
+11. Unit Testing and Coverage
+
 ## Application Feature Overview
 ### Feature for User
 1. Registration
