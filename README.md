@@ -3,6 +3,7 @@ Orion is an examination event app which targeted to TOSSAKA and Olimpiade.id, it
 
 ## Application Technical Overview
 Orion is responsive, single-page, serverless application. It designed so, so we could maximize development efficiency and iteration without any dev-ops difficulties.
+
 1. Javascript for everything ☑️
 2. React and Redux for view and state management ☑️
 3. CRA for build system ☑️
@@ -12,8 +13,9 @@ Orion is responsive, single-page, serverless application. It designed so, so we 
 7. Google Cloud Function for triggering databases ☑️
 8. Airbnb's Javascript convention ☑️
 9. Xendit for payments
-10. Material UI ☑️
-11. Unit Testing and Coverage
+10. Algolia for instant search ☑️
+11. Material UI ☑️
+12. Unit Testing and Coverage
 
 ## Application Feature Overview
 ### Feature for User
@@ -37,7 +39,7 @@ Orion is responsive, single-page, serverless application. It designed so, so we 
     3. Payments Statistics ☑️
     4. Realtime Events Statistics
 2. Manage User Registrations
-    1. Search User
+    1. Search User ☑️
     2. Edit User
     3. Delete User ☑️
 3. Manage User Payments
@@ -50,6 +52,7 @@ Orion is responsive, single-page, serverless application. It designed so, so we 
     2. Online Result
 5. Event Settings
     1. Payment Closing
+    2. Authentication Settings
     2. Event Branding
     3. Exam Type (Offline or Online)
     4. Landing Page
