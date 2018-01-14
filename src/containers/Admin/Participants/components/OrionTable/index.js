@@ -104,25 +104,42 @@ class OrionTable extends React.PureComponent {
     editData: {},
     dataOnPage: {},
   };
+
   componentDidMount() {
     this.fetchData();
-  };
-  changeCurrentPage = (currentPage) => {
-    this.setState({
-      loading: true,
-      currentPage,
-    }, () => this.fetchData());
-  };
-  changePageSize = (pageSize) => {
-    const totalPages = Math.ceil(this.state.totalCount / pageSize);
-    const currentPage = Math.min(this.state.currentPage, totalPages - 1);
+  }
 
-    this.setState({
-      loading: true,
-      pageSize,
-      currentPage,
-    }, () => this.fetchData());
+  onDialogOk = () => {
+    const { uid } = this.state.editData;
+    deleteParticipant(uid);
+    this.setState({ ...this.state, dialogOpen: false, editOpen: false }, () => this.fetchData());
   };
+
+  onEdit = (uid) => {
+    let dataOnPage = this.state.dataOnPage;
+    const editData = { ...dataOnPage[uid], uid };
+    this.setState({ ...this.state, editOpen: true, editData });
+  };
+
+  setRows = (participants, rows) => {
+    const totalCount = this.props.participantsCount;
+    this.setState({
+      ...this.state,
+      loading: false,
+      rows,
+      totalCount,
+      dataOnPage: participants,
+    });
+  };
+
+  handleDialogClose = () => {
+    this.setState({ ...this.state, dialogOpen: false });
+  };
+
+  handleDialogOpen = () => {
+    this.setState({ ...this.state, dialogOpen: true });
+  };
+
   queryString() {
     const { sorting, pageSize, currentPage } = this.state;
 
@@ -136,33 +153,21 @@ class OrionTable extends React.PureComponent {
 
     return queryString;
   }
-  handleDialogOpen = () => {
-    this.setState({ ...this.state, dialogOpen: true });
-  };
-  handleDialogClose = () => {
-    this.setState({ ...this.state, dialogOpen: false });
-  };
-  onDialogOk = () => {
-    const { uid } = this.state.editData;
-    deleteParticipant(uid);
-    this.setState({ ...this.state, dialogOpen: false, editOpen: false }, () => this.fetchData());
-  };
-  setRows = (participants, rows) => {
-    const totalCount = this.props.participantsCount;
+
+  changeCurrentPage = (currentPage) => {
     this.setState({
-      ...this.state,
-      loading: false,
-      rows,
-      totalCount,
-      dataOnPage: participants,
-    });
+      loading: true,
+      currentPage,
+    }, () => this.fetchData());
   };
+
   changeSorting = (sorting) => {
     this.setState({
       loading: true,
       sorting,
     });
   };
+
   fetchData() {
     const { pageSize, currentPage, sorting } = this.state;
     retrieveParticipants(
@@ -193,12 +198,8 @@ class OrionTable extends React.PureComponent {
       )
       .catch(() => this.setState({ loading: false }));
     this.lastQuery = queryString;
-  };
-  onEdit = (uid) => {
-    let dataOnPage = this.state.dataOnPage;
-    const editData = { ...dataOnPage[uid], uid };
-    this.setState({ ...this.state, editOpen: true, editData });
-  };
+  }
+
   toggleEditDrawer = (state) => {
     this.setState({ ...this.state, editOpen: state });
   };

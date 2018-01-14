@@ -7,10 +7,7 @@ const algoliasearch = require('algoliasearch');
 
 admin.initializeApp(functions.config().firebase);
 
-const algolia = algoliasearch(
-  '5RPGT77LXQ',
-  'c0c34193afd1631b2024fcf24699863a'
-);
+const algolia = algoliasearch('5RPGT77LXQ', 'c0c34193afd1631b2024fcf24699863a');
 
 const userIndex = algolia.initIndex('users');
 
@@ -64,49 +61,62 @@ exports.actions = functions.https.onRequest((req, res) => {
   req.get('/reset-counter', (request, respond) => {
     const database = admin.database();
 
-    database.ref('/').once('value').then((snapshot) => {
-      const parsed = snapshot.val();
+    database
+      .ref('/')
+      .once('value')
+      .then((snapshot) => {
+        const parsed = snapshot.val();
 
-      // Reset count values
-      parsed.appData.examsCount = _.mapValues(parsed.appData.examsCount, (v, k, o) => 0);
-      parsed.appData.methodsCount = _.mapValues(parsed.appData.methodsCount, (v, k, o) => 0);
+        // Reset count values
+        parsed.appData.examsCount = _.mapValues(parsed.appData.examsCount, (v, k, o) => 0);
+        parsed.appData.methodsCount = _.mapValues(parsed.appData.methodsCount, (v, k, o) => 0);
 
-      function updateNumber(data, dataFieldKey, dataNumberingKey, callback) {
-        let i = 1;
-        parsed.appData.verificationCount = 0;
+        function updateNumber(data, dataFieldKey, dataNumberingKey, callback) {
+          let i = 1;
+          parsed.appData.verificationCount = 0;
 
-        const updatedData = _.mapValues(data[dataFieldKey], (value, key, object) => {
-          const newValue = value;
-          newValue[dataNumberingKey] = i;
+          const updatedData = _.mapValues(data[dataFieldKey], (value, key, object) => {
+            const newValue = value;
+            newValue[dataNumberingKey] = i;
 
-          if (newValue.examType) {
-            const previousExamsCount = parsed.appData.examsCount[newValue.examType];
-            parsed.appData.examsCount[newValue.examType] = previousExamsCount + 1;
-          }
+            if (newValue.examType) {
+              const previousExamsCount = parsed.appData.examsCount[newValue.examType];
+              parsed.appData.examsCount[newValue.examType] = previousExamsCount + 1;
+            }
 
-          if (newValue.method) {
-            const previousMethodsCount = parsed.appData.methodsCount[newValue.method];
-            parsed.appData.methodsCount[newValue.method] = previousMethodsCount + 1;
-          }
+            if (newValue.method) {
+              const previousMethodsCount = parsed.appData.methodsCount[newValue.method];
+              parsed.appData.methodsCount[newValue.method] = previousMethodsCount + 1;
+            }
 
-          if (newValue.verificationTime > 0) {
-            const previousVerificationCount = parsed.appData.verificationCount;
-            parsed.appData.verificationCount = previousVerificationCount + 1;
-          }
+            if (newValue.verificationTime > 0) {
+              const previousVerificationCount = parsed.appData.verificationCount;
+              parsed.appData.verificationCount = previousVerificationCount + 1;
+            }
 
-          i++;
-          return newValue;
-        });
+            i++;
+            return newValue;
+          });
 
-        callback(i - 1);
-        return updatedData;
-      }
+          callback(i - 1);
+          return updatedData;
+        }
 
-      parsed.paymentsData = updateNumber(parsed, 'paymentsData', 'paymentNumber', i => parsed.appData.paymentsCount = i);
-      parsed.usersData = updateNumber(parsed, 'usersData', 'userNumber', i => parsed.appData.usersCount = i);
+        parsed.paymentsData = updateNumber(
+          parsed,
+          'paymentsData',
+          'paymentNumber',
+          i => (parsed.appData.paymentsCount = i),
+        );
+        parsed.usersData = updateNumber(
+          parsed,
+          'usersData',
+          'userNumber',
+          i => (parsed.appData.usersCount = i),
+        );
 
-      database.ref('/').update(parsed, () => respond.send('Reset successfull'));
-    });
+        database.ref('/').update(parsed, () => respond.send('Reset successfull'));
+      });
   });
 });
 
@@ -143,22 +153,23 @@ function deleteUserRecord(user) {
   });
 }
 
-exports.updateUsersData = functions.database.ref('/usersData/{userId}').onUpdate((event) => {
-  return addOrUpdateUserRecord(event.data);
-});
+exports.updateUsersData = functions.database
+  .ref('/usersData/{userId}')
+  .onUpdate(event => addOrUpdateUserRecord(event.data));
 
-exports.updateVerification = functions.database.ref('/usersData/{userId}/verificationTime').onCreate(() => {
-  const verificationCountRef = admin.database().ref('appData/verificationCount');
-  verificationCountRef.once('value').then(() => {
-    verificationCountRef.transaction((current) => {
-      const count = (current || 0) + 1;
-      return count;
+exports.updateVerification = functions.database
+  .ref('/paymentsData/{paymentId}/verificationTime')
+  .onCreate(() => {
+    const verificationCountRef = admin.database().ref('appData/verificationCount');
+    verificationCountRef.once('value').then(() => {
+      verificationCountRef.transaction((current) => {
+        const count = (current || 0) + 1;
+        return count;
+      });
     });
+
+    return verificationCountRef;
   });
-
-  return verificationCountRef;
-});
-
 
 exports.createPayment = functions.database.ref('/paymentsData/{paymentId}').onCreate((event) => {
   const now = new Date();
@@ -180,7 +191,7 @@ exports.createPayment = functions.database.ref('/paymentsData/{paymentId}').onCr
             console.log(`Payment count: ${value}`);
             resolve();
           });
-        }
+        },
       );
     });
   });
@@ -259,7 +270,7 @@ exports.createUser = functions.database.ref('/usersData/{userId}').onCreate((eve
             console.log(`User count: ${userNumber}`);
             resolve();
           });
-        }
+        },
       );
     });
   });
@@ -318,12 +329,10 @@ exports.createUser = functions.database.ref('/usersData/{userId}').onCreate((eve
   ]);
 });
 
-exports.deleteUserData = functions.database.ref('usersData/{userId}').onDelete((event) => {
-  return Promise.all([
-    deleteUserRecord(event.data),
-    admin.auth().deleteUser(event.params.userId)
-  ]);
-});
+exports.deleteUserData = functions.database
+  .ref('usersData/{userId}')
+  .onDelete(event =>
+    Promise.all([deleteUserRecord(event.data), admin.auth().deleteUser(event.params.userId)]), );
 
 exports.deleteUserAuth = functions.auth.user().onDelete((event) => {
   const user = event.data;

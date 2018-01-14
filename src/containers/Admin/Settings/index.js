@@ -37,7 +37,9 @@ class Settings extends React.Component {
 
       function updateNumber(data, dataFieldKey, dataNumberingKey, callback) {
         let i = 1;
-        const filteredData = _.mapValues(data[dataFieldKey], (value, key, object) => {
+        parsed.appData.verificationCount = 0;
+
+        const updatedData = _.mapValues(data[dataFieldKey], (value, key, object) => {
           const newValue = value;
           newValue[dataNumberingKey] = i;
 
@@ -51,16 +53,21 @@ class Settings extends React.Component {
             parsed.appData.methodsCount[newValue.method] = previousMethodsCount + 1;
           }
 
+          if (newValue.verificationTime > 0) {
+            const previousVerificationCount = parsed.appData.verificationCount;
+            parsed.appData.verificationCount = previousVerificationCount + 1;
+          }
+
           i++;
           return newValue;
         });
 
         callback(i - 1);
-        return filteredData;
+        return updatedData;
       }
 
-      parsed.paymentsData = updateNumber(parsed, 'paymentsData', 'paymentNumber', i => parsed.appData.paymentsCount = i);
       parsed.usersData = updateNumber(parsed, 'usersData', 'userNumber', i => parsed.appData.usersCount = i);
+      parsed.paymentsData = updateNumber(parsed, 'paymentsData', 'paymentNumber', i => parsed.appData.paymentsCount = i);
 
       database.ref('/').update(parsed, () => this.setState({ onRebuildDatabase: false }, alert('Database rebuilding completed')));
     });

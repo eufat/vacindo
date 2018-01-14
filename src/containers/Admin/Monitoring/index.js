@@ -216,7 +216,7 @@ class Monitoring extends Component {
           </Grid>
           <Grid item xs={6} sm={3}>
             <Paper className={classes.paper}>
-              <h2 className={classes.number}>{get(appData, 'verifiedPaymentsCount', 0)}</h2>
+              <h2 className={classes.number}>{get(appData, 'verificationCount', 0)}</h2>
               <p>Verified Payments</p>
             </Paper>
           </Grid>
