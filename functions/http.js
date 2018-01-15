@@ -47,13 +47,13 @@ exports.updateCounter = function (req, res, database) {
           parsed,
           'paymentsData',
           'paymentNumber',
-          i => (parsed.appData.paymentsCount = i),
+          i => (parsed.appData.paymentsCount = i)
         );
         parsed.usersData = updateNumber(
           parsed,
           'usersData',
           'userNumber',
-          i => (parsed.appData.usersCount = i),
+          i => (parsed.appData.usersCount = i)
         );
 
         database.ref('/').update(parsed, () => respond.send('Reset successfull'));

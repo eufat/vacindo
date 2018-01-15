@@ -201,7 +201,7 @@ exports.deleteUserData = functions.database
     Promise.all([
       algolia.deleteUserRecord(event.data),
       admin.auth().deleteUser(event.params.userId),
-    ]), );
+    ]));
 
 exports.deletePaymentData = functions.database
   .ref('usersData/{userId}')

@@ -13,7 +13,8 @@ class Settings extends React.Component {
     openSignUp: true,
     adminData: {},
     onRebuildDatabase: false,
-    onRebuildSearch: false,
+    onRebuildUser: false,
+    onRebuildPayment: false,
   };
 
   toggleSignIn = (checked) => {
@@ -74,7 +75,7 @@ class Settings extends React.Component {
   }
 
 
-  rebuildSearch = () => {
+  rebuildUserIndex = () => {
     const algolia = algoliasearch(
       '5RPGT77LXQ',
       'c0c34193afd1631b2024fcf24699863a',
@@ -96,11 +97,42 @@ class Settings extends React.Component {
         .saveObjects(records)
         .then(() => {
           const message = 'imported into Algolia';
-          this.setState({ onRebuildSearch: false }, alert(message));
+          this.setState({ onRebuildUser: false }, alert(message));
         })
         .catch((error) => {
           const message = 'Error when importing into Algolia';
-          this.setState({ onRebuildSearch: false }, alert(message + ': ' + error));
+          this.setState({ onRebuildUser: false }, alert(message + ': ' + error));
+        });
+    });
+  }
+
+  rebuildPaymentIndex = () => {
+    const algolia = algoliasearch(
+      '5RPGT77LXQ',
+      'c0c34193afd1631b2024fcf24699863a',
+    );
+
+    const userIndex = algolia.initIndex('payments');
+
+    const database = firebase.database();
+    return database.ref('/paymentsData').once('value', (users) => {
+      const records = [];
+      users.forEach((user) => {
+        const childKey = user.key;
+        const childData = user.val();
+        childData.objectID = childKey;
+        records.push(childData);
+      });
+
+      userIndex
+        .saveObjects(records)
+        .then(() => {
+          const message = 'imported into Algolia';
+          this.setState({ onRebuildPayment: false }, alert(message));
+        })
+        .catch((error) => {
+          const message = 'Error when importing into Algolia';
+          this.setState({ onRebuildPayment: false }, alert(message + ': ' + error));
         });
     });
   }
@@ -109,8 +141,12 @@ class Settings extends React.Component {
     this.setState({ onRebuildDatabase: true }, () => this.rebuildDatabase());
   }
 
-  handleRebuildSearch = () => {
-    this.setState({ onRebuildSearch: true }, () => this.rebuildSearch());
+  handleRebuildUser = () => {
+    this.setState({ onRebuildUser: true }, () => this.rebuildUserIndex());
+  }
+
+  handleRebuildPaymentIndex = () => {
+    this.setState({ onRebuildPayment: true }, () => this.rebuildPaymentIndex());
   }
 
   render() {
@@ -120,12 +156,15 @@ class Settings extends React.Component {
           <Typography type="title">Rebuilder</Typography>
           <br />
           <Button disabled={this.state.onRebuildDatabase} onClick={() => this.handleRebuildDatabase()} raised>
-            {this.state.onRebuildDatabase ? 'Rebuilding ...' : 'Rebuild Database'}
+            {this.state.onRebuildDatabase ? 'Rebuilding ...' : 'Recount Database'}
           </Button>
           <br />
           <br />
-          <Button disabled={this.state.onRebuildSearch} onClick={() => this.handleRebuildSearch()} raised>
-            {this.state.onRebuildSearch ? 'Rebuilding ...' : 'Rebuild Search'}
+          <Button disabled={this.state.onRebuildUser} onClick={() => this.handleRebuildUser()} raised>
+            {this.state.onRebuildUser ? 'Rebuilding ...' : 'Rebuild User Index'}
+          </Button>
+          <Button disabled={this.state.onRebuildPayment} onClick={() => this.handlePaymentIndex()} raised>
+            {this.state.onRebuildPayment ? 'Rebuilding ...' : 'Rebuild User Index'}
           </Button>
           <br />
           <br />

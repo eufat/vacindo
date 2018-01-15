@@ -16,8 +16,6 @@ const prodConfig = {
   messagingSenderId: '231207813297',
 };
 
-console.log('FIREBASE_ENV: ' + process.env.FIREBASE_ENV);
-const env = process.env.FIREBASE_ENV || 'production';
 const config = prodConfig;
 // const config = devConfig;
 
