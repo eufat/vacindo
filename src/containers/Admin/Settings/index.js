@@ -112,7 +112,7 @@ class Settings extends React.Component {
       'c0c34193afd1631b2024fcf24699863a',
     );
 
-    const userIndex = algolia.initIndex('payments');
+    const paymentsIndex = algolia.initIndex('payments');
 
     const database = firebase.database();
     return database.ref('/paymentsData').once('value', (users) => {
@@ -124,7 +124,7 @@ class Settings extends React.Component {
         records.push(childData);
       });
 
-      userIndex
+      paymentsIndex
         .saveObjects(records)
         .then(() => {
           const message = 'imported into Algolia';
@@ -163,8 +163,10 @@ class Settings extends React.Component {
           <Button disabled={this.state.onRebuildUser} onClick={() => this.handleRebuildUser()} raised>
             {this.state.onRebuildUser ? 'Rebuilding ...' : 'Rebuild User Index'}
           </Button>
+          <br />
+          <br />
           <Button disabled={this.state.onRebuildPayment} onClick={() => this.handlePaymentIndex()} raised>
-            {this.state.onRebuildPayment ? 'Rebuilding ...' : 'Rebuild User Index'}
+            {this.state.onRebuildPayment ? 'Rebuilding ...' : 'Rebuild Payment Index'}
           </Button>
           <br />
           <br />
