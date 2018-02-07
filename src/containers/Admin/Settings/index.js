@@ -145,7 +145,7 @@ class Settings extends React.Component {
     this.setState({ onRebuildUser: true }, () => this.rebuildUserIndex());
   }
 
-  handleRebuildPaymentIndex = () => {
+  handleRebuildPayment = () => {
     this.setState({ onRebuildPayment: true }, () => this.rebuildPaymentIndex());
   }
 
@@ -164,8 +164,8 @@ class Settings extends React.Component {
             {this.state.onRebuildUser ? 'Rebuilding ...' : 'Rebuild User Index'}
           </Button>
           <br />
-          <br />
-          <Button disabled={this.state.onRebuildPayment} onClick={() => this.handlePaymentIndex()} raised>
+          <br />  
+          <Button disabled={this.state.onRebuildPayment} onClick={() => this.handleRebuildPayment()} raised>
             {this.state.onRebuildPayment ? 'Rebuilding ...' : 'Rebuild Payment Index'}
           </Button>
           <br />

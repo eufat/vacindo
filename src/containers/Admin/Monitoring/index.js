@@ -160,8 +160,8 @@ class Monitoring extends Component {
               onChange={this.handleChange}
               input={<Input name="graphMode" id="graphMode-simple" />}
             >
-              <MenuItem value={0}>Single Mode</MenuItem>
-              <MenuItem value={1}>Total Mode</MenuItem>
+              <MenuItem value={0}>Daily</MenuItem>
+              <MenuItem value={1}>Total</MenuItem>
             </Select>
           </FormControl>
         </form>

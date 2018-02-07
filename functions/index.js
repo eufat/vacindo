@@ -14,13 +14,13 @@ exports.actions = functions.https.onRequest((req, res) => {
   http.updateCounter(req, res, admin.database());
 });
 
-exports.updateUsersData = functions.database
-  .ref('/usersData/{userId}')
-  .onUpdate(event => algolia.addOrUpdateUserRecord(event.data));
+// exports.updateUsersData = functions.database
+//   .ref('/usersData/{userId}')
+//   .onUpdate(event => algolia.addOrUpdateUserRecord(event.data));
 
-exports.updatePaymentsaData = functions.database
-  .ref('/paymentsData/{paymentId}')
-  .onUpdate(event => algolia.addOrUpdatePaymentRecord(event.data));
+// exports.updatePaymentsaData = functions.database
+//   .ref('/paymentsData/{paymentId}')
+//   .onUpdate(event => algolia.addOrUpdatePaymentRecord(event.data));
 
 exports.updateVerification = functions.database
   .ref('/paymentsData/{paymentId}/verificationTime')

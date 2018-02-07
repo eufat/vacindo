@@ -48,6 +48,9 @@ const Results = connectHits(({ hits, ...props }) => (
         <TableCell>
           <Highlight attributeName="examType" hit={hit} />
         </TableCell>
+        <TableCell>
+          <Highlight attributeName="email" hit={hit} />
+        </TableCell>
         <TableCell>{hit.attendedTime > 0 ? 'Attended' : 'Not Attended'}</TableCell>
         <TableCell>
           <Button onClick={() => props.onEdit(hit)}>Edit</Button>
@@ -71,6 +74,7 @@ function ResultsTable(props) {
               <TableCell>Reg. Date</TableCell>
               <TableCell>Name</TableCell>
               <TableCell>Exam Type</TableCell>
+              <TableCell>Email</TableCell>
               <TableCell>Attended</TableCell>
               <TableCell>Action</TableCell>
             </TableRow>
