@@ -32,6 +32,17 @@ export function setAppData(appData) {
   };
 }
 
+export function attendParticipant(userId) {
+  const now = new Date();
+  const timestamp = now.getTime();
+
+  const rtdb = firebase.database();
+  const updates = {};
+
+  updates[`/usersData/${userId}/attendedTime/`] = timestamp;
+  return rtdb.ref().update(updates);
+}
+
 export function retrieveParticipants(startAt, endAt, sorting) {
   const usersDataRef = firebase.database().ref('usersData');
   return usersDataRef

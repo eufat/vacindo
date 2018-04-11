@@ -105,37 +105,27 @@ class OriontransferForms extends Component {
     this.setState({ ...this.state, imageFile, imageName });
   };
 
-  handleOnSubmitPayment = () => {
+  handleOnSubmitPayment = async () => {
     const method = this.state.method;
     const { dispatch, user, checkPayment } = this.props;
-
-    this.toggleOnSubmitProcess(async () => {
-      if (method === 'transfer') {
-        const selectedFile = this.state.imageFile;
-        if (this.transferIsValid()) {
-          dispatch(setPaymentData(user.uid, 'transfer', this.state.form.transfer, () => {
-            dispatch(setPaymentImage(user.uid, selectedFile));
-            this.toggleOnSubmitProcess(noop => noop);
-          }));
-        }
-        checkPayment();
-      } else if (method === 'voucher') {
-        const voucherIsValid = await this.voucherIsValid();
-        if (voucherIsValid) {
-          let voucherForm = this.state.form.voucher;
-          voucherForm = { ...voucherForm, code: toUpperCase(voucherForm.code) };
-          dispatch(setPaymentData(user.uid, 'voucher', voucherForm, () => {
-            this.toggleOnSubmitProcess(noop => noop);
-          }));
-        }
-        checkPayment();
+    if (method === 'transfer') {
+      const selectedFile = this.state.imageFile;
+      if (this.transferIsValid()) {
+        dispatch(setPaymentData(user.uid, 'transfer', this.state.form.transfer, () => {
+          dispatch(setPaymentImage(user.uid, selectedFile));
+        }));
       }
-    });
+      checkPayment();
+    } else if (method === 'voucher') {
+      const voucherIsValid = await this.voucherIsValid();
+      if (voucherIsValid) {
+        let voucherForm = this.state.form.voucher;
+        voucherForm = { ...voucherForm, code: toUpperCase(voucherForm.code) };
+        dispatch(setPaymentData(user.uid, 'voucher', voucherForm, noop => noop));
+      }
+      checkPayment();
+    }
   };
-
-  toggleOnSubmitProcess = (callback) => {
-    this.setState({ ...this.state, onSubmitProcess: !this.state.onSubmitProcess }, callback());
-  }
 
   transferIsValid = () => {
     const { dispatch } = this.props;
@@ -312,7 +302,6 @@ class OriontransferForms extends Component {
         {method()}
         <Button
           raised
-          disabled={this.state.onSubmitProcess}
           className={classnames(classes.button, !this.state.method && classes.hidden)}
           onClick={() => this.handleOnSubmitPayment()}
           color="primary"

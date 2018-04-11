@@ -6,6 +6,7 @@ import Dashboard from '../Dashboard';
 import Monitoring from './Monitoring';
 import Participants from './Participants';
 import Payments from './Payments';
+import Scanner from './Scanner';
 import Results from './Results';
 import Settings from './Settings';
 
@@ -34,6 +35,10 @@ class Admin extends Component {
         text: 'Payments',
       },
       {
+        onClick: () => history.push('/admin/scanner'),
+        text: 'Scanner',
+      },
+      {
         onClick: () => history.push('/admin/results'),
         text: 'Results',
       },
@@ -50,6 +55,7 @@ class Admin extends Component {
           <Route exact path="/admin/monitoring" component={Monitoring} />
           <Route exact path="/admin/participants" component={Participants} />
           <Route exact path="/admin/payments" component={Payments} />
+          <Route exact path="/admin/scanner" component={Scanner} />
           <Route exact path="/admin/results" component={Results} />
           <Route exact path="/admin/settings" component={Settings} />
         </Switch>

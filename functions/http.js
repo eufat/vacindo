@@ -1,4 +1,4 @@
-/* eslint-disable func-names */
+/* eslint-disable func-names, no-plusplus */
 const _ = require('lodash');
 
 exports.updateCounter = function (req, res, database) {

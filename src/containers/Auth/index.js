@@ -13,6 +13,7 @@ import Button from 'material-ui/Button';
 import OrionSignup from './components/OrionSignup';
 import OrionSignin from './components/OrionSignin';
 import OrionReset from './components/OrionReset';
+import OrionMessage from './../../components/OrionMessage';
 
 import { submitAuthentication, createAuthentication, resetAuthentication } from './actions';
 import { errorMessage } from '../App/actions';
@@ -50,6 +51,7 @@ const styleSheet = theme => ({
 
 class Auth extends Component {
   state = {
+    click: 0,
     open: false,
     signInPage: true,
     rememberSignIn: true,
@@ -83,6 +85,10 @@ class Auth extends Component {
     // if (toSignUp !== null && toSignUp === 'true') {
     //   this.changeToSignUpPage();
     // }
+  }
+
+  incrementClick = () => {
+    this.setState({ ...this.state, click: this.state.click + 1 });
   }
 
   changeToSignInPage = () => {
@@ -207,12 +213,24 @@ class Auth extends Component {
                   handleOpen={this.handleOpen}
                 />
               ) : (
-                <OrionSignup
-                  changeSignUpFields={this.changeSignUpFields}
-                  changeSignUpSelect={this.changeSignUpSelect}
-                  handleOnSubmitAuth={this.handleOnSubmitAuth}
-                  signUp={this.state.form.signUp}
-                />
+                <div>
+                  <div onClick={ () => this.incrementClick() }>
+                    <OrionMessage>
+                      Pendaftaran TOSSAKA 14th sudah di tutup.
+                    </OrionMessage>
+                  </div>
+                  {
+                    this.state.click > 2 ?
+                      <OrionSignup
+                        changeSignUpFields={this.changeSignUpFields}
+                        changeSignUpSelect={this.changeSignUpSelect}
+                        handleOnSubmitAuth={this.handleOnSubmitAuth}
+                        signUp={this.state.form.signUp}
+                      /> : null
+                      
+                  }
+                </div>
+                
               )}
             </form>
             <div className={classes.changeQuestion}>
