@@ -34,8 +34,8 @@ const data = [
     title: 'White Sand Beach',
     city: 'Bali',
     place: 'White Sand Beach',
-    priceFrom: 300000,
-    priceTo: 500000,
+    priceFrom: 3000000,
+    priceTo: 5000000,
   },
   {
     image: 'https://www.pegipegi.com/travel/wp-content/uploads/2016/08/lawang-sewu-horor.jpg',
@@ -52,15 +52,15 @@ const data = [
     city: 'Jakarta',
     place: 'Kota Tua',
     priceFrom: 1500000,
-    priceTo: 300000,
+    priceTo: 3000000,
   },
   {
     image: 'https://i.ytimg.com/vi/7ead5Ti7zNg/maxresdefault.jpg',
     title: 'Komodo Island',
     city: 'Komodo Island',
     place: 'Komodo Island',
-    priceFrom: 300000,
-    priceTo: 500000,
+    priceFrom: 3000000,
+    priceTo: 5000000,
   },
 ];
 
@@ -72,9 +72,18 @@ const styleSheet = theme => ({
     backgroundImage: 'url("/static/images/head.jpg")',
     backgroundPosition: 'center center',
     backgroundSize: 'cover',
+    height: '100vh',
     margin: 0,
     paddingTop: '20vw',
     paddingBottom: '20vw',
+  },
+  filter: {
+    top: 0,
+    backgroundColor: 'black',
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    opacity: 0.5
   },
   experienceContainer: {
     margin: '0 auto',
@@ -98,7 +107,7 @@ class Web extends Component {
 
     const partitionedData = partition(data, n => n % 3);
 
-    const ExperienceRow = d =>
+    const ExperienceRow = d => 
       d.map((item, i) => (
         <Grid item md={4} sm={4} xs={4}>
           <VacindoCard
@@ -106,7 +115,7 @@ class Web extends Component {
             cardTitle={item.title}
             miniHeadline={item.city}
             mainHeadline={item.place}
-            priceRange={`${item.priceFrom}-${item.priceTo}`}
+            priceRange={`Rp${(item.priceFrom).toLocaleString('id')} - Rp${(item.priceTo).toLocaleString('id')}`}
           />
         </Grid>
       ));
@@ -121,23 +130,24 @@ class Web extends Component {
 
     return (
       <span>
-        <div className={classes.headContainer}>
-          <Grid container justify="center" align="flex-start">
-            <Grid item md={6} sm={6} xs={12}>
-              <FormControl fullWidth className={classes.headSearch}>
-                <Input
-                  placeholder="Search destination"
-                  id="adornment-amount"
-                  startAdornment={
-                    <InputAdornment position="start">
-                      <SearchIcon className={classes.icon} />
-                    </InputAdornment>
-                  }
-                />
-              </FormControl>
-            </Grid>
-          </Grid>
-        </div>
+        {/*<div className={classes.headContainer}>
+                  <div className={classes.filter}></div>
+                  <Grid container justify="center" align="flex-start">
+                    <Grid item md={6} sm={6} xs={12}>
+                      <FormControl fullWidth className={classes.headSearch}>
+                        <Input
+                          placeholder="Search destination"
+                          id="adornment-amount"
+                          startAdornment={
+                            <InputAdornment position="start">
+                              <SearchIcon className={classes.icon} />
+                            </InputAdornment>
+                          }
+                        />
+                      </FormControl>
+                    </Grid>
+                  </Grid>
+                </div>*/}
         <div>
           <Grid className={classes.experienceContainer}>{ExperienceContent}</Grid>
         </div>
