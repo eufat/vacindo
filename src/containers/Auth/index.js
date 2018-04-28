@@ -8,6 +8,8 @@ import { withStyles } from 'material-ui/styles';
 import Grid from 'material-ui/Grid';
 
 import VacindoSignin from './components/VacindoSignin';
+import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
+import * as firebase from 'firebase';
 
 import { submitAuthentication, createAuthentication } from './actions';
 
@@ -54,6 +56,18 @@ class Auth extends Component {
     },
   };
 
+  uiConfig = {
+    // Popup signin flow rather than redirect flow.
+    signInFlow: 'popup',
+    // Redirect to /signedIn after sign in is successful. Alternatively you can provide a callbacks.signInSuccess function.
+    signInSuccessUrl: '/user/',
+    // We will display Google and Facebook as auth providers.
+    signInOptions: [
+      firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+      firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+    ],
+  };
+
   incrementClick = () => {
     this.setState({ ...this.state, click: this.state.click + 1 });
   };
@@ -95,12 +109,13 @@ class Auth extends Component {
               <img src="/static/images/logo.png" alt="logo" width={240} />
             </center>
             <form onSubmit={this.handleOnSubmitAuth}>
-              <VacindoSignin
+              {/* <VacindoSignin
                 changeSignInFields={this.changeSignInFields}
                 changeRememberSignIn={this.changeRememberSignIn}
                 handleOnSubmitAuth={this.handleOnSubmitAuth}
                 rememberSignIn={this.state.rememberSignIn}
-              />
+              /> */}
+              <StyledFirebaseAuth uiConfig={this.uiConfig} firebaseAuth={firebase.auth()} />
             </form>
           </Grid>
         </Grid>
