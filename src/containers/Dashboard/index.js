@@ -4,8 +4,8 @@ import { withStyles } from 'material-ui/styles';
 import classNames from 'classnames';
 import { PropTypes } from 'prop-types';
 
-import OrionAppbar from './components/OrionAppbar';
-import OrionSidebar from './components/OrionSidebar';
+import VacindoAppbar from './components/VacindoAppbar';
+import VacindoSidebar from './components/VacindoSidebar';
 
 import { checkAuthentication } from '../Auth/actions';
 
@@ -76,8 +76,8 @@ class Dashboard extends Component {
 
     return (
       <div>
-        <OrionAppbar {...this.state} handleDrawerOpen={this.handleDrawerOpen} />
-        <OrionSidebar {...this.props} {...this.state} handleDrawerClose={this.handleDrawerClose} />
+        <VacindoAppbar {...this.state} handleDrawerOpen={this.handleDrawerOpen} />
+        <VacindoSidebar {...this.props} {...this.state} handleDrawerClose={this.handleDrawerClose} />
         <main className={classNames(classes.content, this.state.open && classes.contentShift)}>
           {this.props.children}
         </main>

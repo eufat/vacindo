@@ -4,9 +4,6 @@ import { withRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 import Dashboard from '../Dashboard';
 import Profile from './Profile';
-import Payment from './Payment';
-import Ticket from './Ticket';
-import Result from './Result';
 
 class User extends Component {
   render() {
@@ -25,10 +22,6 @@ class User extends Component {
         onClick: () => history.push('/user/ticket'),
         text: 'Ticket',
       },
-      {
-        onClick: () => history.push('/user/result'),
-        text: 'Result',
-      },
     ];
 
     return (
@@ -36,9 +29,6 @@ class User extends Component {
         <Switch>
           <Route exact path="/user/" render={() => <Redirect to="/user/profile" />} />
           <Route exact path="/user/profile" component={Profile} />
-          <Route exact path="/user/payment" component={Payment} />
-          <Route exact path="/user/ticket" component={Ticket} />
-          <Route exact path="/user/result" component={Result} />
         </Switch>
       </Dashboard>
     );

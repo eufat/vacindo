@@ -1,5 +1,3 @@
-import omit from 'lodash/omit';
-
 import * as firebase from 'firebase';
 import * as c from './constants';
 
@@ -97,7 +95,10 @@ export function verifyPayment(paymentId, timestamp) {
     });
   });
 
-  return firebase.database().ref().update(updates);
+  return firebase
+    .database()
+    .ref()
+    .update(updates);
 }
 
 export function deletePayment(paymentId, userId) {
@@ -113,7 +114,10 @@ export function deletePayment(paymentId, userId) {
     });
   });
 
-  return firebase.database().ref().update(updates);
+  return firebase
+    .database()
+    .ref()
+    .update(updates);
 }
 
 export function retrieveAppData() {
@@ -135,35 +139,4 @@ export async function retrievePaymentImageURL(userId) {
   const url = await imageRef.getDownloadURL();
 
   return url;
-}
-
-export async function createVouchers(req) {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const rtdb = firebase.database();
-      const url = 'https://hadron.tossaka14th.com/pdf';
-
-      const response = await fetch(url, {
-        mode: 'no-cors',
-        method: 'POST',
-        headers: new Headers({
-          'Content-Type': 'application/json',
-        }),
-        body: JSON.stringify(req),
-      });
-
-      let data = await response.json();
-
-      const downloadPath = data.downloadPath;
-
-      data = omit(data, ['downloadPath']);
-
-      rtdb
-        .ref('vouchersData')
-        .update(data)
-        .then(resolve(downloadPath));
-    } catch (err) {
-      reject(err);
-    }
-  });
 }

@@ -13,7 +13,7 @@ import Auth from '../Auth';
 import Admin from '../Admin';
 import User from '../User';
 import Web from '../Web';
-import OrionSnackbar from '../../components/OrionSnackbar';
+import VacindoSnackbar from '../../components/VacindoSnackbar';
 
 import { checkAuthentication } from '../Auth/actions';
 
@@ -39,13 +39,13 @@ class App extends Component {
     return (
       <div className={classes.root}>
         <Helmet>
-          <title>TOSSAKA 14th Event</title>
+          <title>Vacindo App</title>
         </Helmet>
         <div className={classes.loadingBar}>
           <LinearProgress style={{ display: loading ? 'block' : 'none' }} />
         </div>
-        <OrionSnackbar state={success} />
-        <OrionSnackbar state={error} />
+        <VacindoSnackbar state={success} />
+        <VacindoSnackbar state={error} />
         <Switch>
           <Route
             exact

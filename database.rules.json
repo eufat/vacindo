@@ -2,9 +2,6 @@
   "rules": {
     ".read": "auth != null",
     ".write": "auth != null",
-    "paymentsData": {
-			".indexOn": "paymentNumber"
-    },
     "usersData": {
       ".indexOn": "userNumber"
     }

@@ -5,10 +5,6 @@ import { withRouter, Route, Switch, Redirect } from 'react-router-dom';
 import Dashboard from '../Dashboard';
 import Monitoring from './Monitoring';
 import Participants from './Participants';
-import Payments from './Payments';
-import Scanner from './Scanner';
-import Results from './Results';
-import Settings from './Settings';
 
 import { retrieveAppData } from './actions';
 
@@ -54,10 +50,6 @@ class Admin extends Component {
           <Route exact path="/admin/" render={() => <Redirect to="/admin/monitoring" />} />
           <Route exact path="/admin/monitoring" component={Monitoring} />
           <Route exact path="/admin/participants" component={Participants} />
-          <Route exact path="/admin/payments" component={Payments} />
-          <Route exact path="/admin/scanner" component={Scanner} />
-          <Route exact path="/admin/results" component={Results} />
-          <Route exact path="/admin/settings" component={Settings} />
         </Switch>
       </Dashboard>
     );

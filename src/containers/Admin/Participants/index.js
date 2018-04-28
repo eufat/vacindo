@@ -9,11 +9,10 @@ import Close from 'material-ui-icons/Close';
 import { InstantSearch } from 'react-instantsearch/dom';
 
 import { deleteParticipant } from '../actions';
-import OrionDialog from '../../../components/OrionDialog';
-import OrionForms from '../../Auth/components/OrionForms';
-import OrionResult from './components/OrionResult';
+import VacindoDialog from '../../../components/VacindoDialog';
+import VacindoResult from './components/VacindoResult';
 
-// import OrionTable from './components/OrionTable';
+// import VacindoTable from './components/VacindoTable';
 
 const styles = theme => ({
   root: {
@@ -68,7 +67,7 @@ class Participants extends Component {
   render() {
     return (
       <div>
-        <OrionDialog
+        <VacindoDialog
           dialogTitle="Delete User"
           dialogText="Are you sure you want to delete this user?"
           open={this.state.dialogOpen}
@@ -85,13 +84,6 @@ class Participants extends Component {
             <IconButton dense onClick={() => this.toggleEditDrawer(false)}>
               <Close className={this.props.classes.leftIcon} />
             </IconButton>
-            <OrionForms
-              changeFormFields={noop => noop}
-              changeFormSelect={noop => noop}
-              forms={this.state.editData}
-              disabled
-            />
-            <br />
             <Button onClick={this.handleDialogOpen}>Delete User</Button>
           </div>
         </Drawer>
@@ -102,7 +94,7 @@ class Participants extends Component {
           apiKey="79e4781eb496813e9c371534bef88d8c"
           indexName="users"
         >
-          <OrionResult onEdit={this.onEdit} />
+          <VacindoResult onEdit={this.onEdit} />
         </InstantSearch>
       </div>
     );

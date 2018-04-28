@@ -1,18 +1,6 @@
 {
   "hosting": {
-    "ignore": [
-      "firebase.json",
-      "node_modules/",
-      "functions/",
-      "**/.*",
-      "**/.scss"
-    ],
-    "rewrites": [
-      {
-        "source": "**/!(in.htm)",
-        "destination": "/index.html"
-      }
-    ],
+    "ignore": ["firebase.json", "node_modules/", "functions/", "**/.*", "**/.scss"],
     "redirects": [
       {
         "source": "/",

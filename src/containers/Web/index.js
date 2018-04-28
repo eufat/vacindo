@@ -23,7 +23,7 @@ const styleSheet = theme => ({
 
 class Web extends Component {
   componentDidMount() {
-    window.location.href = '/in.htm';
+    window.location.href = '/auth';
   }
 
   render() {
