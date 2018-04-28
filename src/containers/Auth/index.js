@@ -27,7 +27,7 @@ const styleSheet = theme => ({
   },
   background: {
     minHeight: '100vh',
-    marginTop: '0',
+    marginTop: '10vh',
   },
   containerGrid: {
     width: '100% !important',
@@ -104,9 +104,9 @@ class Auth extends Component {
     return (
       <div className={classes.background}>
         <Grid container justify="center" align="flex-start" className={classes.containerGrid}>
-          <Grid item md={4} sm={6} xs={12}>
+          <Grid item md={2} sm={3} xs={12}>
             <center>
-              <img src="/static/images/logo.png" alt="logo" width={240} />
+              <img src="/static/images/logo.png" alt="logo" width={100} />
             </center>
             <form onSubmit={this.handleOnSubmitAuth}>
               {/* <VacindoSignin

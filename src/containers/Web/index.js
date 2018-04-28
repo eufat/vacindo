@@ -2,12 +2,16 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
+import { FormControl } from 'material-ui/Form';
+
 import Grid from 'material-ui/Grid';
 import { withStyles } from 'material-ui/styles';
+import SearchIcon from '@material-ui/icons/Search';
+import Input, { InputLabel, InputAdornment } from 'material-ui/Input';
 
 const styleSheet = theme => ({
-  head: {
-    padding: [40, 0],
+  icon: {
+    margin: theme.spacing.unit,
   },
   container: {
     padding: [0, 20],
@@ -22,19 +26,27 @@ const styleSheet = theme => ({
 });
 
 class Web extends Component {
-  componentDidMount() {
-    window.location.href = '/auth';
-  }
+  componentDidMount() {}
 
   render() {
     const { classes } = this.props;
 
     return (
       <Grid container className={classes.container}>
-        <Grid item xs={12} sm={12}>
-          <div className={classes.head}>
-            <h1>Redirecting ...</h1>
-          </div>
+        <Grid container justify="center" align="flex-start" className={classes.containerGrid}>
+          <Grid item md={2} sm={3} xs={12}>
+            <FormControl fullWidth className={classes.margin}>
+              <InputLabel htmlFor="adornment-amount">Amount</InputLabel>
+              <Input
+                id="adornment-amount"
+                startAdornment={
+                  <InputAdornment position="start">
+                    <SearchIcon className={classes.icon} />
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+          </Grid>
         </Grid>
       </Grid>
     );

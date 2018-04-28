@@ -6,6 +6,7 @@
     "@devexpress/dx-react-core": "^1.0.0-alpha.14",
     "@devexpress/dx-react-grid": "^1.0.0-alpha.14",
     "@devexpress/dx-react-grid-material-ui": "^1.0.0-alpha.14",
+    "@material-ui/icons": "^1.0.0-beta.43",
     "algoliasearch": "^3.24.9",
     "assert": "^1.4.1",
     "babel-preset-react-app": "^3.1.0",
