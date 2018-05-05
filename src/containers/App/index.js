@@ -16,6 +16,11 @@ import Web from '../Web';
 import VacindoSnackbar from '../../components/VacindoSnackbar';
 
 import { checkAuthentication } from '../Auth/actions';
+import { loadDestinations } from './actions';
+
+import dummy from '../../dummy.json';
+
+const { data } = dummy;
 
 const styleSheet = theme => ({
   root: {
@@ -32,9 +37,12 @@ class App extends Component {
   componentDidMount() {
     const { dispatch, history } = this.props;
     dispatch(checkAuthentication(history));
+    dispatch(loadDestinations(data));
   }
   render() {
-    const { classes, loading, isAuthenticated, success, error } = this.props;
+    const {
+      classes, loading, isAuthenticated, success, error,
+    } = this.props;
 
     return (
       <div className={classes.root}>
@@ -51,12 +59,14 @@ class App extends Component {
             exact
             path="/"
             render={() =>
-              isAuthenticated ? <Redirect to="/dashboard" /> : <Web {...this.props} />}
+              isAuthenticated ? <Redirect to="/dashboard" /> : <Web {...this.props} />
+            }
           />
           <Route
             path="/auth"
             render={() =>
-              isAuthenticated ? <Redirect to="/dashboard" /> : <Auth {...this.props} />}
+              isAuthenticated ? <Redirect to="/dashboard" /> : <Auth {...this.props} />
+            }
           />
           <Route
             path="/admin"

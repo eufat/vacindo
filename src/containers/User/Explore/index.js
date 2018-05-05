@@ -7,61 +7,56 @@ import Grid from 'material-ui/Grid';
 import Input, { InputLabel, InputAdornment } from 'material-ui/Input';
 import SearchIcon from '@material-ui/icons/Search';
 import partition from 'lodash/partition';
-import VacindoStepButtons from '../components/VacindoStepButtons';
+import { connect } from 'react-redux';
 
+import VacindoStepButtons from '../components/VacindoStepButtons';
 import VacindoCard from '../../../components/VacindoCard';
 import VacindoCardDetails from './components/VacindoCardDetails';
 
-const data = [
+const data1 = [
   {
-    image:
+    imageURL:
       'https://3.bp.blogspot.com/-rpbABXJi17I/VzZPdXEZSJI/AAAAAAAARzU/IDjTcfKszC04rMyxZeylUaVAzytssmeggCLcB/s1600/9%2BGedung%2BPerpustakaan%2BTerbaik%2BIndonesia%2B%2521%2B1.jpg',
     title: 'Universitas Indonesia',
-    city: 'Depok',
-    place: 'Universitas Indonesia',
-    priceFrom: 500000,
-    priceTo: 1500000,
+    preTitle: 'Depok',
+    preTitle: 'Universitas Indonesia',
+    price: 500000,
   },
   {
-    image: 'https://blog.misteraladin.com/wp-content/uploads/2015/09/paralayang-puncak-1.jpg',
+    imageURL: 'https://blog.misteraladin.com/wp-content/uploads/2015/09/paralayang-puncak-1.jpg',
     title: 'Puncak',
-    city: 'Bogor',
-    place: 'Puncak',
-    priceFrom: 1500000,
-    priceTo: 3000000,
+    preTitle: 'Bogor',
+    preTitle: 'Puncak',
+    price: 1500000,
   },
   {
-    image: 'https://s3-eu-west-1.amazonaws.com/virtusvita-images/Destination/xlarge/bali1.jpg',
+    imageURL: 'https://s3-eu-west-1.amazonaws.com/virtusvita-images/Destination/xlarge/bali1.jpg',
     title: 'White Sand Beach',
-    city: 'Bali',
-    place: 'White Sand Beach',
-    priceFrom: 300000,
-    priceTo: 500000,
+    preTitle: 'Bali',
+    preTitle: 'White Sand Beach',
+    price: 300000,
   },
   {
-    image: 'https://www.pegipegi.com/travel/wp-content/uploads/2016/08/lawang-sewu-horor.jpg',
+    imageURL: 'https://www.pegipegi.com/travel/wp-content/uploads/2016/08/lawang-sewu-horor.jpg',
     title: 'Lawang Sewu',
-    city: 'Semarang',
-    place: 'Lawang Sewu',
-    priceFrom: 1500000,
-    priceTo: 2000000,
+    preTitle: 'Semarang',
+    preTitle: 'Lawang Sewu',
+    price: 300000,
   },
   {
-    image:
+    imageURL:
       'https://www.pikniek.com/wp-content/uploads/2017/10/000024-00_wisata-kota-tua-jakarta_kota-tua_800x450_ccpdm-min.jpg?x58194',
     title: 'Kota Tua',
-    city: 'Jakarta',
-    place: 'Kota Tua',
-    priceFrom: 1500000,
-    priceTo: 300000,
+    preTitle: 'Jakarta',
+    preTitle: 'Kota Tua',
+    price: 1500000,
   },
   {
-    image: 'https://i.ytimg.com/vi/7ead5Ti7zNg/maxresdefault.jpg',
+    imageURL: 'https://i.ytimg.com/vi/7ead5Ti7zNg/maxresdefault.jpg',
     title: 'Komodo Island',
-    city: 'Komodo Island',
-    place: 'Komodo Island',
-    priceFrom: 300000,
-    priceTo: 500000,
+    preTitle: 'Komodo Island',
+    preTitle: 'Komodo Island',
+    price: 300000,
   },
 ];
 
@@ -87,24 +82,27 @@ const styleSheet = theme => ({
 });
 
 function Explore(props) {
+  const data = props.destinations;
+
   const partitionedData = partition(data, n => n % 4);
 
   const ExperienceRow = d =>
     d.map((item, i) => (
       <Grid item md={3} sm={3} xs={3}>
         <VacindoCard
-          cardImage={item.image}
+          cardImage={item.imageURL}
           cardTitle={item.title}
-          miniHeadline={item.city}
-          mainHeadline={item.place}
-          priceRange={`${item.priceFrom}-${item.priceTo}`}
+          miniHeadline={item.preTitle}
+          mainHeadline={item.title}
+          price={item.price}
         >
           <VacindoCardDetails
-            cardImage={item.image}
+            cardImage={item.imageURL}
             cardTitle={item.title}
-            miniHeadline={item.city}
-            mainHeadline={item.place}
-            priceRange={`${item.priceFrom}-${item.priceTo}`}
+            miniHeadline={item.preTitle}
+            mainHeadline={item.title}
+            description={item.description}
+            priceRange={item.price}
           >
             View Destination
           </VacindoCardDetails>
@@ -128,7 +126,7 @@ function Explore(props) {
           <Grid item md={6} sm={6} xs={12}>
             <FormControl fullWidth className={props.classes.headSearch}>
               <Input
-                placeholder="Search destination"
+                preTitleholder="Search destination"
                 id="adornment-amount"
                 startAdornment={
                   <InputAdornment position="start">
@@ -148,6 +146,13 @@ function Explore(props) {
 
 Explore.propTypes = {
   classes: PropTypes.object.isRequired,
+  destinations: PropTypes.array.isRequired,
 };
 
-export default withStyles(styleSheet)(Explore);
+function mapStateToProps({ app }) {
+  return {
+    destinations: app.destinations,
+  };
+}
+
+export default withStyles(styleSheet)(connect(mapStateToProps)(Explore));

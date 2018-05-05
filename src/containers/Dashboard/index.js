@@ -77,7 +77,11 @@ class Dashboard extends Component {
     return (
       <div>
         <VacindoAppbar {...this.state} handleDrawerOpen={this.handleDrawerOpen} />
-        <VacindoSidebar {...this.props} {...this.state} handleDrawerClose={this.handleDrawerClose} />
+        <VacindoSidebar
+          {...this.props}
+          {...this.state}
+          handleDrawerClose={this.handleDrawerClose}
+        />
         <main className={classNames(classes.content, this.state.open && classes.contentShift)}>
           {this.props.children}
         </main>

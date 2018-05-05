@@ -13,6 +13,10 @@ import TextField from 'material-ui/TextField';
 import Card, { CardActions, CardContent, CardMedia } from 'material-ui/Card';
 import Slide from 'material-ui/transitions/Slide';
 import { DatePicker } from 'material-ui-pickers';
+import Input, { InputLabel } from 'material-ui/Input';
+import { FormControl, FormHelperText } from 'material-ui/Form';
+import { MenuItem } from 'material-ui/Menu';
+import Select from 'material-ui/Select';
 
 function Transition(props) {
   return <Slide direction="up" {...props} />;
@@ -45,11 +49,20 @@ const styleSheet = theme => ({
     marginRight: theme.spacing.unit,
     width: 200,
   },
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  formControl: {
+    margin: theme.spacing.unit,
+    minWidth: 120,
+  },
 });
 
 class VacindoCardDetails extends Component {
   state = {
     open: false,
+    person: '',
     selectedDate: new Date(),
   };
 
@@ -63,6 +76,10 @@ class VacindoCardDetails extends Component {
 
   handleDateChange = (date) => {
     this.setState({ selectedDate: date });
+  };
+
+  handleChange = (event) => {
+    this.setState({ ...this.state, person: event.target.value });
   };
 
   render() {
@@ -94,32 +111,57 @@ class VacindoCardDetails extends Component {
               {this.props.mainHeadline}
             </Typography>
             <DialogContentText id="alert-dialog-slide-description">
-              <Typography gutterBottom>
-                Let Google help apps determine location. This means sending anonymous location data
-                to Google, even when no apps are running.
-              </Typography>
+              <Typography gutterBottom>{this.props.description}</Typography>
             </DialogContentText>
             <Card className={classes.card}>
               <CardMedia
                 className={classes.media}
-                image="/static/images/cards/contemplative-reptile.jpg"
-                title="Contemplative Reptile"
+                image={this.props.cardImage}
+                title={this.props.cardTitle}
               />
               <CardContent>
-                <Typography gutterBottom variant="headline" component="h2">
+                <Typography gutterBottom variant="title">
                   {this.props.priceRange}
                 </Typography>
-                <form className={classes.container} noValidate>
-                  <TextField
-                    id="date"
-                    label="Birthday"
-                    type="date"
-                    defaultValue={currentFormattedDate}
-                    className={classes.textField}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
+                <form
+                  className={classes.container}
+                  noValidate
+                  className={classes.root}
+                  autoComplete="off"
+                >
+                  <FormControl className={classes.formControl}>
+                    <TextField
+                      id="date"
+                      label="Date"
+                      type="date"
+                      defaultValue={currentFormattedDate}
+                      className={classes.textField}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                  </FormControl>
+                  <FormControl className={classes.formControl}>
+                    <InputLabel htmlFor="person-select">Person</InputLabel>
+                    <Select
+                      label="Person"
+                      value={this.state.person}
+                      onChange={this.handleChange}
+                      inputProps={{
+                        name: 'person',
+                        id: 'person-select',
+                      }}
+                    >
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+                      <MenuItem value={1}>1</MenuItem>
+                      <MenuItem value={2}>2</MenuItem>
+                      <MenuItem value={3}>3</MenuItem>
+                      <MenuItem value={4}>4</MenuItem>
+                      <MenuItem value={5}>5</MenuItem>
+                    </Select>
+                  </FormControl>
                 </form>
               </CardContent>
             </Card>
