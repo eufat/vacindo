@@ -6,12 +6,11 @@ import { FormControl } from 'material-ui/Form';
 import Grid from 'material-ui/Grid';
 import Input, { InputLabel, InputAdornment } from 'material-ui/Input';
 import SearchIcon from '@material-ui/icons/Search';
+import partition from 'lodash/partition';
 import VacindoStepButtons from '../components/VacindoStepButtons';
-import VacindoDetailsDialog from './components/VacindoDetailsDialog';
-import { partition } from 'lodash';
-import Button from 'material-ui/Button';
 
 import VacindoCard from '../../../components/VacindoCard';
+import VacindoCardDetails from './components/VacindoCardDetails';
 
 const data = [
   {
@@ -88,11 +87,11 @@ const styleSheet = theme => ({
 });
 
 function Explore(props) {
-  const partitionedData = partition(data, n => n % 3);
+  const partitionedData = partition(data, n => n % 4);
 
   const ExperienceRow = d =>
     d.map((item, i) => (
-      <Grid item md={4} sm={4} xs={4}>
+      <Grid item md={3} sm={3} xs={3}>
         <VacindoCard
           cardImage={item.image}
           cardTitle={item.title}
@@ -100,7 +99,15 @@ function Explore(props) {
           mainHeadline={item.place}
           priceRange={`${item.priceFrom}-${item.priceTo}`}
         >
-          <Button>Test</Button>
+          <VacindoCardDetails
+            cardImage={item.image}
+            cardTitle={item.title}
+            miniHeadline={item.city}
+            mainHeadline={item.place}
+            priceRange={`${item.priceFrom}-${item.priceTo}`}
+          >
+            View Destination
+          </VacindoCardDetails>
         </VacindoCard>
       </Grid>
     ));
