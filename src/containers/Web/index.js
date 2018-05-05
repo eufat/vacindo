@@ -2,8 +2,14 @@ import React, { Component } from 'react';
 import Grid from 'material-ui/Grid';
 import VacindoCard from '../../components/VacindoCard';
 import {withStyles} from 'material-ui/styles';
+import SearchBar from 'material-ui-search-bar';
+import Typography from 'material-ui/Typography';
+import Footer from '../../components/Footer';
 
-
+// Buat AppBar
+import AppBar from 'material-ui/AppBar';
+import Toolbar from 'material-ui/Toolbar';
+import Button from 'material-ui/Button';
 
 const data = [
   {
@@ -150,6 +156,7 @@ const styles = theme => ({
 
 class Web extends Component {
   render() {
+    const {classes} = this.props;
     let Cards = [];
     data.forEach(item => {
       Cards.push(
@@ -208,18 +215,15 @@ class Web extends Component {
             Book vacation led by tour guides on your next trip
           </Typography>
 
-          {/* Cards */}
-          <Grid container spacing={24}>
-    
-    return (
-      <span>
-        <div className="jumbotron">
-        </div>
+
+
         <div style={{ padding: 20 }}>
           <Grid container spacing={16}>
             {Cards}
           </Grid>
         </div>
+        </div>
+        <Footer/>
       </span>
     );
   }
