@@ -1,49 +1,40 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import Grid from 'material-ui/Grid';
+import VacindoCard from '../../../components/VacindoCard';
 import { withStyles } from 'material-ui/styles';
-import Typography from 'material-ui/Typography';
 
-import VacindoStepButtons from '../components/VacindoStepButtons';
-
-const styleSheet = theme => ({
-  container: theme.mixins.gutters({
-    paddingTop: 32,
-    paddingBottom: 32,
-    marginTop: theme.spacing.unit * 3,
-  }),
-  icon: {
-    height: 64,
-    width: 64,
-    margin: theme.spacing.unit,
-  },
-  button: {
-    margin: theme.spacing.unit,
-    textDecoration: 'none',
-  },
-  input: {
-    display: 'none',
-  },
-  anchor: {
-    textDecoration: 'none',
-  },
-});
+const styles = theme => ({});
 
 function Booking(props) {
+  let bookings = [];
+  bookings = props.bookings;
+
+  const Cards = [];
+
+  if (bookings.length > 0) {
+    bookings.forEach((item) => {
+      Cards.push(<Grid item xs={12} sm={4}>
+        <VacindoCard data={item} />
+                 </Grid>);
+    });
+  }
+
   return (
-    <div>
-      <Typography type="title">Booking</Typography>
-      <div className={props.classes.container}>
-        <center>
-          <p>This is Booking</p>
-        </center>
+    <span>
+      <div style={{ padding: 20 }}>
+        <Grid container spacing={16}>
+          {Cards}
+        </Grid>
       </div>
-      <VacindoStepButtons beforeLink="/user/ticket" last />
-    </div>
+    </span>
   );
 }
 
-Booking.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
+function mapStateToProps({ user }) {
+  return {
+    bookings: user.bookings,
+  };
+}
 
-export default withStyles(styleSheet)(Booking);
+export default withStyles(styles)(connect(mapStateToProps)(Booking));

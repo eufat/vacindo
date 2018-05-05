@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Button from 'material-ui/Button';
 import Dialog, {
   DialogActions,
@@ -7,6 +8,7 @@ import Dialog, {
   DialogTitle,
 } from 'material-ui/Dialog';
 import { withStyles } from 'material-ui/styles';
+import { PropTypes } from 'prop-types';
 
 import Typography from 'material-ui/Typography';
 import TextField from 'material-ui/TextField';
@@ -17,6 +19,8 @@ import Input, { InputLabel } from 'material-ui/Input';
 import { FormControl, FormHelperText } from 'material-ui/Form';
 import { MenuItem } from 'material-ui/Menu';
 import Select from 'material-ui/Select';
+
+import { addBooking } from '../../../actions';
 
 function Transition(props) {
   return <Slide direction="up" {...props} />;
@@ -82,8 +86,16 @@ class VacindoCardDetails extends Component {
     this.setState({ ...this.state, person: event.target.value });
   };
 
+  handleBook = () => {
+    const { data, dispatch } = this.props;
+    const { person, selectedData } = this.state;
+    const dataToBook = { ...data, person, selectedData };
+
+    dispatch(addBooking(dataToBook));
+  };
+
   render() {
-    const { classes } = this.props;
+    const { classes, data } = this.props;
     const { selectedDate } = this.state;
 
     const now = new Date();
@@ -103,25 +115,21 @@ class VacindoCardDetails extends Component {
           keepMounted
         >
           <DialogContent>
-            <img src={this.props.cardImage} className={classes.image} />
+            <img src={data.imageURL} className={classes.image} />
             <Typography gutterBottom variant="subheading">
-              {this.props.miniHeadline}
+              {data.preTitle}
             </Typography>
             <Typography gutterBottom variant="title">
-              {this.props.mainHeadline}
+              {data.title}
             </Typography>
             <DialogContentText id="alert-dialog-slide-description">
-              <Typography gutterBottom>{this.props.description}</Typography>
+              <Typography gutterBottom>{data.description}</Typography>
             </DialogContentText>
             <Card className={classes.card}>
-              <CardMedia
-                className={classes.media}
-                image={this.props.cardImage}
-                title={this.props.cardTitle}
-              />
+              <CardMedia className={classes.media} image={data.imageURL} title={data.title} />
               <CardContent>
                 <Typography gutterBottom variant="title">
-                  {this.props.priceRange}
+                  {data.price}
                 </Typography>
                 <form
                   className={classes.container}
@@ -170,7 +178,7 @@ class VacindoCardDetails extends Component {
             <Button onClick={this.handleClose} color="primary">
               Cancel
             </Button>
-            <Button onClick={this.handleClose} color="primary" autoFocus>
+            <Button onClick={this.handleBook} color="primary" autoFocus>
               Book Destination
             </Button>
           </DialogActions>
@@ -180,4 +188,8 @@ class VacindoCardDetails extends Component {
   }
 }
 
-export default withStyles(styleSheet)(VacindoCardDetails);
+VacindoCardDetails.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+};
+
+export default withStyles(styleSheet)(connect()(VacindoCardDetails));

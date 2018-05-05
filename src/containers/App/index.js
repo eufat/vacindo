@@ -20,7 +20,8 @@ import { loadDestinations } from './actions';
 
 import dummy from '../../dummy.json';
 
-const { data } = dummy;
+let { data } = dummy;
+data = data.slice(0, 20);
 
 const styleSheet = theme => ({
   root: {

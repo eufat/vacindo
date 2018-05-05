@@ -2,6 +2,7 @@ import * as c from './constants';
 
 const initialState = {
   userData: {},
+  bookings: [],
 };
 
 export default function userReducer(state = initialState, action) {
@@ -10,6 +11,11 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         userData: action.userData,
+      };
+    case c.ADD_BOOKING:
+      return {
+        ...state,
+        bookings: [...state.bookings, action.booking],
       };
     default:
       return state;
