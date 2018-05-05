@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
+import AppBar from 'material-ui/AppBar';
+import Toolbar from 'material-ui/Toolbar';
 import Grid from 'material-ui/Grid';
 import VacindoCard from '../../components/VacindoCard';
 import {withStyles} from 'material-ui/styles';
+import SearchBar from 'material-ui-search-bar';
+import Typography from 'material-ui/Typography';
 
 
 
@@ -63,12 +67,21 @@ const data = [
 const styles = theme => ({
   jumbotron: {
     backgroundImage: 'url("/static/images/head.jpg")',
-    backgroundPosition: 'center center',
+    backgroundPosition: 'center',
     backgroundSize: 'cover',
     height: '100vh',
     margin: 0,
-    paddingTop: '20vw',
-    paddingBottom: '20vw',
+    paddingTop: '30vh'
+  },
+  titleJumbotronContainer: {
+    textAlign: 'center'
+  },
+  titleJumbotron: {
+    color: 'white',
+    fontSize: '40px'
+  },
+  searchBarContainer: {
+    padding: '0 20px'
   }
 });
 
@@ -90,13 +103,43 @@ class Web extends Component {
         </Grid>
       )
     });
+
+
+    const jumbotron = (
+      <div className={this.props.classes.jumbotron}>
+        <div className={this.props.classes.titleJumbotronContainer}>
+          <Typography className={this.props.classes.titleJumbotron} variant="display3" gutterBottom>
+            New way to vacate!
+          </Typography>
+        </div>
+        <div className={this.props.classes.searchBarContainer}>
+          <SearchBar
+            onChange={() => console.log('onChange')}
+            onRequestSearch={() => console.log('onRequestSearch')}
+            style={{
+              margin: '0 auto',
+              maxWidth: 800
+            }}
+          />
+        </div>
+      </div>
+    )
     
     return (
       <span>
-        <div className="jumbotron">
-        </div>
-        <div style={{ padding: 20 }}>
-          <Grid container spacing={16}>
+
+        {jumbotron}
+
+        {/* Content */}
+        <div style={{ padding: '20px 50px' }}>
+          <Typography variant="title">
+            Experience travelers love
+          </Typography>
+          <Typography variant="subheading" gutterBottom>
+            Book vacation led by tour guides on your next trip
+          </Typography>
+          {/* Cards */}
+          <Grid container spacing={24}>
             {Cards}
           </Grid>
         </div>
