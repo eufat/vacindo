@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import Grid from 'material-ui/Grid';
 import VacindoCard from '../../components/VacindoCard';
+import {withStyles} from 'material-ui/styles';
+
+
 
 const data = [
   {
@@ -58,7 +61,15 @@ const data = [
 
 
 const styles = theme => ({
-
+  jumbotron: {
+    backgroundImage: 'url("/static/images/head.jpg")',
+    backgroundPosition: 'center center',
+    backgroundSize: 'cover',
+    height: '100vh',
+    margin: 0,
+    paddingTop: '20vw',
+    paddingBottom: '20vw',
+  }
 });
 
 
@@ -96,4 +107,4 @@ class Web extends Component {
 
 
 
-export default Web;
+export default withStyles(styles)(Web);
