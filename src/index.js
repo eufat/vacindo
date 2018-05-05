@@ -8,6 +8,9 @@ import createMuiTheme from 'material-ui/styles/createMuiTheme';
 import { MuiThemeProvider } from 'material-ui/styles';
 import 'sanitize.css/sanitize.css';
 
+import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
+import DateFnsUtils from 'material-ui-pickers/utils/date-fns-utils';
+
 import store, { history } from './store';
 import registerServiceWorker from './registerServiceWorker';
 import firebaseConfig from './firebase.config';
@@ -23,7 +26,9 @@ render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
       <MuiThemeProvider theme={theme}>
-        <App />
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <App />
+        </MuiPickersUtilsProvider>
       </MuiThemeProvider>
     </ConnectedRouter>
   </Provider>,
