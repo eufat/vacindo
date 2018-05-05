@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
 import Grid from 'material-ui/Grid';
 import VacindoCard from '../../components/VacindoCard';
 import {withStyles} from 'material-ui/styles';
 import SearchBar from 'material-ui-search-bar';
 import Typography from 'material-ui/Typography';
+import Footer from '../../components/Footer';
+
+// Buat AppBar
+import AppBar from 'material-ui/AppBar';
+import Toolbar from 'material-ui/Toolbar';
+import Button from 'material-ui/Button';
 
 
 
@@ -65,6 +69,13 @@ const data = [
 
 
 const styles = theme => ({
+  appbar: {
+    backgroundColor: '#000',
+    opacity: 0.9
+  },
+  flex: {
+    flex: 1
+  },
   jumbotron: {
     backgroundImage: 'url("/static/images/head.jpg")',
     backgroundPosition: 'center',
@@ -89,6 +100,7 @@ const styles = theme => ({
 
 class Web extends Component {
   render() {
+    const {classes} = this.props;
     let Cards = [];
     data.forEach(item => {
       Cards.push(
@@ -104,6 +116,17 @@ class Web extends Component {
       )
     });
 
+    const appbar = (
+      <AppBar position="static" className={classes.appbar}>
+        <Toolbar>
+          <Typography variant="title" color="inherit" className={classes.flex}>
+            Vacindo
+          </Typography>
+          <Button color="inherit">Become a Tour Guide</Button>
+          <Button color="inherit">Login</Button>
+        </Toolbar>
+      </AppBar>
+    )
 
     const jumbotron = (
       <div className={this.props.classes.jumbotron}>
@@ -127,7 +150,7 @@ class Web extends Component {
     
     return (
       <span>
-
+        {appbar}
         {jumbotron}
 
         {/* Content */}
@@ -138,11 +161,14 @@ class Web extends Component {
           <Typography variant="subheading" gutterBottom>
             Book vacation led by tour guides on your next trip
           </Typography>
+
           {/* Cards */}
           <Grid container spacing={24}>
             {Cards}
           </Grid>
         </div>
+
+        <Footer/>
       </span>
     );
   }
