@@ -8,7 +8,6 @@ import Typography from 'material-ui/Typography';
 const styles = {
   card: {
     padding: 0,
-    maxWidth: 345,
     fontFamily: "'Enriqueta', arial, serif"
   },
   media: {

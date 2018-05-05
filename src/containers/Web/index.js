@@ -1,14 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { partition } from 'lodash';
-
-import { FormControl } from 'material-ui/Form';
-
 import Grid from 'material-ui/Grid';
-import { withStyles } from 'material-ui/styles';
-import SearchIcon from '@material-ui/icons/Search';
-import Input, { InputLabel, InputAdornment } from 'material-ui/Input';
 import VacindoCard from '../../components/VacindoCard';
 
 const data = [
@@ -61,55 +52,23 @@ const data = [
     place: 'Komodo Island',
     priceFrom: 3000000,
     priceTo: 5000000,
-  },
+  }
 ];
 
-const styleSheet = theme => ({
-  icon: {
-    margin: theme.spacing.unit,
-  },
-  headContainer: {
-    backgroundImage: 'url("/static/images/head.jpg")',
-    backgroundPosition: 'center center',
-    backgroundSize: 'cover',
-    height: '100vh',
-    margin: 0,
-    paddingTop: '20vw',
-    paddingBottom: '20vw',
-  },
-  filter: {
-    top: 0,
-    backgroundColor: 'black',
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    opacity: 0.5
-  },
-  experienceContainer: {
-    margin: '0 auto',
-  },
-  paper: {
-    padding: 20,
-    minHeight: 200,
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  },
-  headSearch: {
-    backgroundColor: 'white',
-  },
+
+
+const styles = theme => ({
+
 });
 
+
+
 class Web extends Component {
-  componentDidMount() {}
-
   render() {
-    const { classes } = this.props;
-
-    const partitionedData = partition(data, n => n % 3);
-
-    const ExperienceRow = d => 
-      d.map((item, i) => (
-        <Grid item md={4} sm={4} xs={4}>
+    let Cards = [];
+    data.forEach(item => {
+      Cards.push(
+        <Grid item xs={12} sm={4}>
           <VacindoCard
             cardImage={item.image}
             cardTitle={item.title}
@@ -118,49 +77,23 @@ class Web extends Component {
             priceRange={`Rp${(item.priceFrom).toLocaleString('id')} - Rp${(item.priceTo).toLocaleString('id')}`}
           />
         </Grid>
-      ));
-
-    const ExperienceContent = partitionedData.map((item, i) => (
-      <div>
-        <Grid container justify="center" align="flex-start">
-          {ExperienceRow(item)}
-        </Grid>
-      </div>
-    ));
-
+      )
+    });
+    
     return (
       <span>
-        {/*<div className={classes.headContainer}>
-                  <div className={classes.filter}></div>
-                  <Grid container justify="center" align="flex-start">
-                    <Grid item md={6} sm={6} xs={12}>
-                      <FormControl fullWidth className={classes.headSearch}>
-                        <Input
-                          placeholder="Search destination"
-                          id="adornment-amount"
-                          startAdornment={
-                            <InputAdornment position="start">
-                              <SearchIcon className={classes.icon} />
-                            </InputAdornment>
-                          }
-                        />
-                      </FormControl>
-                    </Grid>
-                  </Grid>
-                </div>*/}
-        <div>
-          <Grid className={classes.experienceContainer}>{ExperienceContent}</Grid>
+        <div className="jumbotron">
+        </div>
+        <div style={{ padding: 20 }}>
+          <Grid container spacing={16}>
+            {Cards}
+          </Grid>
         </div>
       </span>
     );
   }
 }
 
-Web.propTypes = {
-  classes: PropTypes.object.isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
-};
 
-export default withRouter(withStyles(styleSheet)(Web));
+
+export default Web;
