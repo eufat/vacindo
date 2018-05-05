@@ -2,14 +2,6 @@ import React, { Component } from 'react';
 import Grid from 'material-ui/Grid';
 import VacindoCard from '../../components/VacindoCard';
 import {withStyles} from 'material-ui/styles';
-import SearchBar from 'material-ui-search-bar';
-import Typography from 'material-ui/Typography';
-import Footer from '../../components/Footer';
-
-// Buat AppBar
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
-import Button from 'material-ui/Button';
 
 
 
@@ -69,30 +61,14 @@ const data = [
 
 
 const styles = theme => ({
-  appbar: {
-    backgroundColor: '#000',
-    opacity: 0.9
-  },
-  flex: {
-    flex: 1
-  },
   jumbotron: {
     backgroundImage: 'url("/static/images/head.jpg")',
-    backgroundPosition: 'center',
+    backgroundPosition: 'center center',
     backgroundSize: 'cover',
     height: '100vh',
     margin: 0,
-    paddingTop: '30vh'
-  },
-  titleJumbotronContainer: {
-    textAlign: 'center'
-  },
-  titleJumbotron: {
-    color: 'white',
-    fontSize: '40px'
-  },
-  searchBarContainer: {
-    padding: '0 20px'
+    paddingTop: '20vw',
+    paddingBottom: '20vw',
   }
 });
 
@@ -100,7 +76,6 @@ const styles = theme => ({
 
 class Web extends Component {
   render() {
-    const {classes} = this.props;
     let Cards = [];
     data.forEach(item => {
       Cards.push(
@@ -115,60 +90,16 @@ class Web extends Component {
         </Grid>
       )
     });
-
-    const appbar = (
-      <AppBar position="static" className={classes.appbar}>
-        <Toolbar>
-          <Typography variant="title" color="inherit" className={classes.flex}>
-            Vacindo
-          </Typography>
-          <Button color="inherit">Become a Tour Guide</Button>
-          <Button color="inherit">Login</Button>
-        </Toolbar>
-      </AppBar>
-    )
-
-    const jumbotron = (
-      <div className={this.props.classes.jumbotron}>
-        <div className={this.props.classes.titleJumbotronContainer}>
-          <Typography className={this.props.classes.titleJumbotron} variant="display3" gutterBottom>
-            New way to vacate!
-          </Typography>
-        </div>
-        <div className={this.props.classes.searchBarContainer}>
-          <SearchBar
-            onChange={() => console.log('onChange')}
-            onRequestSearch={() => console.log('onRequestSearch')}
-            style={{
-              margin: '0 auto',
-              maxWidth: 800
-            }}
-          />
-        </div>
-      </div>
-    )
     
     return (
       <span>
-        {appbar}
-        {jumbotron}
-
-        {/* Content */}
-        <div style={{ padding: '20px 50px' }}>
-          <Typography variant="title">
-            Experience travelers love
-          </Typography>
-          <Typography variant="subheading" gutterBottom>
-            Book vacation led by tour guides on your next trip
-          </Typography>
-
-          {/* Cards */}
-          <Grid container spacing={24}>
+        <div className="jumbotron">
+        </div>
+        <div style={{ padding: 20 }}>
+          <Grid container spacing={16}>
             {Cards}
           </Grid>
         </div>
-
-        <Footer/>
       </span>
     );
   }

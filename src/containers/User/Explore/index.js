@@ -13,53 +13,6 @@ import VacindoStepButtons from '../components/VacindoStepButtons';
 import VacindoCard from '../../../components/VacindoCard';
 import VacindoCardDetails from './components/VacindoCardDetails';
 
-const data1 = [
-  {
-    imageURL:
-      'https://3.bp.blogspot.com/-rpbABXJi17I/VzZPdXEZSJI/AAAAAAAARzU/IDjTcfKszC04rMyxZeylUaVAzytssmeggCLcB/s1600/9%2BGedung%2BPerpustakaan%2BTerbaik%2BIndonesia%2B%2521%2B1.jpg',
-    title: 'Universitas Indonesia',
-    preTitle: 'Depok',
-    preTitle: 'Universitas Indonesia',
-    price: 500000,
-  },
-  {
-    imageURL: 'https://blog.misteraladin.com/wp-content/uploads/2015/09/paralayang-puncak-1.jpg',
-    title: 'Puncak',
-    preTitle: 'Bogor',
-    preTitle: 'Puncak',
-    price: 1500000,
-  },
-  {
-    imageURL: 'https://s3-eu-west-1.amazonaws.com/virtusvita-images/Destination/xlarge/bali1.jpg',
-    title: 'White Sand Beach',
-    preTitle: 'Bali',
-    preTitle: 'White Sand Beach',
-    price: 300000,
-  },
-  {
-    imageURL: 'https://www.pegipegi.com/travel/wp-content/uploads/2016/08/lawang-sewu-horor.jpg',
-    title: 'Lawang Sewu',
-    preTitle: 'Semarang',
-    preTitle: 'Lawang Sewu',
-    price: 300000,
-  },
-  {
-    imageURL:
-      'https://www.pikniek.com/wp-content/uploads/2017/10/000024-00_wisata-kota-tua-jakarta_kota-tua_800x450_ccpdm-min.jpg?x58194',
-    title: 'Kota Tua',
-    preTitle: 'Jakarta',
-    preTitle: 'Kota Tua',
-    price: 1500000,
-  },
-  {
-    imageURL: 'https://i.ytimg.com/vi/7ead5Ti7zNg/maxresdefault.jpg',
-    title: 'Komodo Island',
-    preTitle: 'Komodo Island',
-    preTitle: 'Komodo Island',
-    price: 300000,
-  },
-];
-
 const styleSheet = theme => ({
   container: {
     paddingTop: '100px',
@@ -89,23 +42,8 @@ function Explore(props) {
   const ExperienceRow = d =>
     d.map((item, i) => (
       <Grid item md={3} sm={3} xs={3}>
-        <VacindoCard
-          cardImage={item.imageURL}
-          cardTitle={item.title}
-          miniHeadline={item.preTitle}
-          mainHeadline={item.title}
-          price={item.price}
-        >
-          <VacindoCardDetails
-            cardImage={item.imageURL}
-            cardTitle={item.title}
-            miniHeadline={item.preTitle}
-            mainHeadline={item.title}
-            description={item.description}
-            priceRange={item.price}
-          >
-            View Destination
-          </VacindoCardDetails>
+        <VacindoCard data={item}>
+          <VacindoCardDetails data={item}>View Destination</VacindoCardDetails>
         </VacindoCard>
       </Grid>
     ));
