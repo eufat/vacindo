@@ -28,13 +28,13 @@ const styleSheet = theme => ({
   },
 });
 
-function Profile(props) {
+function Booking(props) {
   return (
     <div>
-      <Typography type="title">Profile</Typography>
+      <Typography type="title">Booking</Typography>
       <div className={props.classes.container}>
         <center>
-          <p>This is Profile</p>
+          <p>This is Booking</p>
         </center>
       </div>
       <VacindoStepButtons beforeLink="/user/ticket" last />
@@ -42,8 +42,8 @@ function Profile(props) {
   );
 }
 
-Profile.propTypes = {
+Booking.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styleSheet)(Profile);
+export default withStyles(styleSheet)(Booking);

@@ -38,11 +38,7 @@ function VacindoCard(props) {
           </Typography>
           <Typography component="p">{props.priceRange}</Typography>
         </CardContent>
-        <CardActions>
-          <Button size="small" color="primary">
-            Explore
-          </Button>
-        </CardActions>
+        <CardActions>{props.children}</CardActions>
       </Card>
     </div>
   );
