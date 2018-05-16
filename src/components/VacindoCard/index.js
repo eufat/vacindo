@@ -37,7 +37,7 @@ function VacindoCard(props) {
           <Typography gutterBottom variant="headline" component="h2" className={classes.judul}>
             <b>{props.data.title}</b>
           </Typography>
-          <Typography component="p">{props.data.price}</Typography>
+          <Typography component="p">Rp{Number(props.data.price).toLocaleString('id-ID')}</Typography>
         </CardContent>
         <CardActions>{props.children}</CardActions>
       </Card>

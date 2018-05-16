@@ -123,11 +123,11 @@ const data = [
 
 const styles = theme => ({
   appbar: {
-    backgroundColor: '#000',
-    opacity: 0.5
+    
   },
   flex: {
-    flex: 1
+    flex: 1,
+    marginLeft: 10
   },
   jumbotron: {
     position: 'absolute',
@@ -161,9 +161,7 @@ class Web extends Component {
     data.forEach(item => {
       Cards.push(
         <Grid item xs={12} sm={4}>
-          <VacindoCard
-            data={item}
-          />
+          <VacindoCard data={item} />
         </Grid>
       )
     });
@@ -171,6 +169,9 @@ class Web extends Component {
     const appbar = (
       <AppBar position="static" className={classes.appbar}>
         <Toolbar>
+          <a href="">
+            <img src="/static/images/logo-small.png" width="30"></img>
+          </a>
           <Typography variant="title" color="inherit" className={classes.flex}>
             Vacindo
           </Typography>
