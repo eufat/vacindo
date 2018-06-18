@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import Drawer from '@material-ui/core/Drawer';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import Close from 'material-ui-icons/Close';
+import Close from '@material-ui/icons/Close';
 
 import { InstantSearch } from 'react-instantsearch/dom';
 

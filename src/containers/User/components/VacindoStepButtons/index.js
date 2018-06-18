@@ -4,8 +4,8 @@ import { withRouter } from 'react-router-dom';
 
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import NavigateNext from 'material-ui-icons/NavigateNext';
-import NavigateBefore from 'material-ui-icons/NavigateBefore';
+import NavigateNext from '@material-ui/icons/NavigateNext';
+import NavigateBefore from '@material-ui/icons/NavigateBefore';
 
 const styleSheet = theme => ({
   stepper: {
