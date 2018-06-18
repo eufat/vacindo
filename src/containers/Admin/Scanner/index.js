@@ -3,16 +3,16 @@ import mapKeys from 'lodash/mapKeys';
 import React, { Component } from 'react';
 import QrReader from 'react-qr-reader';
 
-import Button from 'material-ui/Button';
-import Typography from 'material-ui/Typography';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 import Dialog, {
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-} from 'material-ui/Dialog';
+} from '@material-ui/core/Dialog';
 
-import Slide from 'material-ui/transitions/Slide';
+import Slide from '@material-ui/core/Slide';
 import { retrieveParticipant, retrievePayment, attendParticipant } from '../actions';
 
 function Transition(props) {

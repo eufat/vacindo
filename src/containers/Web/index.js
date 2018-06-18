@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import Grid from 'material-ui/Grid';
+import Grid from '@material-ui/core/Grid';
 import VacindoCard from '../../components/VacindoCard';
-import {withStyles} from 'material-ui/styles';
+import {withStyles} from '@material-ui/core/styles';
 import SearchBar from 'material-ui-search-bar';
-import Typography from 'material-ui/Typography';
+import Typography from '@material-ui/core/Typography';
 import Footer from '../../components/Footer';
 
 // Buat AppBar
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
-import Button from 'material-ui/Button';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Button from '@material-ui/core/Button';
 
 const data = [
   {

@@ -10,9 +10,9 @@ import {
   PagingPanel,
 } from '@devexpress/dx-react-grid-material-ui';
 import { TableCell } from 'material-ui';
-import { withStyles } from 'material-ui/styles';
-import Button from 'material-ui/Button';
-import Drawer from 'material-ui/Drawer';
+import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import Drawer from '@material-ui/core/Drawer';
 
 
 import VacindoDialog from '../../../../../components/VacindoDialog';

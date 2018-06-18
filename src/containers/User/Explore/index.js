@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import Typography from 'material-ui/Typography';
-import { FormControl } from 'material-ui/Form';
-import Grid from 'material-ui/Grid';
-import Input, { InputLabel, InputAdornment } from 'material-ui/Input';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import FormControl from '@material-ui/core/FormControl';
+import Grid from '@material-ui/core/Grid';
+import Input, { InputLabel, InputAdornment } from '@material-ui/core/Input';
 import SearchIcon from '@material-ui/icons/Search';
 import partition from 'lodash/partition';
 import { connect } from 'react-redux';

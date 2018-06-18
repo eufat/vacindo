@@ -1,24 +1,23 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Button from 'material-ui/Button';
+import Button from '@material-ui/core/Button';
 import Dialog, {
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-} from 'material-ui/Dialog';
-import { withStyles } from 'material-ui/styles';
+} from '@material-ui/core/Dialog';
+import { withStyles } from '@material-ui/core/styles';
 import { PropTypes } from 'prop-types';
 
-import Typography from 'material-ui/Typography';
-import TextField from 'material-ui/TextField';
-import Card, { CardActions, CardContent, CardMedia } from 'material-ui/Card';
-import Slide from 'material-ui/transitions/Slide';
-import { DatePicker } from 'material-ui-pickers';
-import Input, { InputLabel } from 'material-ui/Input';
-import { FormControl, FormHelperText } from 'material-ui/Form';
-import { MenuItem } from 'material-ui/Menu';
-import Select from 'material-ui/Select';
+import Typography from '@material-ui/core/Typography';
+import TextField from '@material-ui/core/TextField';
+import Card, { CardActions, CardContent, CardMedia } from '@material-ui/core/Card';
+import Slide from '@material-ui/core/Slide';
+import Input, { InputLabel } from '@material-ui/core/Input';
+import FormControl from '@material-ui/core/FormControl';
+import { MenuItem } from '@material-ui/core/Menu';
+import Select from '@material-ui/core/Select';
 
 import { addBooking } from '../../../actions';
 
