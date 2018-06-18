@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
-import Table, { TableBody, TableCell, TableHead, TableRow } from '@material-ui/core/Table';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 
-import {
-  SearchBox,
-  Highlight,
-  Pagination,
-} from 'react-instantsearch/dom';
+import { SearchBox, Highlight, Pagination } from 'react-instantsearch/dom';
 
 import { connectHits } from 'react-instantsearch/connectors';
 import { getDate } from '../../../../../utils/numberHelper';

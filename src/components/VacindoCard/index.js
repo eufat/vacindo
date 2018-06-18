@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Card, { CardActions, CardContent, CardMedia } from '@material-ui/core/Card';
-import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardMedia from '@material-ui/core/CardMedia';
+import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 
 const styles = {
@@ -23,26 +25,28 @@ const styles = {
   },
 };
 
-function VacindoCard(props) {
-  const { classes, data } = props;
+class VacindoCard extends Component {
+  render() {
+    const { classes, data } = this.props;
 
-  return (
-    <div>
-      <Card className={classes.card}>
-        <CardMedia className={classes.media} image={props.data.imageURL} title={props.data.title} />
-        <CardContent>
-          <Typography gutterBottom variant="headline" component="h3" className={classes.kota}>
-            <b>{props.data.preTitle.toUpperCase()}</b>
-          </Typography>
-          <Typography gutterBottom variant="headline" component="h2" className={classes.judul}>
-            <b>{props.data.title}</b>
-          </Typography>
-          <Typography component="p">Rp{Number(props.data.price).toLocaleString('id-ID')}</Typography>
-        </CardContent>
-        <CardActions>{props.children}</CardActions>
-      </Card>
-    </div>
-  );
+    return (
+      <div>
+        <Card className={classes.card}>
+          <CardMedia className={classes.media} image={data.imageURL} title={data.title} />
+          <CardContent>
+            <Typography gutterBottom variant="headline" component="h3" className={classes.kota}>
+              <b>{data.preTitle.toUpperCase()}</b>
+            </Typography>
+            <Typography gutterBottom variant="headline" component="h2" className={classes.judul}>
+              <b>{data.title}</b>
+            </Typography>
+            <Typography component="p">Rp{Number(data.price).toLocaleString('id-ID')}</Typography>
+          </CardContent>
+          <CardActions>{this.props.children}</CardActions>
+        </Card>
+      </div>
+    );
+  }
 }
 
 VacindoCard.propTypes = {

@@ -1,20 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
-import Dialog, {
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from '@material-ui/core/Dialog';
+import Dialog, { DialogActions, DialogContent, DialogContentText } from '@material-ui/core/Dialog';
 import { withStyles } from '@material-ui/core/styles';
 import { PropTypes } from 'prop-types';
 
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import Card, { CardActions, CardContent, CardMedia } from '@material-ui/core/Card';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
 import Slide from '@material-ui/core/Slide';
-import Input, { InputLabel } from '@material-ui/core/Input';
+import { InputLabel } from '@material-ui/core/Input';
 import FormControl from '@material-ui/core/FormControl';
 import { MenuItem } from '@material-ui/core/Menu';
 import Select from '@material-ui/core/Select';
