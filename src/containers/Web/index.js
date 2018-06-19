@@ -5,6 +5,7 @@ import {withStyles} from '@material-ui/core/styles';
 import SearchBar from 'material-ui-search-bar';
 import Typography from '@material-ui/core/Typography';
 import Footer from '../../components/Footer';
+import { withRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 // Buat AppBar
 import AppBar from '@material-ui/core/AppBar';
@@ -122,9 +123,6 @@ const data = [
 
 
 const styles = theme => ({
-  appbar: {
-    
-  },
   flex: {
     flex: 1,
     marginLeft: 10
@@ -157,6 +155,8 @@ const styles = theme => ({
 class Web extends Component {
   render() {
     const {classes} = this.props;
+    const {history} = this.props;
+
     let Cards = [];
     data.forEach(item => {
       Cards.push(
@@ -176,8 +176,8 @@ class Web extends Component {
             Vacindo
           </Typography>
           <Button color="inherit">Become a Tour Guide</Button>
-          <Button color="inherit">Sign Up</Button>
-          <Button color="inherit">Login</Button>
+          <Button color="inherit" onClick={() => history.push('/auth')}>Sign Up</Button>
+          <Button color="inherit" onClick={() => history.push('/auth')}>Login</Button>
         </Toolbar>
       </AppBar>
     )
@@ -201,13 +201,11 @@ class Web extends Component {
         </div>
       </div>
     )
-    
+
     return (
       <span>
         {jumbotron}
         {appbar}
-        
-        {/* Content */}
         <div style={{ padding: '20px 50px', marginTop: '100vh' }}>
           <Typography variant="title">
             Experience travelers love
@@ -232,4 +230,4 @@ class Web extends Component {
 
 
 
-export default withStyles(styles)(Web);
+export default withStyles(styles)(withRouter(Web));
