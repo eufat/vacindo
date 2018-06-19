@@ -143,7 +143,9 @@ const styles = theme => ({
   },
   titleJumbotron: {
     color: 'white',
-    fontSize: '40px'
+    fontSize: '40px',
+    fontFamily: "'Enriqueta', arial, serif",
+    marginBottom: '1em',
   },
   searchBarContainer: {
     padding: '0 20px'

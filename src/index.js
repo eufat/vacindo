@@ -3,6 +3,7 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
 import firebase from 'firebase';
+import 'typeface-roboto';
 
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import { MuiThemeProvider } from '@material-ui/core/styles';

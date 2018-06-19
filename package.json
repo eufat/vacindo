@@ -47,6 +47,7 @@
     "shortid": "^2.2.8",
     "stackdriver-errors-js": "^0.4.0",
     "stacktrace-js": "^2.0.0",
+    "typeface-roboto": "0.0.54",
     "warning": "^4.0.1"
   },
   "scripts": {

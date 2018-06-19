@@ -28,6 +28,7 @@ const styleSheet = theme => ({
     }),
   },
   menuButton: {
+    color: 'white',
     marginLeft: 12,
     marginRight: 20,
   },
