@@ -5,6 +5,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
+import { withRouter, Route, Switch, Redirect } from 'react-router-dom';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { withStyles } from '@material-ui/core/styles';
 import { PropTypes } from 'prop-types';
@@ -87,11 +88,12 @@ class VacindoCardDetails extends Component {
   };
 
   handleBook = () => {
-    const { data, dispatch } = this.props;
+    const { data, dispatch, history } = this.props;
     const { person, selectedData } = this.state;
     const dataToBook = { ...data, person, selectedData };
 
     dispatch(addBooking(dataToBook));
+    history.push('/user/booking');
   };
 
   render() {
@@ -192,4 +194,4 @@ VacindoCardDetails.propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
 
-export default withStyles(styleSheet)(connect()(VacindoCardDetails));
+export default withStyles(styleSheet)(connect()(withRouter(VacindoCardDetails)));
