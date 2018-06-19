@@ -138,7 +138,7 @@ class Monitoring extends Component {
 
     return (
       <div>
-        <Typography type="title">Timeline</Typography>
+        <Typography variant="title">Timeline</Typography>
         <form autoComplete="off">
           <FormControl className={classes.formControl}>
             <InputLabel htmlFor="timeRange-simple">Time Range</InputLabel>
@@ -178,7 +178,7 @@ class Monitoring extends Component {
             </LineChart>
           </ResponsiveContainer>
         </Paper>
-        <Typography type="title">Statistics</Typography>
+        <Typography variant="title">Statistics</Typography>
         <Grid container spacing={24}>
           <Grid item xs={6} sm={3}>
             <Paper className={classes.paper}>

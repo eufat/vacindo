@@ -20,8 +20,10 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
+import dayjs from 'dayjs';
 
 import { addBooking } from '../../../actions';
+import { IDR } from '../../../../../utils/numberHelper';
 
 function Transition(props) {
   return <Slide direction="up" {...props} />;
@@ -62,13 +64,17 @@ const styleSheet = theme => ({
     margin: theme.spacing.unit,
     minWidth: 120,
   },
+  card: {
+    margin: theme.spacing.unit
+  }
 });
 
 class VacindoCardDetails extends Component {
   state = {
     open: false,
     person: '',
-    selectedDate: new Date(),
+    dateFrom: '',
+    dateUntil: '',
   };
 
   handleClickOpen = () => {
@@ -79,8 +85,9 @@ class VacindoCardDetails extends Component {
     this.setState({ open: false });
   };
 
-  handleDateChange = (date) => {
-    this.setState({ selectedDate: date });
+  handleDateChange = (event, key) => {
+    const date = dayjs(event.target.value);
+    this.setState({ [key]: date });
   };
 
   handleChange = (event) => {
@@ -89,8 +96,8 @@ class VacindoCardDetails extends Component {
 
   handleBook = () => {
     const { data, dispatch, history } = this.props;
-    const { person, selectedData } = this.state;
-    const dataToBook = { ...data, person, selectedData };
+    const { person, dateFrom, dateUntil } = this.state;
+    const dataToBook = { ...data, person, dateFrom, dateUntil };
 
     dispatch(addBooking(dataToBook));
     history.push('/user/booking');
@@ -100,8 +107,10 @@ class VacindoCardDetails extends Component {
     const { classes, data } = this.props;
     const { selectedDate } = this.state;
 
-    const now = new Date();
-    const currentFormattedDate = formatDate(now);
+    const today = dayjs();
+    const tomorrow = dayjs().add(1, 'day');
+    const todayFormattedDate = today.format('DD/MM/YYYY');
+    const tomorrowFormattedDate = tomorrow.format('DD/MM/YYYY');
 
     return (
       <div>
@@ -130,9 +139,6 @@ class VacindoCardDetails extends Component {
             <Card className={classes.card}>
               <CardMedia className={classes.media} image={data.imageURL} title={data.title} />
               <CardContent>
-                <Typography gutterBottom variant="title">
-                  {data.price}
-                </Typography>
                 <form
                   className={classes.container}
                   noValidate
@@ -142,9 +148,20 @@ class VacindoCardDetails extends Component {
                   <FormControl className={classes.formControl}>
                     <TextField
                       id="date"
-                      label="Date"
+                      label="From"
                       type="date"
-                      defaultValue={currentFormattedDate}
+                      onChange={event => this.handleDateChange(event, 'from')}
+                      defaultValue={todayFormattedDate}
+                      className={classes.textField}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                    <TextField
+                      id="date"
+                      label="Until"
+                      type="date"
+                      defaultValue={tomorrowFormattedDate}
                       className={classes.textField}
                       InputLabelProps={{
                         shrink: true,
@@ -173,6 +190,13 @@ class VacindoCardDetails extends Component {
                     </Select>
                   </FormControl>
                 </form>
+                  <br />
+                  <Typography gutterBottom variant="subheading">
+                    Estimated price
+                  </Typography>
+                  <Typography gutterBottom variant="headline">
+                    {IDR(data.price)}
+                  </Typography>
               </CardContent>
             </Card>
           </DialogContent>

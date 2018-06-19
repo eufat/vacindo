@@ -6,6 +6,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import { IDR } from '../../utils/numberHelper';
 
 const styles = {
   card: {
@@ -40,7 +41,7 @@ class VacindoCard extends Component {
             <Typography gutterBottom variant="headline" component="h2" className={classes.judul}>
               <b>{data.title}</b>
             </Typography>
-            <Typography component="p">Rp{Number(data.price).toLocaleString('id-ID')}</Typography>
+            <Typography component="p">{IDR(data.price)}</Typography>
           </CardContent>
           <CardActions>{this.props.children}</CardActions>
         </Card>

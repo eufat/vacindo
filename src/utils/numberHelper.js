@@ -1,3 +1,7 @@
+import currency from 'currency.js';
+
+export const IDR = value => `${currency(value, { precision: 3 })}`;
+
 export function numberWithDelimiter(n, delimiter) {
   if (n) return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, delimiter);
   return '';

@@ -40,26 +40,20 @@ function Explore(props) {
 
   const partitionedData = partition(data, n => n % 4);
 
-  const ExperienceRow = d =>
-    d.map((item, i) => (
-      <Grid item md={3} sm={3} xs={3}>
+  let Cards = [];
+    data.forEach(item => {
+      Cards.push(
+        <Grid item xs={12} sm={4}>
         <VacindoCard data={item}>
           <VacindoCardDetails data={item}>View Destination</VacindoCardDetails>
         </VacindoCard>
       </Grid>
-    ));
-
-  const ExperienceContent = partitionedData.map((item, i) => (
-    <div>
-      <Grid container justify="center" align="flex-start">
-        {ExperienceRow(item)}
-      </Grid>
-    </div>
-  ));
+      )
+    });
 
   return (
     <div>
-      <Typography type="title">Explore</Typography>
+      <Typography variant="title">Explore</Typography>
       <div className={props.classes.container}>
         <Grid container justify="center" align="flex-start">
           <Grid item md={6} sm={6} xs={12}>
@@ -77,7 +71,11 @@ function Explore(props) {
           </Grid>
         </Grid>
       </div>
-      <div className={props.classes.classes}>{ExperienceContent}</div>
+        <div style={{ padding: 20 }}>
+          <Grid container spacing={16}>
+            {Cards}
+          </Grid>
+        </div>
       <VacindoStepButtons beforeLink="/user/ticket" last />
     </div>
   );

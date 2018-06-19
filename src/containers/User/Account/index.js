@@ -31,7 +31,7 @@ const styleSheet = theme => ({
 function Account(props) {
   return (
     <div>
-      <Typography type="title">Account</Typography>
+      <Typography variant="title">Account</Typography>
       <div className={props.classes.container}>
         <center>
           <p>This is Account</p>

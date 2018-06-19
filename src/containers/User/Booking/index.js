@@ -4,9 +4,15 @@ import Grid from '@material-ui/core/Grid';
 import VacindoCard from '../../../components/VacindoCard';
 import { withStyles } from '@material-ui/core/styles';
 
-const styles = theme => ({});
+const styles = theme => ({
+  emptyBooking: {
+    textAlign: 'center',
+    padding: '200px 0',
+  },
+});
 
 function Booking(props) {
+  const { classes } = props;
   let bookings = [];
   bookings = props.bookings;
 
@@ -20,12 +26,18 @@ function Booking(props) {
     });
   }
 
+  const bookingIsEmpty = Cards.length === 0;
+
   return (
     <span>
       <div style={{ padding: 20 }}>
-        <Grid container spacing={16}>
-          {Cards}
-        </Grid>
+        {bookingIsEmpty ? (
+          <div className={classes.emptyBooking}>There are no bookings.</div>
+        ) : (
+          <Grid container spacing={16}>
+            {Cards}
+          </Grid>
+        )}
       </div>
     </span>
   );

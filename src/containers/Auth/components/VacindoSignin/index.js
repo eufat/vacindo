@@ -24,7 +24,7 @@ const styleSheet = theme => ({
 
 const VacindoSignin = props => (
   <div className={props.classes.formContainer}>
-    <Typography type="title">Sign in</Typography>
+    <Typography variant="title">Sign in</Typography>
     <TextField
       fullWidth
       margin="dense"

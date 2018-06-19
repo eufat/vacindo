@@ -48,7 +48,7 @@ const VacindoAppbar = props => (
       >
         <MenuIcon />
       </IconButton>
-      <Typography type="title" color="inherit" noWrap>
+      <Typography variant="title" color="inherit">
         Vacindo App
       </Typography>
     </Toolbar>

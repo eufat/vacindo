@@ -87,7 +87,7 @@ class Participants extends Component {
             <Button onClick={this.handleDialogOpen}>Delete User</Button>
           </div>
         </Drawer>
-        <Typography type="title">Participants</Typography>
+        <Typography variant="title">Participants</Typography>
         <br />
         <InstantSearch
           appId="5RPGT77LXQ"

@@ -8,7 +8,7 @@ const styleSheet = () => ({});
 function Results(props) {
   return (
     <div>
-      <Typography type="title">Results</Typography>
+      <Typography variant="title">Results</Typography>
     </div>
   );
 }
