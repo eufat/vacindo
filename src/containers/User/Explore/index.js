@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from '@material-ui/icons/Search';
+import CardActions from '@material-ui/core/CardActions';
 import partition from 'lodash/partition';
 import { connect } from 'react-redux';
 
@@ -38,18 +39,18 @@ const styleSheet = theme => ({
 function Explore(props) {
   const data = props.destinations;
 
-  const partitionedData = partition(data, n => n % 4);
-
   let Cards = [];
-    data.forEach(item => {
-      Cards.push(
-        <Grid item xs={12} sm={4}>
+  data.forEach((item) => {
+    Cards.push(
+      <Grid item xs={12} sm={6}>
         <VacindoCard data={item}>
-          <VacindoCardDetails data={item}>View Destination</VacindoCardDetails>
+          <CardActions>
+            <VacindoCardDetails data={item}>View Destination</VacindoCardDetails>
+          </CardActions>
         </VacindoCard>
       </Grid>
-      )
-    });
+    )
+  });
 
   return (
     <div>

@@ -5,8 +5,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import { withRouter, Route, Switch, Redirect } from 'react-router-dom';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import { PropTypes } from 'prop-types';
 
@@ -86,7 +85,7 @@ class VacindoCardDetails extends Component {
   };
 
   handleDateChange = (event, key) => {
-    const date = dayjs(event.target.value);
+    const date = dayjs(event.target.value).toDate();
     this.setState({ ...this.state, [key]: date });
   };
 

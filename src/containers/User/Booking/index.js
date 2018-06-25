@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import VacindoCard from '../../../components/VacindoCard';
 import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import dayjs from 'dayjs';
 
 const styles = theme => ({
   emptyBooking: {
@@ -12,25 +14,27 @@ const styles = theme => ({
 });
 
 function Booking(props) {
+  let bookings = [...props.bookings];
   const { classes } = props;
-  let bookings = [];
-  bookings = props.bookings;
 
-  const Cards = [];
+  const DestinationCards = [];
 
   if (bookings.length > 0) {
     bookings.forEach((item) => {
-      console.log('item', item);
-
-      Cards.push(
+      DestinationCards.push(
         <Grid item xs={12} sm={6}>
           <VacindoCard data={item}>
+            <Typography variant="subheading">From {dayjs(item.dateFrom).format('dddd, D MMMM YYYY')}</Typography>
+            <br />
+            <Typography variant="subheading">Until {dayjs(item.dateUntil).format('dddd, D MMMM YYYY')}</Typography>
+            <br />
+            <Typography variant="subheading">For {item.person} person</Typography>
           </VacindoCard>
         </Grid>);
     });
   }
 
-  const bookingIsEmpty = Cards.length === 0;
+  const bookingIsEmpty = DestinationCards.length === 0;
 
   return (
     <span>
@@ -39,7 +43,7 @@ function Booking(props) {
           <div className={classes.emptyBooking}>There are no bookings.</div>
         ) : (
           <Grid container spacing={16}>
-            {Cards}
+            {DestinationCards}
           </Grid>
         )}
       </div>
