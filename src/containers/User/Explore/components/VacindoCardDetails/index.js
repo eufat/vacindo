@@ -87,7 +87,7 @@ class VacindoCardDetails extends Component {
 
   handleDateChange = (event, key) => {
     const date = dayjs(event.target.value);
-    this.setState({ [key]: date });
+    this.setState({ ...this.state, [key]: date });
   };
 
   handleChange = (event) => {
@@ -142,7 +142,6 @@ class VacindoCardDetails extends Component {
                 <form
                   className={classes.container}
                   noValidate
-                  className={classes.root}
                   autoComplete="off"
                 >
                   <FormControl className={classes.formControl}>
@@ -150,7 +149,7 @@ class VacindoCardDetails extends Component {
                       id="date"
                       label="From"
                       type="date"
-                      onChange={event => this.handleDateChange(event, 'from')}
+                      onChange={event => this.handleDateChange(event, 'dateFrom')}
                       defaultValue={todayFormattedDate}
                       className={classes.textField}
                       InputLabelProps={{
@@ -161,6 +160,7 @@ class VacindoCardDetails extends Component {
                       id="date"
                       label="Until"
                       type="date"
+                      onChange={event => this.handleDateChange(event, 'dateUntil')}
                       defaultValue={tomorrowFormattedDate}
                       className={classes.textField}
                       InputLabelProps={{

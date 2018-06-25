@@ -20,9 +20,13 @@ function Booking(props) {
 
   if (bookings.length > 0) {
     bookings.forEach((item) => {
-      Cards.push(<Grid item xs={12} sm={4}>
-        <VacindoCard data={item} />
-                 </Grid>);
+      console.log('item', item);
+
+      Cards.push(
+        <Grid item xs={12} sm={6}>
+          <VacindoCard data={item}>
+          </VacindoCard>
+        </Grid>);
     });
   }
 
