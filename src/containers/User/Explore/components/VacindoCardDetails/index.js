@@ -64,8 +64,11 @@ const styleSheet = theme => ({
     minWidth: 120,
   },
   card: {
-    margin: theme.spacing.unit
-  }
+    margin: theme.spacing.unit,
+  },
+  destinationContent: {
+    padding: '20px 20px 40px',
+  },
 });
 
 class VacindoCardDetails extends Component {
@@ -126,15 +129,17 @@ class VacindoCardDetails extends Component {
         >
           <DialogContent>
             <img src={data.imageURL} className={classes.image} />
-            <Typography gutterBottom variant="subheading">
-              {data.preTitle}
-            </Typography>
-            <Typography gutterBottom variant="title">
-              {data.title}
-            </Typography>
-            <DialogContentText id="alert-dialog-slide-description">
-              <Typography gutterBottom>{data.description}</Typography>
-            </DialogContentText>
+            <div className={classes.destinationContent}>
+              <Typography gutterBottom variant="subheading">
+                {data.preTitle}
+              </Typography>
+              <Typography gutterBottom variant="title">
+                {data.title}
+              </Typography>
+              <DialogContentText id="alert-dialog-slide-description">
+                <Typography gutterBottom>{data.description}</Typography>
+              </DialogContentText>
+            </div>
             <Card className={classes.card}>
               <CardMedia className={classes.media} image={data.imageURL} title={data.title} />
               <CardContent>
@@ -194,7 +199,7 @@ class VacindoCardDetails extends Component {
                     Estimated price
                   </Typography>
                   <Typography gutterBottom variant="headline">
-                    {IDR(data.price)}
+                    {IDR(data.price)}/day/person
                   </Typography>
               </CardContent>
             </Card>

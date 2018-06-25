@@ -40,7 +40,7 @@ class VacindoCard extends Component {
             <Typography gutterBottom variant="headline" component="h2" className={classes.judul}>
               <b>{data.title}</b>
             </Typography>
-            <Typography component="p">{IDR(data.price)}</Typography>
+            <Typography component="p">{IDR(data.price)}/day/person</Typography>
           </CardContent>
           {this.props.children}
         </Card>

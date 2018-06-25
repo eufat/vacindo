@@ -8,7 +8,6 @@ import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from '@material-ui/icons/Search';
 import CardActions from '@material-ui/core/CardActions';
-import partition from 'lodash/partition';
 import { connect } from 'react-redux';
 
 import VacindoStepButtons from '../components/VacindoStepButtons';
@@ -77,7 +76,7 @@ function Explore(props) {
             {Cards}
           </Grid>
         </div>
-      <VacindoStepButtons beforeLink="/user/ticket" last />
+      <VacindoStepButtons first nextLink="/user/explore" />
     </div>
   );
 }
