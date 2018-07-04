@@ -48,7 +48,7 @@ const styleSheet = theme => ({
   },
   container: {
     display: 'flex',
-    flexWrap: 'wrap',
+    direction: 'row',
   },
   textField: {
     marginLeft: theme.spacing.unit,
@@ -75,8 +75,8 @@ class VacindoCardDetails extends Component {
   state = {
     open: false,
     person: '',
-    dateFrom: '',
-    dateUntil: '',
+    dateFrom: dayjs().toDate(),
+    dateUntil: dayjs().add(1, 'day'),
   };
 
   handleClickOpen = () => {
@@ -111,8 +111,8 @@ class VacindoCardDetails extends Component {
 
     const today = dayjs();
     const tomorrow = dayjs().add(1, 'day');
-    const todayFormattedDate = today.format('DD/MM/YYYY');
-    const tomorrowFormattedDate = tomorrow.format('DD/MM/YYYY');
+    const todayFormattedDate = today.format('YYYY-MM-DD');
+    const tomorrowFormattedDate = tomorrow.format('YYYY-MM-DD');
 
     return (
       <div>
@@ -172,6 +172,8 @@ class VacindoCardDetails extends Component {
                       }}
                     />
                   </FormControl>
+                </form>
+                <form>
                   <FormControl className={classes.formControl}>
                     <InputLabel htmlFor="person-select">Person</InputLabel>
                     <Select
@@ -193,14 +195,7 @@ class VacindoCardDetails extends Component {
                       <MenuItem value={5}>5</MenuItem>
                     </Select>
                   </FormControl>
-                </form>
-                  <br />
-                  <Typography gutterBottom variant="subheading">
-                    Estimated price
-                  </Typography>
-                  <Typography gutterBottom variant="headline">
-                    {IDR(data.price)}/day/person
-                  </Typography>
+                  </form>
               </CardContent>
             </Card>
           </DialogContent>
