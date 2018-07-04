@@ -1,22 +1,21 @@
-import React, { Component } from 'react';
-import Button from '@material-ui/core/Button';
-import CardActions from '@material-ui/core/CardActions';
+import React from 'react';
 import { connect } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
-import VacindoCard from '../../../components/VacindoCard';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import dayjs from 'dayjs';
+
+import VacindoCard from '../../../components/VacindoCard';
 import { IDR } from '../../../utils/numberHelper';
 import VacindoStepButtons from '../components/VacindoStepButtons';
 
-const styles = theme => ({
+const styles = () => ({
   emptyBooking: {
     textAlign: 'center',
     padding: '200px 0',
   },
   additionalInfo: {
-    padding: '20px'
+    padding: '20px',
   }
 });
 
@@ -40,17 +39,12 @@ function Booking(props) {
             </div>
             <div className={classes.additionalInfo}>
               <Typography gutterBottom variant="subheading">
-                  Estimated Total Price
-                </Typography>
-                <Typography gutterBottom variant="headline">
-                  {IDR(item.price * daySpent * item.person)}
-                </Typography>
+                Estimated Total Price
+              </Typography>
+              <Typography gutterBottom variant="headline">
+                {IDR(item.price * daySpent * item.person)}
+              </Typography>
             </div>
-            <CardActions>
-              <Button color="primary" autoFocus>
-                Pay Destination
-              </Button>
-            </CardActions>
           </VacindoCard>
         </Grid>);
     });
@@ -70,7 +64,7 @@ function Booking(props) {
           </Grid>
         )}
       </div>
-      <VacindoStepButtons first nextLink="/user/payment"/>
+      <VacindoStepButtons beforeLink="/user/explore" nextLink="/user/payment"/>
     </div>
   );
 }
