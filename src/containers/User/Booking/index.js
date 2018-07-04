@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import dayjs from 'dayjs';
 
@@ -20,13 +20,12 @@ const styles = () => ({
 });
 
 function Booking(props) {
-  let bookings = [...props.bookings];
-  const { classes } = props;
-
+  const { bookings, classes } = props;
+  const bookingsData = [...bookings];
   const DestinationCards = [];
 
-  if (bookings.length > 0) {
-    bookings.forEach((item) => {
+  if (bookingsData.length > 0) {
+    bookingsData.forEach((item) => {
       const daySpent = dayjs(item.dateUntil).diff(dayjs(item.dateFrom), 'days');
 
       DestinationCards.push(
