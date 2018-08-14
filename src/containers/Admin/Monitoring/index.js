@@ -183,26 +183,26 @@ class Monitoring extends Component {
           <Grid item xs={6} sm={3}>
             <Paper className={classes.paper}>
               <h2 className={classes.number}>{get(appData, 'usersCount', 0)}</h2>
-              <p>Total Participants</p>
+              <p>Total Tourists</p>
             </Paper>
           </Grid>
           <Grid item xs={6} sm={3}>
             <Paper className={classes.paper}>
               <h2 className={classes.number}>{get(appData, 'deletedUserCount', 0)}</h2>
-              <p>Deleted Participants</p>
+              <p>Deleted Tourists</p>
             </Paper>
           </Grid>
           <Grid item xs={6} sm={3}>
             <Paper className={classes.paper}>
               <h2 className={classes.number}>{get(appData, 'examsCount.ipa', 0)}</h2>
 
-              <p>IPA Participants</p>
+              <p>IPA Tourists</p>
             </Paper>
           </Grid>
           <Grid item xs={6} sm={3}>
             <Paper className={classes.paper}>
               <h2 className={classes.number}>{get(appData, 'examsCount.ips', 0)}</h2>
-              <p>IPS Participants</p>
+              <p>IPS Tourists</p>
             </Paper>
           </Grid>
         </Grid>

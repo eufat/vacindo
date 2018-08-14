@@ -2,16 +2,16 @@ import * as c from './constants';
 
 const initialState = {
   appData: {},
-  participants: {},
+  tourists: {},
   payments: {},
 };
 
 export default function dashboardReducer(state = initialState, action) {
   switch (action.type) {
-    case c.FETCH_PARTICIPANTS:
+    case c.FETCH_TOURISTS:
       return {
         ...state,
-        participants: action.participants,
+        tourists: action.tourists,
       };
     case c.FETCH_PAYMENTS:
       return {

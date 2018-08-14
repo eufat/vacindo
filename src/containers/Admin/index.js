@@ -4,7 +4,7 @@ import { withRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 import Dashboard from '../Dashboard';
 import Monitoring from './Monitoring';
-import Participants from './Participants';
+import Tourists from './Tourists';
 
 import { retrieveAppData } from './actions';
 
@@ -23,20 +23,12 @@ class Admin extends Component {
         text: 'Monitoring',
       },
       {
-        onClick: () => history.push('/admin/participants'),
-        text: 'Participants',
+        onClick: () => history.push('/admin/tourists'),
+        text: 'Tourists',
       },
       {
         onClick: () => history.push('/admin/payments'),
         text: 'Payments',
-      },
-      {
-        onClick: () => history.push('/admin/scanner'),
-        text: 'Scanner',
-      },
-      {
-        onClick: () => history.push('/admin/results'),
-        text: 'Results',
       },
       {
         onClick: () => history.push('/admin/settings'),
@@ -49,7 +41,7 @@ class Admin extends Component {
         <Switch>
           <Route exact path="/admin/" render={() => <Redirect to="/admin/monitoring" />} />
           <Route exact path="/admin/monitoring" component={Monitoring} />
-          <Route exact path="/admin/participants" component={Participants} />
+          <Route exact path="/admin/tourists" component={Tourists} />
         </Switch>
       </Dashboard>
     );

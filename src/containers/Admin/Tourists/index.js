@@ -8,7 +8,7 @@ import Close from '@material-ui/icons/Close';
 
 import { InstantSearch } from 'react-instantsearch/dom';
 
-import { deleteParticipant } from '../actions';
+import { deleteTourist } from '../actions';
 import VacindoDialog from '../../../components/VacindoDialog';
 import VacindoResult from './components/VacindoResult';
 
@@ -35,7 +35,7 @@ const styles = theme => ({
   },
 });
 
-class Participants extends Component {
+class Tourists extends Component {
   state = {
     dialogOpen: false,
     editOpen: false,
@@ -44,7 +44,7 @@ class Participants extends Component {
 
   onDialogOk = () => {
     const { objectID } = this.state.editData;
-    deleteParticipant(objectID);
+    deleteTourist(objectID);
     this.setState({ ...this.state, dialogOpen: false, editOpen: false });
   };
 
@@ -81,13 +81,13 @@ class Participants extends Component {
           onRequestClose={() => this.toggleEditDrawer(false)}
         >
           <div className={this.props.classes.editData}>
-            <IconButton dense onClick={() => this.toggleEditDrawer(false)}>
+            <IconButton dense="true" onClick={() => this.toggleEditDrawer(false)}>
               <Close className={this.props.classes.leftIcon} />
             </IconButton>
             <Button onClick={this.handleDialogOpen}>Delete User</Button>
           </div>
         </Drawer>
-        <Typography variant="title">Participants</Typography>
+        <Typography variant="title">Tourists</Typography>
         <br />
         <InstantSearch
           appId="5RPGT77LXQ"
@@ -101,4 +101,4 @@ class Participants extends Component {
   }
 }
 
-export default withStyles(styles)(Participants);
+export default withStyles(styles)(Tourists);

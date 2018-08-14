@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Grid from '@material-ui/core/Grid';
 import VacindoCard from '../../components/VacindoCard';
 import {withStyles} from '@material-ui/core/styles';
-import SearchBar from 'material-ui-search-bar';
+import SearchBar from '@material-ui/core-search-bar';
 import Typography from '@material-ui/core/Typography';
 import Footer from '../../components/Footer';
 
@@ -151,12 +151,12 @@ class Web extends Component {
         </div>
       </div>
     )
-    
+
     return (
       <span>
         {jumbotron}
         {appbar}
-        
+
         {/* Content */}
         <div style={{ padding: '20px 50px', marginTop: '100vh' }}>
           <Typography variant="title">

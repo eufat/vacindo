@@ -1,17 +1,21 @@
 import omit from 'lodash/omit';
+import some from 'lodash/some';
 
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { withStyles } from '@material-ui/core/styles';
+import update from 'immutability-helper';
 import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 
+import VacindoSignup from './components/VacindoSignup';
 import VacindoSignin from './components/VacindoSignin';
-import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
-import * as firebase from 'firebase';
+import VacindoReset from './components/VacindoReset';
 
-import { submitAuthentication, createAuthentication } from './actions';
+import { submitAuthentication, createAuthentication, resetAuthentication } from './actions';
+import { errorMessage } from '../App/actions';
 
 function smoothScroll() {
   const currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
@@ -21,13 +25,18 @@ function smoothScroll() {
   }
 }
 
+function validateEmail(email) {
+  const re = /^(([^<>()\]\\.,;:\s@"]+(\.[^<>()\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(email);
+}
+
 const styleSheet = theme => ({
   paper: {
     paddingTop: 20,
   },
   background: {
     minHeight: '100vh',
-    marginTop: '10vh',
+    marginTop: '0',
   },
   containerGrid: {
     width: '100% !important',
@@ -37,6 +46,9 @@ const styleSheet = theme => ({
   changeQuestion: {
     textAlign: 'center',
   },
+  logo: {
+    margin: '1em'
+  }
 });
 
 class Auth extends Component {
@@ -50,27 +62,32 @@ class Auth extends Component {
         email: '',
         password: '',
       },
+      signUp: {
+        email: '',
+        emailConfirmation: '',
+        password: '',
+        firstName: '',
+        lastName: '',
+        phoneNumber: '',
+        school: '',
+        location: '',
+        examType: '',
+        referral: '',
+      },
       reset: {
         email: '',
       },
     },
   };
 
-  uiConfig = {
-    // Popup signin flow rather than redirect flow.
-    signInFlow: 'popup',
-    // Redirect to /signedIn after sign in is successful. Alternatively you can provide a callbacks.signInSuccess function.
-    signInSuccessUrl: '/user/',
-    // We will display Google and Facebook as auth providers.
-    signInOptions: [
-      firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-      firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-    ],
-  };
-
-  incrementClick = () => {
-    this.setState({ ...this.state, click: this.state.click + 1 });
-  };
+  componentWillMount() {
+    // const query = new URLSearchParams(window.location.search);
+    // // When the URL is /path?toSignUp=true set page to signUp
+    // const toSignUp = query.get('toSignUp');
+    // if (toSignUp !== null && toSignUp === 'true') {
+    //   this.changeToSignUpPage();
+    // }
+  }
 
   changeToSignInPage = () => {
     this.setState({ ...this.state, signInPage: true });
@@ -94,8 +111,84 @@ class Auth extends Component {
     }
   };
 
+  signUpIsValid = () => {
+    const { dispatch } = this.props;
+    const signUpForm = this.state.form.signUp;
+    const emailIsConfirmed = signUpForm.email === signUpForm.emailConfirmation;
+    const emailIsValid = validateEmail(signUpForm.email);
+
+    if (some(signUpForm, field => field === '')) {
+      dispatch(errorMessage('Signup form must be completed'));
+      return false;
+    }
+    if (!emailIsConfirmed) {
+      dispatch(errorMessage('Email confirmation wrong'));
+      return false;
+    }
+    if (!emailIsValid) {
+      dispatch(errorMessage('Email is not correct'));
+      return false;
+    }
+
+    return true;
+  };
+
+  changeSignInFields = (e, field) => {
+    const prevState = this.state.form;
+    const newState = update(prevState.signIn, {
+      $merge: { [field]: e.target.value },
+    });
+    this.setState({
+      ...this.state,
+      form: { ...prevState, signIn: newState },
+    });
+  };
+
   changeRememberSignIn = (event, checked) => {
     this.setState({ rememberSignIn: checked });
+  };
+
+  changeResetFields = (event) => {
+    const prevState = this.state.form;
+    const newState = { email: event.target.value };
+    this.setState({
+      ...this.state,
+      form: { ...prevState, reset: newState },
+    });
+  };
+
+  changeSignUpFields = (e, field) => {
+    const prevState = this.state.form;
+    const newState = update(prevState.signUp, {
+      $merge: { [field]: e.target.value },
+    });
+    this.setState({
+      ...this.state,
+      form: { ...prevState, signUp: newState },
+    });
+  };
+
+  changeSignUpSelect = name => (e) => {
+    const prevState = this.state.form;
+    const newState = update(prevState.signUp, {
+      $merge: { [name]: e.target.value },
+    });
+    this.setState({
+      ...this.state,
+      form: { ...prevState, signUp: newState },
+    });
+  };
+
+  handleRequestClose = () => {
+    this.setState({ ...this.state, open: false });
+  };
+
+  handleOpen = () => {
+    this.setState({ ...this.state, open: true });
+  };
+
+  handleOnReset = () => {
+    this.props.dispatch(resetAuthentication(this.state.form.reset.email));
   };
 
   render() {
@@ -104,21 +197,60 @@ class Auth extends Component {
     return (
       <div className={classes.background}>
         <Grid container justify="center" align="flex-start" className={classes.containerGrid}>
-          <Grid item md={2} sm={3} xs={12}>
-            <center>
-              <img src="/static/images/logo.png" alt="logo" width={100} />
+          <Grid item md={4} sm={6} xs={12}>
+            <center className={classes.logo}>
+              <img src="/static/images/logo.png" alt="logo" width={200} />
             </center>
             <form onSubmit={this.handleOnSubmitAuth}>
-              {/* <VacindoSignin
-                changeSignInFields={this.changeSignInFields}
-                changeRememberSignIn={this.changeRememberSignIn}
-                handleOnSubmitAuth={this.handleOnSubmitAuth}
-                rememberSignIn={this.state.rememberSignIn}
-              /> */}
-              <StyledFirebaseAuth uiConfig={this.uiConfig} firebaseAuth={firebase.auth()} />
+              {this.state.signInPage ? (
+                <VacindoSignin
+                  changeSignInFields={this.changeSignInFields}
+                  changeRememberSignIn={this.changeRememberSignIn}
+                  handleOnSubmitAuth={this.handleOnSubmitAuth}
+                  rememberSignIn={this.state.rememberSignIn}
+                  handleOpen={this.handleOpen}
+                />
+              ) : (
+                <div>
+                  <VacindoSignup
+                    changeSignUpFields={this.changeSignUpFields}
+                    changeSignUpSelect={this.changeSignUpSelect}
+                    handleOnSubmitAuth={this.handleOnSubmitAuth}
+                    signUp={this.state.form.signUp}
+                  />
+                </div>
+              )}
             </form>
+            <div className={classes.changeQuestion}>
+              {this.state.signInPage ? (
+                <div>
+                  <p>
+                    Doesn't have an account?
+                    <Button dense onClick={() => this.changeToSignUpPage()}>
+                      Sign Up
+                    </Button>
+                  </p>
+                </div>
+              ) : (
+                <div>
+                  <p>
+                    Already an account?
+                    <Button dense onClick={() => this.changeToSignInPage()}>
+                      Sign In
+                    </Button>
+                  </p>
+                </div>
+              )}
+            </div>
           </Grid>
         </Grid>
+        <VacindoReset
+          open={this.state.open}
+          changeResetFields={this.changeResetFields}
+          handleOpen={this.handleOpen}
+          handleOnReset={this.handleOnReset}
+          handleRequestClose={this.handleRequestClose}
+        />
       </div>
     );
   }

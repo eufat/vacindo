@@ -4,8 +4,8 @@ import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import FormControlLabel from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormControl';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 
 const styleSheet = theme => ({
@@ -24,7 +24,7 @@ const styleSheet = theme => ({
 
 const VacindoSignin = props => (
   <div className={props.classes.formContainer}>
-    <Typography variant="title">Sign in</Typography>
+    <Typography type="title">Sign in</Typography>
     <TextField
       fullWidth
       margin="dense"
@@ -52,14 +52,18 @@ const VacindoSignin = props => (
             checked={props.rememberSignIn}
             onChange={(e, val) => props.changeRememberSignIn(e, val)}
             value="rememberSignIn"
+            color="primary"
           />
         }
         label="Remember Me"
       />
+      <Button dense onClick={() => props.handleOpen()}>
+        Forget password?
+      </Button>
     </FormGroup>
     <div className={props.classes.buttonWrap}>
       <Button
-        raised
+        variant="contained"
         color="primary"
         className={props.classes.button}
         onClick={() => props.handleOnSubmitAuth()}

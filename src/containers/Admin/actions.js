@@ -12,11 +12,11 @@ export function setPayments(payments) {
   };
 }
 
-export function setParticipants(participants) {
+export function setTourists(tourists) {
   return (dispatch) => {
     dispatch({
-      type: c.FETCH_PARTICIPANTS,
-      participants,
+      type: c.FETCH_TOURISTS,
+      tourists,
     });
   };
 }
@@ -30,7 +30,7 @@ export function setAppData(appData) {
   };
 }
 
-export function attendParticipant(userId) {
+export function attendTourist(userId) {
   const now = new Date();
   const timestamp = now.getTime();
 
@@ -41,7 +41,7 @@ export function attendParticipant(userId) {
   return rtdb.ref().update(updates);
 }
 
-export function retrieveParticipants(startAt, endAt, sorting) {
+export function retrieveTourists(startAt, endAt, sorting) {
   const usersDataRef = firebase.database().ref('usersData');
   return usersDataRef
     .orderByChild(sorting || 'userNumber')
@@ -51,14 +51,14 @@ export function retrieveParticipants(startAt, endAt, sorting) {
     .then(snapshot => snapshot.val());
 }
 
-export async function retrieveParticipant(userId) {
+export async function retrieveTourist(userId) {
   const rtdb = firebase.database();
   const userRef = rtdb.ref(`usersData/${userId}`);
   const data = await userRef.once('value');
   return data.val();
 }
 
-export async function deleteParticipant(userId) {
+export async function deleteTourist(userId) {
   const rtdb = firebase.database();
   const userRef = rtdb.ref(`usersData/${userId}`);
   userRef.set(null).then(() => console.log(`deleting ${userId}.`));
@@ -128,7 +128,7 @@ export function retrieveAppData() {
     appDataRef.on('value', (snapshot) => {
       const appData = snapshot.val();
       dispatch(setAppData(appData));
-      dispatch(successMessage('Succesfully retrieving participants data.'));
+      dispatch(successMessage('Succesfully retrieving tourists data.'));
     });
   };
 }

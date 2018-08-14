@@ -40,48 +40,47 @@ export function removeCurrentUser() {
   };
 }
 
-// async function checkAdmin(userId) {
-//   try {
-//     const adminValue = await firebase
-//       .database()
-//       .ref(`adminData/${userId}`)
-//       .once('value');
-//     return adminValue.val();
-//   } catch (err) {
-//     throw err;
-//   }
-// }
+async function checkAdmin(userId) {
+  try {
+    const adminValue = await firebase
+      .database()
+      .ref(`adminData/${userId}`)
+      .once('value');
+    return adminValue.val();
+  } catch (err) {
+    throw err;
+  }
+}
 
 export function checkAuthentication(history) {
   return (dispatch) => {
-    // firebase.auth().onAuthStateChanged(async (user) => {
-    //   if (user) {
-    //     try {
-    //       const isAdmin = await checkAdmin(user.uid);
-    //       dispatch(setCurrentUser(user));
-    //       dispatch(setCurrentRole(isAdmin));
-    //       if (isAdmin) {
-    //         history.push('/admin/');
-    //       } else {
-    //         history.push('/user/');
-    //       }
-    //     } catch (err) {
-    //       dispatch(errorMessage(err.message));
-    //     }
-    //   } else {
-    //     history.push('/auth/');
-    //     dispatch(removeCurrentUser());
-    //   }
-    // });
+    firebase.auth().onAuthStateChanged(async (user) => {
+      if (user) {
+        try {
+          const isAdmin = await checkAdmin(user.uid);
+          dispatch(setCurrentUser(user));
+          dispatch(setCurrentRole(isAdmin));
+          if (isAdmin) {
+            history.push('/admin/');
+          } else {
+            history.push('/user/');
+          }
+        } catch (err) {
+          dispatch(errorMessage(err.message));
+        }
+      } else {
+        history.push('/auth/');
+        dispatch(removeCurrentUser());
+      }
+    });
   };
 }
 
-function writeUserData(user, data, cb) {
+export function writeUserData(uid, data) {
   firebase
     .database()
-    .ref(`usersData/${user.uid}`)
-    .set(data)
-    .then(cb());
+    .ref(`usersData/${uid}`)
+    .set(data);
 }
 
 export function createAuthentication(email, password, optional) {
