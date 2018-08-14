@@ -1,81 +1,122 @@
-import React from 'react';
-import { PropTypes } from 'prop-types';
-import { withRouter } from 'react-router-dom';
-
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import Drawer from '@material-ui/core/Drawer';
+import Hidden from '@material-ui/core/Hidden';
+import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import Drawer from '@material-ui/core/Drawer';
-import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
 import { closeAuthentication } from '../../../Auth/actions';
 
-const styleSheet = theme => ({
-  drawerInner: {
+const drawerWidth = 240;
+
+const styles = theme => ({
+  root: {
+    flexGrow: 1,
+    height: 430,
+    zIndex: 1,
+    overflow: 'hidden',
     position: 'relative',
-    height: 'auto',
-    width: 240,
-  },
-  drawerHeader: {
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: '0 8px',
-    height: 56,
-    [theme.breakpoints.up('sm')]: {
-      height: 64,
+    width: '100%',
+  },
+  navIconHide: {
+    [theme.breakpoints.up('md')]: {
+      display: 'none',
     },
   },
-  button: {
-    margin: 5,
+  toolbar: theme.mixins.toolbar,
+  drawerPaper: {
+    width: drawerWidth,
+    [theme.breakpoints.up('md')]: {
+      position: 'relative',
+    },
   },
-  divider: {
-    marginTop: 100,
+  content: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.default,
+    padding: theme.spacing.unit * 3,
   },
 });
 
-const VacindoSidebar = props => (
-  <Drawer open={props.open} type="persistent">
-    <div className={props.classes.drawerInner}>
-      <div className={props.classes.drawerHeader}>
-        <IconButton onClick={() => props.handleDrawerClose()}>
-          <ChevronLeftIcon />
-        </IconButton>
-      </div>
-      <Divider />
-      <List disablePadding className={props.classes.sidebar}>
-        {props.sidebarItems.map(sidebarItem => (
-          <ListItem button onClick={() => sidebarItem.onClick()}>
-            <ListItemText primary={sidebarItem.text} />
+class VacindoSidebar extends Component {
+  handleDrawerToggle = () => {
+    this.setState(state => ({ mobileOpen: !state.mobileOpen }));
+  };
+
+  render() {
+    const {
+      classes, dispatch, sidebarItems, history, handleDrawerClose, open
+    } = this.props;
+
+    const drawer = (
+      <div>
+        <div className={classes.toolbar} />
+        <Divider />
+        <List disablePadding className={classes.sidebar}>
+          {sidebarItems.map(sidebarItem => (
+            <ListItem button onClick={() => sidebarItem.onClick()}>
+              <ListItemText primary={sidebarItem.text} />
+            </ListItem>
+          ))}
+          <Divider className={classes.divider} />
+          <ListItem>
+            <Button
+              onClick={() => dispatch(closeAuthentication(() => history.push('/')))}
+              className={classes.button}
+            >
+              Sign Out
+            </Button>
           </ListItem>
-        ))}
-        <Divider className={props.classes.divider} />
-        <ListItem>
-          <Button
-            onClick={() => props.dispatch(closeAuthentication(() => props.history.push('/')))}
-            className={props.classes.button}
+        </List>
+      </div>
+    );
+
+    return (
+      <div className={classes.root}>
+        <Hidden mdUp>
+          <Drawer
+            variant="temporary"
+            open={open}
+            onClose={handleDrawerClose}
+            classes={{
+              paper: classes.drawerPaper,
+            }}
+            ModalProps={{
+              keepMounted: true,
+            }}
           >
-            Sign Out
-          </Button>
-        </ListItem>
-      </List>
-    </div>
-  </Drawer>
-);
+            {drawer}
+          </Drawer>
+        </Hidden>
+        <Hidden smDown implementation="css">
+          <Drawer
+            variant="permanent"
+            open
+            classes={{
+              paper: classes.drawerPaper,
+            }}
+          >
+            {drawer}
+          </Drawer>
+        </Hidden>
+      </div>
+    );
+  }
+}
 
 VacindoSidebar.propTypes = {
+  classes: PropTypes.object.isRequired,
   sidebarItems: PropTypes.array.isRequired,
   open: PropTypes.bool.isRequired,
   handleDrawerClose: PropTypes.func.isRequired,
   dispatch: PropTypes.func.isRequired,
-  classes: PropTypes.object.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
 };
 
-export default withRouter(withStyles(styleSheet)(VacindoSidebar));
+export default withStyles(styles)(VacindoSidebar);

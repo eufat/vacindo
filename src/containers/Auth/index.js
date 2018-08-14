@@ -69,9 +69,7 @@ class Auth extends Component {
         firstName: '',
         lastName: '',
         phoneNumber: '',
-        school: '',
         location: '',
-        examType: '',
         referral: '',
       },
       reset: {

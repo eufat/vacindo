@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 
 import AppBar from '@material-ui/core/AppBar';
@@ -14,10 +13,15 @@ const drawerWidth = 240;
 const styleSheet = theme => ({
   appBar: {
     position: 'absolute',
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
+    marginLeft: drawerWidth,
+    [theme.breakpoints.up('md')]: {
+      width: `calc(100% - ${drawerWidth}px)`,
+    },
+  },
+  navIconHide: {
+    [theme.breakpoints.up('md')]: {
+      display: 'none',
+    },
   },
   appBarShift: {
     marginLeft: drawerWidth,
@@ -38,13 +42,13 @@ const styleSheet = theme => ({
 });
 
 const VacindoAppbar = props => (
-  <AppBar className={classNames(props.classes.appBar, props.open && props.classes.appBarShift)}>
+  <AppBar className={props.classes.appBar}>
     <Toolbar disableGutters={!props.open}>
       <IconButton
-        color="contrast"
-        aria-label="open drawer"
+        color="inherit"
+        aria-label="Open drawer"
         onClick={() => props.handleDrawerOpen()}
-        className={classNames(props.classes.menuButton, props.open && props.classes.hide)}
+        className={props.classes.navIconHide}
       >
         <MenuIcon />
       </IconButton>

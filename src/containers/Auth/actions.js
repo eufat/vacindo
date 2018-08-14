@@ -76,11 +76,12 @@ export function checkAuthentication(history) {
   };
 }
 
-export function writeUserData(uid, data) {
+export function writeUserData(user, data, cb) {
   firebase
     .database()
-    .ref(`usersData/${uid}`)
-    .set(data);
+    .ref(`usersData/${user.uid}`)
+    .set(data)
+    .then(cb());
 }
 
 export function createAuthentication(email, password, optional) {

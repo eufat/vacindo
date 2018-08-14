@@ -59,7 +59,12 @@ const VacindoSignup = props => (
         forms={props.signUp}
         disabled={false}
       />
-      <Button raised color="primary" className={props.classes.button} onClick={() => props.handleOnSubmitAuth()}>
+      <Button
+        variant="contained"
+        color="primary"
+        className={props.classes.button}
+        onClick={() => props.handleOnSubmitAuth()}
+      >
         Sign Up
       </Button>
     </div>
