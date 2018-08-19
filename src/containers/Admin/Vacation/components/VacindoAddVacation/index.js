@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import update from 'immutability-helper';
+
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
@@ -20,7 +20,7 @@ const locations = locationsData.map(location => location.name);
 
 // import { IDR } from '../../.../../../../utils/numberHelper';
 
-const styles = theme => ({
+const styles = () => ({
   card: {
     padding: 0,
     width: '100%',
@@ -44,7 +44,29 @@ const styles = theme => ({
 });
 
 class VacindoAddVacation extends Component {
-  state = {};
+  state = {
+    form: {
+      title: '',
+      preTitle: '',
+      description: '',
+      location: '',
+      startDate: '',
+      endDate: '',
+      price: '',
+    },
+  };
+
+  changeField = (e, field) => {
+    const prevState = this.state.form;
+    const newState = {
+      ...prevState,
+      [field]: e.target.value,
+    };
+    this.setState({
+      ...this.state,
+      form: newState,
+    });
+  };
 
   render() {
     const { classes } = this.props;
@@ -56,12 +78,41 @@ class VacindoAddVacation extends Component {
             <div>
               <div className={classes.formContainer}>
                 <Typography type="title">New Vacation</Typography>
-                <TextField fullWidth label="Vacation Name" />
-                <TextField fullWidth label="Vacation Type" />
-                <TextField fullWidth rows="4" multiline label="Vacation Description" />
+                <TextField
+                  fullWidth
+                  label="Vacation Name"
+                  value={this.state.form.title}
+                  onChange={(e) => {
+                    this.changeField(e, 'title');
+                  }}
+                />
+                <TextField
+                  fullWidth
+                  label="Vacation Type"
+                  value={this.state.form.preTitle}
+                  onChange={(e) => {
+                    this.changeField(e, 'preTitle');
+                  }}
+                />
+                <TextField
+                  fullWidth
+                  rows="4"
+                  multiline
+                  label="Vacation Description"
+                  value={this.state.form.description}
+                  onChange={(e) => {
+                    this.changeField(e, 'description');
+                  }}
+                />
                 <FormControl fullWidth>
                   <InputLabel htmlFor="forms-location">Vacation Location</InputLabel>
-                  <Select input={<Input id="forms-location" />}>
+                  <Select
+                    input={<Input id="forms-location" />}
+                    value={this.state.form.location}
+                    onChange={(e) => {
+                      this.changeField(e, 'location');
+                    }}
+                  >
                     <MenuItem value="" />
                     {locations.map((location, index) => (
                       <MenuItem key={index} value={location}>
@@ -83,6 +134,10 @@ class VacindoAddVacation extends Component {
                       }}
                       placeholder="Placeholder"
                       type="date"
+                      value={this.state.form.startDate}
+                      onChange={(e) => {
+                        this.changeField(e, 'startDate');
+                      }}
                     />
                   </div>
                   <div className={classes.nameItem}>
@@ -94,10 +149,21 @@ class VacindoAddVacation extends Component {
                       }}
                       placeholder="Placeholder"
                       type="date"
+                      value={this.state.form.endDate}
+                      onChange={(e) => {
+                        this.changeField(e, 'endDate');
+                      }}
                     />
                   </div>
                 </div>
-                <TextField fullWidth label="Vacation Price" />
+                <TextField
+                  fullWidth
+                  label="Vacation Price"
+                  value={this.state.form.price}
+                  onChange={(e) => {
+                    this.changeField(e, 'price');
+                  }}
+                />
               </div>
               <div className={classes.formContainer}>
                 <Button variant="contained" color="primary" className={classes.button}>
