@@ -2,6 +2,7 @@ import * as firebase from 'firebase';
 import * as c from './constants';
 
 import { showLoadingBar, successMessage } from '../App/actions';
+import generateHash from '../../utils/hash';
 
 export function setPayments(payments) {
   return (dispatch) => {
@@ -10,6 +11,46 @@ export function setPayments(payments) {
       payments,
     });
   };
+}
+
+export function createDestination(formData, placeholderImage) {
+  const file = placeholderImage;
+  const destinationId = generateHash();
+
+  return async (dispatch) => {
+    dispatch(showLoadingBar());
+    const imageRef = firebase
+      .storage()
+      .ref()
+      .child(`destinationsImage/${destinationId}`);
+
+    await imageRef.put(file);
+
+    dispatch(successMessage('Destination placeholder image uploaded.'));
+    dispatch(showLoadingBar());
+
+    const imageURL = await imageRef.getDownloadURL();
+
+    const withImageFormData = {
+      ...formData,
+      imageURL,
+    };
+
+    await firebase
+      .database()
+      .ref(`destinationsData/${destinationId}`)
+      .set(withImageFormData);
+    dispatch(successMessage(`Destination ${formData.title} created.`));
+  };
+}
+
+export async function retrieveAdminDestinations(adminUID) {
+  const destinationsDataRef = firebase.database().ref('destinationsData');
+  const snapshot = await destinationsDataRef.orderByChild('admin').equalTo(adminUID).once('value');
+  const value = snapshot.val();
+  if (value) {
+    return value;
+  }
 }
 
 export function setTourists(tourists) {

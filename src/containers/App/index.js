@@ -18,7 +18,7 @@ import VacindoSnackbar from '../../components/VacindoSnackbar';
 import { checkAuthentication } from '../Auth/actions';
 import { loadDestinations } from './actions';
 
-import dummy from '../../dummy.json';
+import dummy from '../../utils/dummy.json';
 
 let { data } = dummy;
 data = data.slice(0, 20);

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 import Dashboard from '../Dashboard';
-import Vacation from './Vacation';
+import Destination from './Destination';
 import Payments from './Payments';
 
 import { retrieveAppData } from './actions';
@@ -19,8 +19,8 @@ class Admin extends Component {
 
     const sidebarItems = [
       {
-        onClick: () => history.push('/admin/vacation'),
-        text: 'Vacation',
+        onClick: () => history.push('/admin/destination'),
+        text: 'Destination',
       },
       {
         onClick: () => history.push('/admin/payments'),
@@ -35,8 +35,8 @@ class Admin extends Component {
     return (
       <Dashboard sidebarItems={sidebarItems} {...this.props}>
         <Switch>
-          <Route exact path="/admin/" render={() => <Redirect to="/admin/vacation" />} />
-          <Route exact path="/admin/vacation" component={Vacation} />
+          <Route exact path="/admin/" render={() => <Redirect to="/admin/destination" />} />
+          <Route exact path="/admin/destination" component={Destination} />
           <Route exact path="/admin/payments" component={Payments} />
         </Switch>
       </Dashboard>

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Dropzone from 'react-dropzone';
 
 import { withStyles } from '@material-ui/core/styles';
@@ -7,16 +8,18 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
+import { createDestination } from '../../../actions';
 import locationsData from '../../../../../utils/locations.json';
+import destinationTypes from '../../../../../utils/destinationTypes.json';
 
 const locations = locationsData.map(location => location.name);
+const destTypes = destinationTypes.data;
 
 // import { IDR } from '../../.../../../../utils/numberHelper';
 
@@ -49,7 +52,7 @@ const styles = () => ({
   },
 });
 
-class VacindoAddVacation extends Component {
+class VacindoAddDestination extends Component {
   state = {
     form: {
       title: '',
@@ -82,6 +85,14 @@ class VacindoAddVacation extends Component {
     });
   };
 
+  handleCreateDestination = () => {
+    const { dispatch, currentUser } = this.props;
+    const placeholderImage = this.state.files[0];
+    const prevFormData = this.state.form;
+    const newFormData = { ...prevFormData, admin: currentUser.uid };
+    dispatch(createDestination(newFormData, placeholderImage));
+  };
+
   render() {
     const { classes } = this.props;
 
@@ -91,35 +102,44 @@ class VacindoAddVacation extends Component {
           <CardContent>
             <div>
               <div className={classes.formContainer}>
-                <Typography type="title">Vacation Information</Typography>
+                <Typography type="title">Destination Information</Typography>
                 <TextField
                   fullWidth
-                  label="Vacation Name"
+                  label="Destination Name"
                   value={this.state.form.title}
                   onChange={(e) => {
                     this.changeField(e, 'title');
                   }}
                 />
-                <TextField
-                  fullWidth
-                  label="Vacation Type"
-                  value={this.state.form.preTitle}
-                  onChange={(e) => {
-                    this.changeField(e, 'preTitle');
-                  }}
-                />
+                <FormControl fullWidth>
+                  <InputLabel htmlFor="forms-type">Destination Type</InputLabel>
+                  <Select
+                    input={<Input id="forms-type" />}
+                    value={this.state.form.preTitle}
+                    onChange={(e) => {
+                      this.changeField(e, 'preTitle');
+                    }}
+                  >
+                    <MenuItem value="" />
+                    {destTypes.map((type, index) => (
+                      <MenuItem key={index} value={type}>
+                        {type}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
                 <TextField
                   fullWidth
                   rows="4"
                   multiline
-                  label="Vacation Description"
+                  label="Destination Description"
                   value={this.state.form.description}
                   onChange={(e) => {
                     this.changeField(e, 'description');
                   }}
                 />
                 <FormControl fullWidth>
-                  <InputLabel htmlFor="forms-location">Vacation Location</InputLabel>
+                  <InputLabel htmlFor="forms-location">Destination Location</InputLabel>
                   <Select
                     input={<Input id="forms-location" />}
                     value={this.state.form.location}
@@ -137,7 +157,7 @@ class VacindoAddVacation extends Component {
                 </FormControl>
               </div>
               <div className={classes.formContainer}>
-                <Typography type="title">Vacation Date and Price</Typography>
+                <Typography type="title">Destination Date and Price</Typography>
                 <div className={classes.dateContainer}>
                   <div className={classes.dateItem}>
                     <TextField
@@ -172,7 +192,7 @@ class VacindoAddVacation extends Component {
                 </div>
                 <TextField
                   fullWidth
-                  label="Vacation Price"
+                  label="Destination Price"
                   value={this.state.form.price}
                   onChange={(e) => {
                     this.changeField(e, 'price');
@@ -180,11 +200,11 @@ class VacindoAddVacation extends Component {
                 />
               </div>
               <div className={classes.formContainer}>
-                <Typography type="title">Vacation Image</Typography>
+                <Typography type="title">Destination Image</Typography>
                 <section>
                   <div>
                     <Dropzone onDrop={this.onDrop} className={classes.dropzone}>
-                      <p>Drop vacation images files here, or click to select files to upload.</p>
+                      <p>Drop Destination images files here, or click to select files to upload.</p>
                     </Dropzone>
                   </div>
                   <aside>
@@ -200,8 +220,13 @@ class VacindoAddVacation extends Component {
                 </section>
               </div>
               <div className={classes.formContainer}>
-                <Button variant="contained" color="primary" className={classes.button}>
-                  Create Vacation
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.button}
+                  onClick={() => this.handleCreateDestination()}
+                >
+                  Create Destination
                 </Button>
               </div>
             </div>
@@ -212,4 +237,10 @@ class VacindoAddVacation extends Component {
   }
 }
 
-export default withStyles(styles)(VacindoAddVacation);
+function mapStateToProps({ auth }) {
+  return {
+    currentUser: auth.currentUser,
+  };
+}
+
+export default withStyles(styles)(connect(mapStateToProps)(VacindoAddDestination));
