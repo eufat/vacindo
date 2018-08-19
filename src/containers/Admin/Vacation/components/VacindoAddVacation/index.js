@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import update from 'immutability-helper';
+import Dropzone from 'react-dropzone';
 
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -41,6 +41,12 @@ const styles = () => ({
       marginRight: 10,
     },
   },
+  dropzone: {
+    width: '100%',
+    padding: 20,
+    radius: 5,
+    border: '2px dashed #eee',
+  },
 });
 
 class VacindoAddVacation extends Component {
@@ -53,7 +59,15 @@ class VacindoAddVacation extends Component {
       startDate: '',
       endDate: '',
       price: '',
+      imageURL: '',
     },
+    files: [],
+  };
+
+  onDrop = (files) => {
+    this.setState({
+      files,
+    });
   };
 
   changeField = (e, field) => {
@@ -77,7 +91,7 @@ class VacindoAddVacation extends Component {
           <CardContent>
             <div>
               <div className={classes.formContainer}>
-                <Typography type="title">New Vacation</Typography>
+                <Typography type="title">Vacation Information</Typography>
                 <TextField
                   fullWidth
                   label="Vacation Name"
@@ -123,7 +137,7 @@ class VacindoAddVacation extends Component {
                 </FormControl>
               </div>
               <div className={classes.formContainer}>
-                <Typography type="title">Date and Price</Typography>
+                <Typography type="title">Vacation Date and Price</Typography>
                 <div className={classes.dateContainer}>
                   <div className={classes.dateItem}>
                     <TextField
@@ -164,6 +178,26 @@ class VacindoAddVacation extends Component {
                     this.changeField(e, 'price');
                   }}
                 />
+              </div>
+              <div className={classes.formContainer}>
+                <Typography type="title">Vacation Image</Typography>
+                <section>
+                  <div>
+                    <Dropzone onDrop={this.onDrop} className={classes.dropzone}>
+                      <p>Drop vacation images files here, or click to select files to upload.</p>
+                    </Dropzone>
+                  </div>
+                  <aside>
+                    <p>Dropped files</p>
+                    <ul>
+                      {this.state.files.map(f => (
+                        <li key={f.name}>
+                          {f.name} - {f.size} bytes
+                        </li>
+                      ))}
+                    </ul>
+                  </aside>
+                </section>
               </div>
               <div className={classes.formContainer}>
                 <Button variant="contained" color="primary" className={classes.button}>

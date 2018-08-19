@@ -17,13 +17,14 @@ class Vacation extends Component {
   render() {
     const Cards = [];
 
+    Cards.push(<Grid item xs={12} sm={6}><VacindoAddVacation /></Grid>);
+
     data.forEach((item) => {
       Cards.push(<Grid item xs={12} sm={6}>
         <VacindoCard data={item} />
                  </Grid>);
     });
 
-    Cards.push(<Grid item xs={12} sm={6}><VacindoAddVacation /></Grid>);
 
     return (
       <div>
