@@ -93,7 +93,8 @@ export function createAuthentication(email, password, optional) {
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then(
-        (user) => {
+        (snapshot) => {
+          const { user } = snapshot;
           writeUserData(user, userData, () => {
             dispatch(setCurrentUser(user));
             dispatch(successMessage(`${user.email} was successfully created.`));
@@ -121,7 +122,8 @@ export function submitAuthentication(email, password, persistence) {
           .auth()
           .signInWithEmailAndPassword(email, password)
           .then(
-            (user) => {
+            (snapshot) => {
+              const { user } = snapshot;
               dispatch(setCurrentUser(user));
               dispatch(successMessage(`${user.email} was successfully signed in.`));
             },
