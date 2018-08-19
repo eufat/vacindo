@@ -71,11 +71,11 @@ class App extends Component {
           />
           <Route
             path="/admin"
-            render={() => (isAuthenticated ? <Redirect to="/auth" /> : <Admin {...this.props} />)}
+            render={() => (isAuthenticated ? <Redirect to="/" /> : <Admin {...this.props} />)}
           />
           <Route
             path="/user"
-            render={() => (isAuthenticated ? <Redirect to="/auth" /> : <User {...this.props} />)}
+            render={() => (isAuthenticated ? <Redirect to="/" /> : <User {...this.props} />)}
           />
         </Switch>
       </div>

@@ -13,16 +13,20 @@ import isMobile from '../../utils/mobileCheck';
 const styleSheet = theme => ({
   root: {
     flexGrow: 1,
-    height: '100%',
     zIndex: 1,
     overflow: 'hidden',
     position: 'relative',
     display: 'flex',
     width: '100%',
   },
+  toolbar: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
+    padding: theme.spacing.unit * 3,
+    [theme.breakpoints.up('md')]: {
+      paddingLeft: '240px',
+    },
   },
 });
 
@@ -60,7 +64,10 @@ class Dashboard extends Component {
           {...this.state}
           handleDrawerClose={this.handleDrawerClose}
         />
-        <main className={classes.content}>{this.props.children}</main>
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
+          {this.props.children}
+        </main>
       </div>
     );
   }

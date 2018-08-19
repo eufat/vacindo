@@ -14,31 +14,19 @@ import { closeAuthentication } from '../../../Auth/actions';
 const drawerWidth = 240;
 
 const styles = theme => ({
-  root: {
-    flexGrow: 1,
-    height: 430,
-    zIndex: 1,
-    overflow: 'hidden',
-    position: 'relative',
-    display: 'flex',
-    width: '100%',
-  },
   navIconHide: {
     [theme.breakpoints.up('md')]: {
       display: 'none',
     },
   },
-  toolbar: theme.mixins.toolbar,
   drawerPaper: {
     width: drawerWidth,
     [theme.breakpoints.up('md')]: {
       position: 'relative',
     },
   },
-  content: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.default,
-    padding: theme.spacing.unit * 3,
+  fixedSidebar: {
+    position: 'fixed',
   },
 });
 
@@ -54,7 +42,6 @@ class VacindoSidebar extends Component {
 
     const drawer = (
       <div>
-        <div className={classes.toolbar} />
         <Divider />
         <List disablePadding className={classes.sidebar}>
           {sidebarItems.map(sidebarItem => (
@@ -76,7 +63,7 @@ class VacindoSidebar extends Component {
     );
 
     return (
-      <div className={classes.root}>
+      <div className={classes.fixedSidebar}>
         <Hidden mdUp>
           <Drawer
             variant="temporary"

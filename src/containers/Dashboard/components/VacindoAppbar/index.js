@@ -12,7 +12,7 @@ const drawerWidth = 240;
 
 const styleSheet = theme => ({
   appBar: {
-    position: 'absolute',
+    position: 'fixed',
     marginLeft: drawerWidth,
     [theme.breakpoints.up('md')]: {
       width: `calc(100% - ${drawerWidth}px)`,
@@ -22,22 +22,6 @@ const styleSheet = theme => ({
     [theme.breakpoints.up('md')]: {
       display: 'none',
     },
-  },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    color: 'white',
-    marginLeft: 12,
-    marginRight: 20,
-  },
-  hide: {
-    display: 'none',
   },
 });
 

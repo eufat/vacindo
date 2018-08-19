@@ -69,7 +69,7 @@ export function checkAuthentication(history) {
           dispatch(errorMessage(err.message));
         }
       } else {
-        history.push('/auth/');
+        history.push('/');
         dispatch(removeCurrentUser());
       }
     });
