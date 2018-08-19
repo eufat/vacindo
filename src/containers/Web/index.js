@@ -12,6 +12,19 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 
+// Algolia
+var algoliasearch = require('algoliasearch');
+var algoliasearch = require('algoliasearch/reactnative');
+var algoliasearch = require('algoliasearch/lite');
+
+var clientAlgolia = algoliasearch('VR7FD3DTUW', 'b4e4ff31927c35e087ef52d93784f081');
+var index = clientAlgolia.initIndex('index');
+
+index.search('puppet', function(err, content) {
+  console.log(content.hits);
+});
+
+// Program
 const data = [
   {
     "imageURL":
@@ -194,7 +207,11 @@ class Web extends Component {
         <div className={this.props.classes.searchBarContainer}>
           <SearchBar
             onChange={() => console.log('onChange')}
-            onRequestSearch={() => console.log('onRequestSearch')}
+            onRequestSearch={(value) => {
+            	index.search(value, function(err, content) {
+				  alert(JSON.stringify(content.hits[0]));
+				});
+            }}
             style={{
               margin: '0 auto',
               maxWidth: 800
