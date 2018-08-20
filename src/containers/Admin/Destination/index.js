@@ -15,7 +15,7 @@ import { retrieveAdminDestinations } from '../actions';
 
 class Destination extends Component {
   state = {
-    destinations: []
+    destinations: {},
   };
 
   componentDidMount() {
@@ -23,15 +23,14 @@ class Destination extends Component {
   }
 
   retrieveData = async () => {
-    const { currentUser } = this.props;
+    const { dispatch, currentUser } = this.props;
 
     if (currentUser.uid) {
-      let destinations = [];
-      destinations = await retrieveAdminDestinations(currentUser.uid);
-
-      this.setState({
-        destinations,
-      });
+      dispatch(retrieveAdminDestinations(currentUser.uid, (destinations) => {
+        this.setState({
+          destinations,
+        });
+      }));
     }
   }
 
@@ -62,9 +61,10 @@ class Destination extends Component {
   }
 }
 
-function mapStateToProps({ auth }) {
+function mapStateToProps({ auth, admin }) {
   return {
     currentUser: auth.currentUser,
+    destinations: admin.destinations,
   };
 }
 
