@@ -4,6 +4,7 @@ const initialState = {
   appData: {},
   tourists: {},
   payments: {},
+  destinations: {}
 };
 
 export default function dashboardReducer(state = initialState, action) {
@@ -22,6 +23,11 @@ export default function dashboardReducer(state = initialState, action) {
       return {
         ...state,
         appData: action.appData,
+      };
+    case c.SET_DESTINATIONS:
+      return {
+        ...state,
+        destinations: action.destinations,
       };
     default:
       return state;

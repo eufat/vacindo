@@ -13,6 +13,22 @@ export function setPayments(payments) {
   };
 }
 
+export function retrieveAdminDestinations(adminUID, callback) {
+  return async (dispatch) => {
+    const destinationsDataRef = firebase.database().ref('destinationsData');
+    const snapshot = await destinationsDataRef.orderByChild('admin').equalTo(adminUID).once('value');
+    const value = snapshot.val();
+    dispatch({
+      type: c.SET_DESTINATIONS,
+      destinations: value,
+    });
+
+    if (callback !== undefined) {
+      callback(value);
+    }
+  };
+}
+
 export function createDestination(formData, placeholderImage) {
   const file = placeholderImage;
   const destinationId = generateHash();
@@ -41,16 +57,11 @@ export function createDestination(formData, placeholderImage) {
       .ref(`destinationsData/${destinationId}`)
       .set(withImageFormData);
     dispatch(successMessage(`Destination ${formData.title} created.`));
-  };
-}
 
-export async function retrieveAdminDestinations(adminUID) {
-  const destinationsDataRef = firebase.database().ref('destinationsData');
-  const snapshot = await destinationsDataRef.orderByChild('admin').equalTo(adminUID).once('value');
-  const value = snapshot.val();
-  if (value) {
-    return value;
-  }
+    const { admin } = formData;
+    const adminUID = admin;
+    dispatch(retrieveAdminDestinations(adminUID));
+  };
 }
 
 export function setTourists(tourists) {
