@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import Card from '@material-ui/core/Card';
+import Button from '@material-ui/core/Button';
+import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
 
@@ -10,9 +14,21 @@ import VacindoAddDestination from './components/VacindoAddDestination';
 
 import { retrieveAdminDestinations } from '../actions';
 
+const styleSheet = theme => ({
+  button: {
+    height: '100%',
+    width: '100%',
+  },
+  addDestination: {
+    padding: 0,
+    height: 445,
+  },
+});
+
 class Destination extends Component {
   state = {
     destinations: {},
+    onAdd: false,
   };
 
   componentDidMount() {
@@ -31,19 +47,50 @@ class Destination extends Component {
     }
   }
 
+  handleOnAdd = () => {
+    this.setState({
+      ...this.state,
+      onAdd: true,
+    });
+  }
+
   render() {
     const Cards = [];
+    const { classes } = this.props;
+    const { onAdd } = this.state;
 
-    Cards.push(<Grid item xs={12} sm={6}>
-      <VacindoAddDestination {...this.props} />
-               </Grid>);
+    const newDestinationComponent = () => {
+      return (
+        <Grid item xs={12} sm={6}>
+          { onAdd ?
+            <VacindoAddDestination {...this.props} /> :
+            <Card className={classes.addDestination}>
+              <Button
+                className={classes.button}
+                onClick={() => this.handleOnAdd()}
+              >
+                <Icon className={classes.icon} color="action" style={{ fontSize: 60 }}>add_circle</Icon>
+              </Button>
+            </Card>
+          }
+        </Grid>
+      );
+    };
+
+    Cards.push(newDestinationComponent());
 
     const data = values(this.state.destinations);
 
     data.forEach((item) => {
-      Cards.push(<Grid item xs={12} sm={6}>
-        <VacindoCard data={item} />
-                 </Grid>);
+      const retrievedDestinationComponent = () => {
+        return (
+          <Grid item xs={12} sm={6}>
+            <VacindoCard data={item} />
+          </Grid>
+        );
+      };
+
+      Cards.push(retrievedDestinationComponent());
     });
 
     return (
@@ -66,4 +113,4 @@ function mapStateToProps({ auth, admin }) {
   };
 }
 
-export default connect(mapStateToProps)(Destination);
+export default withStyles(styleSheet)(connect(mapStateToProps)(Destination));
