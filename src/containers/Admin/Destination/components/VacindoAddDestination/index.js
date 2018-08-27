@@ -50,6 +50,9 @@ const styles = () => ({
     radius: 5,
     border: '2px dashed #eee',
   },
+  buttonDestination: {
+    marginRight: 10,
+  },
 });
 
 class VacindoAddDestination extends Component {
@@ -94,7 +97,7 @@ class VacindoAddDestination extends Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, handleCancelAdd } = this.props;
 
     return (
       <div>
@@ -223,10 +226,18 @@ class VacindoAddDestination extends Component {
                 <Button
                   variant="contained"
                   color="primary"
-                  className={classes.button}
+                  className={classes.buttonDestination}
                   onClick={() => this.handleCreateDestination()}
                 >
                   Create Destination
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  className={classes.buttonDestination}
+                  onClick={() => handleCancelAdd()}
+                >
+                  Cancel
                 </Button>
               </div>
             </div>

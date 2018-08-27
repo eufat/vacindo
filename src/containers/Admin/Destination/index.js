@@ -21,7 +21,7 @@ const styleSheet = theme => ({
   },
   addDestination: {
     padding: 0,
-    height: 445,
+    height: 339.3,
   },
 });
 
@@ -54,6 +54,13 @@ class Destination extends Component {
     });
   }
 
+  handleCancelAdd = () => {
+    this.setState({
+      ...this.state,
+      onAdd: false,
+    });
+  }
+
   render() {
     const Cards = [];
     const { classes } = this.props;
@@ -61,9 +68,9 @@ class Destination extends Component {
 
     const newDestinationComponent = () => {
       return (
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
           { onAdd ?
-            <VacindoAddDestination {...this.props} /> :
+            <VacindoAddDestination {...this.props} handleCancelAdd={this.handleCancelAdd}/> :
             <Card className={classes.addDestination}>
               <Button
                 className={classes.button}
@@ -84,7 +91,7 @@ class Destination extends Component {
     data.forEach((item) => {
       const retrievedDestinationComponent = () => {
         return (
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={4}>
             <VacindoCard data={item} />
           </Grid>
         );
