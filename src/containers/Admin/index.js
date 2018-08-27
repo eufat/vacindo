@@ -5,6 +5,7 @@ import { withRouter, Route, Switch, Redirect } from 'react-router-dom';
 import Dashboard from '../Dashboard';
 import Destination from './Destination';
 import Payments from './Payments';
+import Metrics from './Metrics';
 
 import { retrieveAppData } from './actions';
 
@@ -18,6 +19,10 @@ class Admin extends Component {
     const { history } = this.props;
 
     const sidebarItems = [
+      {
+        onClick: () => history.push('/admin/metrics'),
+        text: 'Metrics',
+      },
       {
         onClick: () => history.push('/admin/destination'),
         text: 'Destination',
@@ -35,7 +40,8 @@ class Admin extends Component {
     return (
       <Dashboard sidebarItems={sidebarItems} {...this.props}>
         <Switch>
-          <Route exact path="/admin/" render={() => <Redirect to="/admin/destination" />} />
+          <Route exact path="/admin/" render={() => <Redirect to="/admin/metrics" />} />
+          <Route exact path="/admin/metrics" component={Metrics} />
           <Route exact path="/admin/destination" component={Destination} />
           <Route exact path="/admin/payments" component={Payments} />
         </Switch>

@@ -1,17 +1,14 @@
 import React, { Component } from 'react';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
 
 import values from 'lodash/values';
 
-import dummy from '../../../utils/dummy.json';
 import VacindoCard from '../../../components/VacindoCard';
 import VacindoAddDestination from './components/VacindoAddDestination';
 
 import { retrieveAdminDestinations } from '../actions';
-
-// let { data } = dummy;
-// data = data.slice(0, 1);
 
 class Destination extends Component {
   state = {
@@ -52,6 +49,7 @@ class Destination extends Component {
     return (
       <div>
         <div style={{ padding: 20 }}>
+          <Typography type="title">Destinations</Typography>
           <Grid container spacing={16}>
             {Cards}
           </Grid>
