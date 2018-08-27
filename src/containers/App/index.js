@@ -77,6 +77,10 @@ class App extends Component {
             path="/user"
             render={() => (isAuthenticated ? <Redirect to="/" /> : <User {...this.props} />)}
           />
+          <Route
+            path="/promo"
+            render={() => (<Promo {...this.props} />)}
+          />
         </Switch>
       </div>
     );
