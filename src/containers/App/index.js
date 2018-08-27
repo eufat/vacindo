@@ -14,6 +14,9 @@ import Admin from '../Admin';
 import User from '../User';
 import Web from '../Web';
 import Promo from '../Promo';
+import Help from '../Help';
+import Safety from '../Safety';
+import Faq from '../Faq';
 import VacindoSnackbar from '../../components/VacindoSnackbar';
 
 import { checkAuthentication } from '../Auth/actions';
@@ -79,9 +82,20 @@ class App extends Component {
             render={() => (isAuthenticated ? <Redirect to="/" /> : <User {...this.props} />)}
           />
           <Route
-            exact
             path="/promo" 
             render={() => (<Promo {...this.props} />)}
+          />
+          <Route
+            path="/help" 
+            render={() => (<Help {...this.props} />)}
+          />
+          <Route
+            path="/safety" 
+            render={() => (<Safety {...this.props} />)}
+          />
+          <Route
+            path="/faq" 
+            render={() => (<Faq {...this.props} />)}
           />
         </Switch>
       </div>
