@@ -18,8 +18,7 @@ import dummy from '../../utils/dummy.json';
 var algoliasearch = require('algoliasearch');
 var algoliasearch = require('algoliasearch/reactnative');
 var algoliasearch = require('algoliasearch/lite');
-
-var clientAlgolia = algoliasearch('VR7FD3DTUW', 'b4e4ff31927c35e087ef52d93784f081');
+var clientAlgolia = algoliasearch('NG4EKIHD89', 'f945cd0b9d03ef383d2ab2c8e4b7adc9');
 var index = clientAlgolia.initIndex('index');
 
 // Program
@@ -69,7 +68,7 @@ class Web extends Component {
     index.search(value, (err, content) => {
     const newData = content.hits;
     this.setState({ ...this.state, data: newData});
-    
+
   })}
 
   render() {
