@@ -1,4 +1,4 @@
-/* eslint-disable react/forbid-prop-types */
+/* eslint-disable react/forbid-prop-types, no-restricted-syntax */
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -12,6 +12,7 @@ import CardActions from '@material-ui/core/CardActions';
 import { connect } from 'react-redux';
 import algoliasearch from 'algoliasearch/lite';
 import values from 'lodash/values';
+import mapKeys from 'lodash/mapKeys';
 
 import VacindoStepButtons from '../components/VacindoStepButtons';
 import VacindoCard from '../../../components/VacindoCard';
@@ -52,9 +53,9 @@ const styleSheet = theme => ({
 
 class Explore extends Component {
   state = {
-    destinations: {},
+    destinations: [],
     onProgress: false,
-  }
+  };
 
   componentDidMount() {
     this.retrieveData();
@@ -65,27 +66,39 @@ class Explore extends Component {
       const newData = content.hits;
       this.setState({ ...this.state, destinations: newData });
     });
-  }
+  };
 
   retrieveData = () => {
-    const { dispatch } = this.props;
+    const { dispatch, currentUser } = this.props;
     this.setState({ ...this.state, onProgress: true }, () => {
       dispatch(retrieveUserDestinations((destinations) => {
+        const newDestinations = [];
+        for (const key in destinations) {
+          if (destinations.hasOwnProperty(key)) {
+            const value = destinations[key];
+            const newValue = {
+              ...value,
+              destinationId: key,
+              userId: currentUser.uid,
+            };
+            newDestinations.push(newValue);
+          }
+        }
+
         this.setState({
           ...this.state,
-          destinations,
-          onProgress: false
+          destinations: newDestinations,
+          onProgress: false,
         });
       }));
     });
-  }
+  };
 
   render() {
     const { classes } = this.props;
     const Cards = [];
 
-    let { destinations } = this.state;
-    destinations = values(destinations);
+    const { destinations } = this.state;
 
     destinations.forEach((item) => {
       const destinationComponent = () => (
@@ -114,17 +127,17 @@ class Explore extends Component {
             </Grid>
           </Grid>
         </div>
-        {
-          this.state.onProgress ?
-            <center>
-              <CircularProgress className={classes.progress} />
-            </center> :
-            <div>
-              <Grid container spacing={16}>
-                {Cards}
-              </Grid>
-            </div>
-        }
+        {this.state.onProgress ? (
+          <center>
+            <CircularProgress className={classes.progress} />
+          </center>
+        ) : (
+          <div>
+            <Grid container spacing={16}>
+              {Cards}
+            </Grid>
+          </div>
+        )}
 
         <VacindoStepButtons first nextLink="/user/explore" />
       </div>
@@ -135,11 +148,13 @@ class Explore extends Component {
 Explore.propTypes = {
   classes: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
+  currentUser: PropTypes.object.isRequired,
 };
 
-function mapStateToProps({ app }) {
+function mapStateToProps({ auth, app }) {
   return {
     destinations: app.destinations,
+    currentUser: auth.currentUser,
   };
 }
 

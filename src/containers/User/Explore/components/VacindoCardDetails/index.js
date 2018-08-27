@@ -76,7 +76,7 @@ class VacindoCardDetails extends Component {
     open: false,
     person: '',
     dateFrom: dayjs().toDate(),
-    dateUntil: dayjs().add(1, 'day'),
+    dateUntil: dayjs().add(1, 'day').toDate(),
   };
 
   handleClickOpen = () => {
@@ -99,7 +99,14 @@ class VacindoCardDetails extends Component {
   handleBook = () => {
     const { data, dispatch, history } = this.props;
     const { person, dateFrom, dateUntil } = this.state;
-    const dataToBook = { ...data, person, dateFrom, dateUntil };
+    const newDateFrom = dateFrom.getTime();
+    const newDateUntil = dateUntil.getTime();
+    const dataToBook = {
+      ...data,
+      person,
+      dateFrom: newDateFrom,
+      dateUntil: newDateUntil,
+    };
 
     dispatch(addBooking(dataToBook));
     history.push('/user/booking');

@@ -1,6 +1,8 @@
 import * as firebase from 'firebase';
 import * as c from './constants';
 
+import generateHash from '../../utils/hash';
+
 export function retrieveUserDestinations(callback) {
   return async (dispatch) => {
     const destinationsDataRef = firebase.database().ref('destinationsData');
@@ -29,11 +31,39 @@ export async function fetchUserData(userId) {
   return null;
 }
 
-export function addBooking(booking) {
-  return (dispatch) => {
-    dispatch({
-      type: c.ADD_BOOKING,
-      booking,
-    });
+export function retrieveBookingsData(userId, callback) {
+  return async (dispatch) => {
+    if (userId) {
+      const bookingsRef = firebase.database().ref('bookingsData');
+      const snapshot = await bookingsRef
+        .orderByChild('userId')
+        .equalTo(userId)
+        .once('value');
+
+      const value = snapshot.val();
+
+      dispatch({
+        type: c.SET_BOOKINGS,
+        bookings: value,
+      });
+
+      if (callback !== undefined) {
+        callback(value);
+      }
+    }
+  };
+}
+
+export function addBooking(booking, callback) {
+  return async (dispatch) => {
+    const bookingId = generateHash();
+    await firebase
+      .database()
+      .ref(`bookingsData/${bookingId}`)
+      .set(booking);
+
+    if (callback !== undefined) {
+      callback();
+    }
   };
 }

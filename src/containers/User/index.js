@@ -9,7 +9,7 @@ import Booking from './Booking';
 import Payment from './Payment';
 
 class User extends Component {
-  state = {}
+  state = {};
 
   render() {
     const { history } = this.props;
