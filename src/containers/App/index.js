@@ -13,6 +13,7 @@ import Auth from '../Auth';
 import Admin from '../Admin';
 import User from '../User';
 import Web from '../Web';
+import Promo from '../Promo';
 import VacindoSnackbar from '../../components/VacindoSnackbar';
 
 import { checkAuthentication } from '../Auth/actions';
@@ -60,7 +61,7 @@ class App extends Component {
             exact
             path="/"
             render={() =>
-              isAuthenticated ? <Redirect to="/dashboard" /> : <Web {...this.props} />
+              isAuthenticated ? <Redirect to="/dashboard" /> : <Promo {...this.props} />
             }
           />
           <Route
@@ -78,7 +79,8 @@ class App extends Component {
             render={() => (isAuthenticated ? <Redirect to="/" /> : <User {...this.props} />)}
           />
           <Route
-            path="/promo"
+            exact
+            path="/promo" 
             render={() => (<Promo {...this.props} />)}
           />
         </Switch>
