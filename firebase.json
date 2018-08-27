@@ -4,7 +4,7 @@
     "redirects": [
       {
         "source": "/",
-        "destination": "/in.htm",
+        "destination": "/index.html",
         "type": 301
       }
     ],

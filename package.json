@@ -53,7 +53,7 @@
         "build": "react-scripts build",
         "test": "react-scripts test --env=jsdom",
         "eject": "react-scripts eject",
-        "clone": "cp ./public/index.html ./build/index.html && cp -r ./public/static ./build/static",
+        "clone": "cp -r ./public/static ./build/static",
         "deploy": "npm run build && npm run clone && firebase deploy --except functions"
     }
 }
