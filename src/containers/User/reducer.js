@@ -17,6 +17,11 @@ export default function userReducer(state = initialState, action) {
         ...state,
         bookings: [...state.bookings, action.booking],
       };
+    case c.SET_DESTINATIONS:
+      return {
+        ...state,
+        destinations: action.destinations,
+      };
     default:
       return state;
   }
