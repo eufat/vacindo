@@ -58,7 +58,7 @@ class Explore extends Component {
     })
   }
 
-  render(){
+  render() {
     let Cards = [];
     this.state.data.forEach((item) => {
       Cards.push(
@@ -96,9 +96,9 @@ class Explore extends Component {
           </div>
         <VacindoStepButtons first nextLink="/user/explore" />
       </div>
-    );  
+    );
   }
-    
+
 }
 
 Explore.propTypes = {
