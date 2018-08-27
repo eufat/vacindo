@@ -8,12 +8,19 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Button from '@material-ui/core/Button';
+import Icon from '@material-ui/core/Icon';
 
 import { closeAuthentication } from '../../../Auth/actions';
 
 const drawerWidth = 240;
 
 const styles = theme => ({
+  icon: {
+    marginRight: 10,
+  },
+  signOutButton: {
+    width: '100%',
+  },
   navIconHide: {
     [theme.breakpoints.up('md')]: {
       display: 'none',
@@ -24,6 +31,9 @@ const styles = theme => ({
     [theme.breakpoints.up('md')]: {
       position: 'relative',
     },
+  },
+  divider: {
+    marginTop: 100,
   },
   fixedSidebar: {
     position: 'fixed',
@@ -53,8 +63,10 @@ class VacindoSidebar extends Component {
           <ListItem>
             <Button
               onClick={() => dispatch(closeAuthentication(() => history.push('/')))}
-              className={classes.button}
+              className={classes.signOutButton}
+
             >
+              <Icon className={classes.icon} color="action">exit_to_app</Icon>
               Sign Out
             </Button>
           </ListItem>

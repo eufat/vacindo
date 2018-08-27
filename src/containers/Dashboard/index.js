@@ -22,11 +22,12 @@ const styleSheet = theme => ({
   toolbar: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.default,
     padding: theme.spacing.unit * 3,
     [theme.breakpoints.up('md')]: {
       paddingLeft: '240px',
     },
+    minHeight: '100vh !important',
+    backgroundColor: theme.palette.background.default,
   },
 });
 

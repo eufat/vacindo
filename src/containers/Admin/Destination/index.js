@@ -76,7 +76,7 @@ class Destination extends Component {
                 className={classes.button}
                 onClick={() => this.handleOnAdd()}
               >
-                <Icon className={classes.icon} color="action" style={{ fontSize: 60 }}>add_circle</Icon>
+                <Icon className={classes.icon} color="action" style={{ fontSize: 60 }}>add</Icon>
               </Button>
             </Card>
           }
