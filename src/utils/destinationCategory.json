@@ -1,0 +1,22 @@
+{
+    "data": [
+        { "name": "Lakes", "imageURL": "" },
+        { "name": "Arts & Cultures", "imageURL": "" },
+        { "name": "Spas", "imageURL": "" },
+        { "name": "Forests & Wildlife", "imageURL": "" },
+        { "name": "Beaches", "imageURL": "" },
+        { "name": "Museums", "imageURL": "" },
+        { "name": "Heritages", "imageURL": "" },
+        { "name": "Culinaries", "imageURL": "" },
+        { "name": "Shoppings", "imageURL": "" },
+        { "name": "Mountains & Craters", "imageURL": "" },
+        { "name": "Marine Life", "imageURL": "" },
+        { "name": "Surfings", "imageURL": "" },
+        { "name": "Entertainments", "imageURL": "" },
+        { "name": "Diving & Snorkeling ", "imageURL": "" },
+        { "name": "Valleys & Canyons", "imageURL": "" },
+        { "name": "Hot Springs", "imageURL": "" },
+        { "name": "Rivers & Waterfalls", "imageURL": "" },
+        { "name": "Traditional Ceremonies", "imageURL": "" }
+    ]
+}

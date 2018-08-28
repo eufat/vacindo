@@ -1,21 +1,24 @@
-const dummy = require("./dummy.json");
-const fs = require("fs");
+const dummy = require('./dummy.json');
+const fs = require('fs');
 
 const output = {
-    data: []
+  data: [],
 };
 
 const pretitleSet = new Set();
 
-for (let item of dummy.data) {
-    pretitleSet.add(item.preTitle);
+for (const item of dummy.data) {
+  pretitleSet.add(item.preTitle);
 }
 
-for (let item of pretitleSet) {
-    output.data.push(item);
+for (const item of pretitleSet) {
+  output.data.push({
+    name: item,
+    imageURL: '',
+  });
 }
 
 const json = JSON.stringify(output);
-fs.writeFile("destinationTypes.json", json, "utf8", () => {
-    console.log("done.");
+fs.writeFile('destinationCategory.json', json, 'utf8', () => {
+  console.log('done.');
 });
