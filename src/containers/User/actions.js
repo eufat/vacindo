@@ -1,6 +1,7 @@
+import values from 'lodash/values';
 import * as firebase from 'firebase';
 import * as c from './constants';
-
+import { showLoadingBar, successMessage, errorMessage } from '../App/actions';
 import generateHash from '../../utils/hash';
 
 export function retrieveUserDestinations(callback) {
@@ -44,7 +45,7 @@ export function retrieveBookingsData(userId, callback) {
 
       dispatch({
         type: c.SET_BOOKINGS,
-        bookings: value,
+        bookings: values(value),
       });
 
       if (callback !== undefined) {
@@ -65,5 +66,65 @@ export function addBooking(booking, callback) {
     if (callback !== undefined) {
       callback();
     }
+  };
+}
+
+export async function fetchPaymentData(paymentId) {
+  if (paymentId) {
+    const paymentData = await firebase
+      .database()
+      .ref(`paymentsData/${paymentId}`)
+      .once('value');
+    return paymentData.val();
+  }
+  return null;
+}
+
+export function setPaymentData(userId, method, data, callback) {
+  return (dispatch) => {
+    dispatch(showLoadingBar());
+    const paymentId = firebase
+      .database()
+      .ref()
+      .child('paymentsData')
+      .push().key;
+
+    const updates = {};
+    updates[`paymentsData/${paymentId}`] = {
+      method,
+      data,
+      userId,
+      paymentId,
+    };
+    updates[`usersData/${userId}/paymentId`] = paymentId;
+
+    return firebase
+      .database()
+      .ref()
+      .update(updates, () => {
+        dispatch(successMessage('Payment successfully submitted'));
+        callback();
+      });
+  };
+}
+
+export async function fetchVoucherData(voucherCode) {
+  const voucherData = await firebase
+    .database()
+    .ref(`vouchersData/${voucherCode}`)
+    .once('value');
+  return voucherData.val();
+}
+
+export function setPaymentImage(uid, file) {
+  return (dispatch) => {
+    dispatch(showLoadingBar());
+    const imageRef = firebase
+      .storage()
+      .ref()
+      .child(`paymentsImage/${uid}`);
+    imageRef.put(file).then(() => {
+      dispatch(successMessage('Payment image uploaded.'));
+    });
   };
 }

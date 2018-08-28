@@ -1,68 +1,128 @@
-import React from 'react';
+/* eslint-disable react/forbid-prop-types */
+
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
+import PropTypes from 'prop-types';
+import values from 'lodash/values';
 import dayjs from 'dayjs';
 
+import Grid from '@material-ui/core/Grid';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+
+import { fetchPaymentData, fetchUserData, retrieveBookingsData } from '../actions';
+import VacindoPaymentForms from './components/VacindoPaymentForms';
+import VacindoPaymentComplete from './components/VacindoPaymentComplete';
 import VacindoStepButtons from '../components/VacindoStepButtons';
+
 import { IDR } from '../../../utils/numberHelper';
 
 const styleSheet = () => ({
-  emptyPayment: {
-    textAlign: 'center',
-    padding: '200px 0',
+  paymentContainer: {
+    padding: 20,
   },
 });
 
-function Payment(props) {
-  const { bookings, classes } = props;
-  const bookingsData = [...bookings];
+class Payment extends Component {
+  state = {
+    verificationTime: null,
+    paymentData: {},
+    bookings: [],
+    onProgress: false,
+  };
 
-  let totalBookingsPrice = 0;
+  componentDidMount() {
+    this.checkPayment();
+    this.retrieveData();
+  }
 
-  bookingsData.forEach((item) => {
-    const daySpent = dayjs(item.dateUntil).diff(dayjs(item.dateFrom), 'days');
-    const bookingPrice = item.price * daySpent * item.person;
+  retrieveData = () => {
+    const { user, dispatch } = this.props;
+    const userId = user.uid;
 
-    totalBookingsPrice += bookingPrice;
-  });
+    this.setState({ ...this.state, onProgress: true }, () => {
+      dispatch(retrieveBookingsData(userId, (bookings) => {
+        this.setState({
+          ...this.state,
+          bookings: values(bookings),
+          onProgress: false,
+        });
+      }));
+    });
+  };
 
-  const bookingIsEmpty = !(bookingsData.length > 0);
+  checkPayment = async () => {
+    const { user } = this.props;
+    const userData = await fetchUserData(user.uid);
+    const paymentId = userData && userData.paymentId;
 
-  console.log('tbc', totalBookingsPrice);
+    if (paymentId) {
+      const paymentData = await fetchPaymentData(paymentId);
+      const { verificationTime } = paymentData;
+      this.setState({ paymentData, verificationTime });
+    }
+  };
 
-  const PaymentContent = () => (
-    <div>
-      <Typography gutterBottom variant="subheading">
-        Payment Total
-      </Typography>
-      <Typography gutterBottom variant="headline">
-        {IDR(totalBookingsPrice)}
-      </Typography>
-    </div>
-  );
+  render() {
+    const { classes } = this.props;
 
-  return (
-    <div>
-      <Typography variant="title">Payment</Typography>
-      <div style={{ padding: 20 }}>
-        {bookingIsEmpty ? (
-          <div className={classes.emptyPayment}>There are no bookings.</div>
-        ) : (
-          <Grid container spacing={16}>
-            {PaymentContent()}
-          </Grid>
-        )}
+    const isPaymentEmpty = this.state.verificationTime === null;
+    const verification = this.state.verificationTime > 0 ? 'Verified' : 'Waiting Verification';
+
+    const { bookings } = this.state;
+    const bookingsData = [...bookings];
+
+    let totalBookingsPrice = 0;
+
+    bookingsData.forEach((item) => {
+      const daySpent = dayjs(item.dateUntil).diff(dayjs(item.dateFrom), 'days');
+      const bookingPrice = item.price * daySpent * item.person;
+
+      totalBookingsPrice += bookingPrice;
+    });
+
+    const bookingIsEmpty = !(bookingsData.length > 0);
+
+    const PaymentContent = () => (
+      <div>
+        <Typography gutterBottom variant="subheading">
+          Payment Total
+        </Typography>
+        <Typography gutterBottom variant="headline">
+          {IDR(totalBookingsPrice)}
+        </Typography>
       </div>
-      <VacindoStepButtons last beforeLink="/user/explore" />
-    </div>
-  );
+    );
+
+    return (
+      <div className={classes.paymentContainer}>
+        <div className={classes.paymentContent}>
+          {bookingIsEmpty ? (
+            <div className={classes.emptyPayment}>There are no bookings.</div>
+          ) : (
+            <Grid container spacing={16}>
+              {PaymentContent()}
+            </Grid>
+          )}
+        </div>
+        {isPaymentEmpty ? (
+          <VacindoPaymentForms checkPayment={this.checkPayment} />
+        ) : (
+          <VacindoPaymentComplete verification={verification} />
+        )}
+        <VacindoStepButtons beforeLink="/user/profile" last />
+      </div>
+    );
+  }
 }
 
-function mapStateToProps({ user }) {
+Payment.propTypes = {
+  user: PropTypes.object.isRequired,
+};
+
+function mapStateToProps({ auth }) {
   return {
-    bookings: user.bookings,
+    user: auth.currentUser,
   };
 }
 
