@@ -64,7 +64,7 @@ class App extends Component {
             exact
             path="/"
             render={() =>
-              isAuthenticated ? <Redirect to="/dashboard" /> : <Promo {...this.props} />
+              isAuthenticated ? <Redirect to="/dashboard" /> : <Web {...this.props} />
             }
           />
           <Route
@@ -82,19 +82,19 @@ class App extends Component {
             render={() => (isAuthenticated ? <Redirect to="/" /> : <User {...this.props} />)}
           />
           <Route
-            path="/promo" 
+            path="/promo"
             render={() => (<Promo {...this.props} />)}
           />
           <Route
-            path="/help" 
+            path="/help"
             render={() => (<Help {...this.props} />)}
           />
           <Route
-            path="/safety" 
+            path="/safety"
             render={() => (<Safety {...this.props} />)}
           />
           <Route
-            path="/faq" 
+            path="/faq"
             render={() => (<Faq {...this.props} />)}
           />
         </Switch>
