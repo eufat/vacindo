@@ -29,7 +29,7 @@ class Booking extends Component {
   state = {
     bookings: [],
     onProgress: false,
-  }
+  };
 
   componentDidMount() {
     this.retrieveData();
@@ -48,7 +48,7 @@ class Booking extends Component {
         });
       }));
     });
-  }
+  };
 
   render() {
     const { bookings, onProgress } = this.state;
@@ -60,24 +60,30 @@ class Booking extends Component {
       bookingsData.forEach((item) => {
         const daySpent = dayjs(item.dateUntil).diff(dayjs(item.dateFrom), 'days');
 
-        DestinationCards.push(
-          <Grid item xs={12} sm={6}>
+        const DestinationCardComponent = () => (
+          <Grid item xs={12} sm={4}>
             <VacindoCard data={item}>
               <div className={classes.additionalInfo}>
-                <Typography variant="subheading">{dayjs(item.dateFrom).format('dddd, D MMMM YYYY')} → {dayjs(item.dateUntil).format('dddd, D MMMM YYYY')}</Typography>
+                <Typography variant="subheading">
+                  {dayjs(item.dateFrom).format('dddd, D MMMM YYYY')} →{' '}
+                  {dayjs(item.dateUntil).format('dddd, D MMMM YYYY')}
+                </Typography>
                 <Typography variant="subheading">{daySpent} Days</Typography>
                 <Typography variant="subheading">{item.person} person</Typography>
               </div>
               <div className={classes.additionalInfo}>
                 <Typography gutterBottom variant="subheading">
-                  Estimated Total Price
+                  Cost
                 </Typography>
                 <Typography gutterBottom variant="headline">
                   {IDR(item.price * daySpent * item.person)}
                 </Typography>
               </div>
             </VacindoCard>
-          </Grid>);
+          </Grid>
+        );
+
+        DestinationCards.push(DestinationCardComponent());
       });
     }
 
@@ -87,22 +93,22 @@ class Booking extends Component {
       <div className={classes.bookingContainer}>
         <Typography variant="title">Booking</Typography>
 
-        {
-          onProgress ?
-            <center>
-              <CircularProgress className={classes.progress} />
-            </center> :
-            <div>
-              {bookingIsEmpty ? (
-                <div className={classes.emptyBooking}>There are no bookings.</div>
-              ) : (
-                <Grid container spacing={16}>
-                  {DestinationCards}
-                </Grid>
-              )}
-            </div>
-        }
-        <VacindoStepButtons beforeLink="/user/explore" nextLink="/user/payment"/>
+        {onProgress ? (
+          <center>
+            <CircularProgress className={classes.progress} />
+          </center>
+        ) : (
+          <div>
+            {bookingIsEmpty ? (
+              <div className={classes.emptyBooking}>There are no bookings.</div>
+            ) : (
+              <Grid container spacing={16}>
+                {DestinationCards}
+              </Grid>
+            )}
+          </div>
+        )}
+        <VacindoStepButtons beforeLink="/user/explore" nextLink="/user/payment" />
       </div>
     );
   }
